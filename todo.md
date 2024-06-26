@@ -1,17 +1,27 @@
 Priority
 ========
 
+- Unable to submit up-accept or up-dismiss links with the keyboard within popups
 - Consider removing { pointer: cursor } for [up-defer][up-href]
-- Allow the [wants-menu] compiler to be implemented without JS
-  - We would need something like [up-defer][up-unless-already-there] 
+  - And [up-poll][up-href] later
 - Should we restore scroll on history-restore?
-- Should we restore focus on focus-restore?
+- Should we restore focus on history-restore?
 - Docs say up:location:changed is emitted on back button, but I think it isn't
 - Publish { reason } property of up:location:changed
 - Do we dare to restore history using up.render() instead of up.navigate()?
   - Compare renderOptions
+  - Users could configure different navigateOptions, but that is OK, right?
 - Consider exposing up.history.config.restoreOptions
   - This would subsume config.restoreTargets 
+- Consider setting custom URLs for polling with [up-href] instead of [up-source]
+- Consider supporting all link options for [up-poll]
+  - up.radio.pollOptions()
+  - This would be analogue to [up-defer]
+- Allow the [wants-menu] compiler to be implemented without JS
+  - We would need something like [up-defer][up-unless-already-there] 
+- Unable to submit an a[href="#"][up-accept] with enter
+- Issue with [up-alias] not matching wildcards
+  - https://github.com/unpoly/unpoly/issues/542
 
 
 Backlog
