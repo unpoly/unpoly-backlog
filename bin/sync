@@ -1,0 +1,8 @@
+#!/bin/bash
+set -e
+cd $(dirname "$0")
+git add --all
+git commit -m "Changes from $(date)"
+git pull --strategy-option=ours
+git push -f
+

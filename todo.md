@@ -14,6 +14,7 @@ Defer and Polling
 - Require [up-follow] in addition to [up-href]?
   - This would mean moving the docs into [up-follow] (and redirect)
   - Make sure tests for [up-expand] are solid
+  - Make sure we still get { cursor: pointer } for a span[up-follow][up-href]
   - Could be migrated nicely:
     - up.macro('[up-href]:not([up-defer], [up-poll], [up-follow]', function(link) {
         warn('Making non-interactive elements behave like a hyperlink, use [up-follow] in addition to [up-href] (found in %o)', link)
@@ -57,6 +58,7 @@ Backlog
 =======
 
 - Remove isNull() and isUndefined()
+  - The test is trivial, but it may be nice to not have to think aobut it
 - Allow to keep elements *without* remembering to mark elements as [up-keep]
   - config.keepSelectors
   - Allow { useKeep: '[up-keep], .search-input' } to keep additional elements
