@@ -1,7 +1,7 @@
 Priority
 ========
 
-- Use new Event() in up.event.build()
+
 
 
 Layer
