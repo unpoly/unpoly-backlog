@@ -1,33 +1,61 @@
 Priority
 ========
 
-- Unable to submit up-accept or up-dismiss links with the keyboard within popups
+- Use new Event() in up.event.build()
+
+
+Layer
+-----
+
+
+Defer and Polling
+-----------------
+
+- Require [up-follow] in addition to [up-href]?
+  - This would mean moving the docs into [up-follow] (and redirect)
+  - Make sure tests for [up-expand] are solid
+  - Could be migrated nicely:
+    - up.macro('[up-href]:not([up-defer], [up-poll], [up-follow]', function(link) {
+        warn('Making non-interactive elements behave like a hyperlink, use [up-follow] in addition to [up-href] (found in %o)', link)
+        link.setAttribute('up-follow', '')
+      })
 - Consider removing { pointer: cursor } for [up-defer][up-href]
   - And [up-poll][up-href] later
-- Should we restore scroll on history-restore?
-- Should we restore focus on history-restore?
-- Docs say up:location:changed is emitted on back button, but I think it isn't
-- Publish { reason } property of up:location:changed
-- Do we dare to restore history using up.render() instead of up.navigate()?
-  - Compare renderOptions
-  - Users could configure different navigateOptions, but that is OK, right?
-- Consider exposing up.history.config.restoreOptions
-  - This would subsume config.restoreTargets 
+- [up-defer][up-href] should not be followable
+- [up-poll][up-href] should not be followable
 - Consider setting custom URLs for polling with [up-href] instead of [up-source]
 - Consider supporting all link options for [up-poll]
   - up.radio.pollOptions()
   - This would be analogue to [up-defer]
-- Allow the [wants-menu] compiler to be implemented without JS
-  - We would need something like [up-defer][up-unless-already-there] 
-- Unable to submit an a[href="#"][up-accept] with enter
-- Issue with [up-alias] not matching wildcards
-  - https://github.com/unpoly/unpoly/issues/542
+    
+
+A11Y
+----
+
+
+
+History
+-------
+
+- Publish { reason } property of up:location:changed
+  - It should probably be { reason: 'restore' }
+
+
+
+
+Others
+------
+
+- Form submission when the origin is a shadow DOM control: https://github.com/unpoly/unpoly/discussions/643#discussioncomment-9760586
+- [up-validate] from a different URL
+  - https://github.com/unpoly/unpoly/issues/486
+  - This should make for a simpler code example
+
 
 
 Backlog
 =======
 
-- Form submission when the origin is a shadow DOM control: https://github.com/unpoly/unpoly/discussions/643#discussioncomment-9760586
 - Remove isNull() and isUndefined()
 - Allow to keep elements *without* remembering to mark elements as [up-keep]
   - config.keepSelectors
@@ -678,3 +706,13 @@ Decisions
   - Maybe, but you can already do in CSS: .container:has(.up-active) .spinner { ... }
 - Do we really need to abort requests in LinkPreloader?
   => Yes, aborted requests can be seen in the network tab. We also found a shorter way to write it. 
+
+- Allow the [wants-menu] compiler to be implemented without JS
+  - We would need something like [up-defer][up-unless-already-there] 
+    - Or even a follow option?
+    - Should we just check, or "only revalidate"?
+    - Or should it be the default behavior?
+    => This is really hard to do right
+- Do we dare to restore history using up.render() instead of up.navigate()?
+  => We override as much as want to re-use
+
