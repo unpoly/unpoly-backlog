@@ -2,6 +2,11 @@ Priority
 ========
 
 
+Document [up-fail] and { fail } as:
+
+> With { fail: false } or [up-fail=false] Unpoly will always consider the response to be successful, even with a HTTP 4xx or 5xx status code.
+
+"Loading changed assets" could be simplified when only swapping stylesheets
 
 
 Layer
@@ -20,6 +25,9 @@ Defer and Polling
         warn('Making non-interactive elements behave like a hyperlink, use [up-follow] in addition to [up-href] (found in %o)', link)
         link.setAttribute('up-follow', '')
       })
+- Clickable elements
+  - [role=link] for [up-follow][up-href]?
+  - Only use the pointer cursor when we set [role=link]
 - Consider removing { pointer: cursor } for [up-defer][up-href]
   - And [up-poll][up-href] later
 - [up-defer][up-href] should not be followable
