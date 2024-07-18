@@ -18,16 +18,32 @@ Defer and Polling
 
 - Require [up-follow] in addition to [up-href]?
   - This would mean moving the docs into [up-follow] (and redirect)
-  - Make sure tests for [up-expand] are solid
   - Make sure we still get { cursor: pointer } for a span[up-follow][up-href]
   - Could be migrated nicely:
     - up.macro('[up-href]:not([up-defer], [up-poll], [up-follow]', function(link) {
         warn('Making non-interactive elements behave like a hyperlink, use [up-follow] in addition to [up-href] (found in %o)', link)
         link.setAttribute('up-follow', '')
       })
+
+- Make sure tests for [up-expand] are solid
+  - Test that it can be followed
+  - Test that it can be focused via keyboard
+  - Test that it cab be activated via keyboard
+    - makeFollowable() does not imply makeClickable() right now, but it might be via clickableSelectors
+    - If makeFolloable() would call makeClickable(), this would cause multiple compilations
+  - Test that it gets a role
+
+- Do we have tests for [up-emit]?
+  - Test that it can be focused via keyboard
+  - Test that it cab be activated via keyboard
+  - Test that it gets a role
+
 - Clickable elements
   - [role=link] for [up-follow][up-href]?
   - Only use the pointer cursor when we set [role=link]
+  - Buttons are expected to be triggered using the Space or Enter key, while links are expected to be triggered using the Enter key.
+  - Test that making links or buttons clickable will not cause a second up:click
+  
 - Consider removing { pointer: cursor } for [up-defer][up-href]
   - And [up-poll][up-href] later
 - [up-defer][up-href] should not be followable
