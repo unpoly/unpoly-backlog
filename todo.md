@@ -2,22 +2,15 @@ Priority
 ========
 
 
-Document [up-fail] and { fail } as:
-
-> With { fail: false } or [up-fail=false] Unpoly will always consider the response to be successful, even with a HTTP 4xx or 5xx status code.
-
-"Loading changed assets" could be simplified when only swapping stylesheets
-
-
-Layer
------
-
-
-Defer and Polling
+Clickable rework
 -----------------
 
-- Require [up-follow] in addition to [up-href]?
-  - This would mean moving the docs into [up-follow] (and redirect)
+- Doc clean-up
+  - Remove tag prefixes from all doc pages
+  - Remove clickable-behaviors partial
+  - Remove [up-href] doc page (migrate via .htaccess)
+
+- Require [up-follow] for [up-href]
   - Make sure we still get { cursor: pointer } for a span[up-follow][up-href]
   - Could be migrated nicely:
     - up.macro('[up-href]:not([up-defer], [up-poll], [up-follow]', function(link) {
@@ -35,6 +28,13 @@ Defer and Polling
 
 - Do we have tests for [up-emit]?
   - Test that it can be focused via keyboard
+  - Test that it gets cursor pointer
+  - Test that it cab be activated via keyboard
+  - Test that it gets a role
+
+- Do we have tests for [up-back]?
+  - Test that it can be focused via keyboard
+  - Test that it gets cursor pointer
   - Test that it cab be activated via keyboard
   - Test that it gets a role
 
@@ -44,15 +44,38 @@ Defer and Polling
   - Buttons are expected to be triggered using the Space or Enter key, while links are expected to be triggered using the Enter key.
   - Test that making links or buttons clickable will not cause a second up:click
   
+
+Defer and polling
+-----------------
+  
 - Consider removing { pointer: cursor } for [up-defer][up-href]
   - And [up-poll][up-href] later
-- [up-defer][up-href] should not be followable
-- [up-poll][up-href] should not be followable
+  - We should get this automatically with the [up-follow][up-href] change above
+  - Test anyway
+- Test that [up-defer][up-href] should not be followable
+- Test that [up-poll][up-href] should not be followable
 - Consider setting custom URLs for polling with [up-href] instead of [up-source]
 - Consider supporting all link options for [up-poll]
   - up.radio.pollOptions()
   - This would be analogue to [up-defer]
     
+
+Docs
+----
+
+Document [up-fail] and { fail } as:
+
+> With { fail: false } or [up-fail=false] Unpoly will always consider the response to be successful, even with a HTTP 4xx or 5xx status code.
+
+"Loading changed assets" could be simplified when only swapping stylesheets
+
+
+Layer
+-----
+
+
+
+
 
 A11Y
 ----
@@ -71,7 +94,6 @@ History
 Others
 ------
 
-- Form submission when the origin is a shadow DOM control: https://github.com/unpoly/unpoly/discussions/643#discussioncomment-9760586
 - [up-validate] from a different URL
   - https://github.com/unpoly/unpoly/issues/486
   - This should make for a simpler code example
