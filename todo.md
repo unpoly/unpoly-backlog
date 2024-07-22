@@ -11,20 +11,21 @@ Clickable rework
   - Remove [up-href] doc page (migrate via .htaccess)
 
 - Require [up-follow] for [up-href]
-  - Make sure we still get { cursor: pointer } for a span[up-follow][up-href]
-  - Could be migrated nicely:
+  - [ok] Make sure we still get { cursor: pointer } for a span[up-follow][up-href]
+  - Migrate with warning, e.g.:
     - up.macro('[up-href]:not([up-defer], [up-poll], [up-follow]', function(link) {
         warn('Making non-interactive elements behave like a hyperlink, use [up-follow] in addition to [up-href] (found in %o)', link)
         link.setAttribute('up-follow', '')
       })
+    - We could also push it to clickableSelectors and followSelectors and still print the warning above.
 
-- Make sure tests for [up-expand] are solid
-  - Test that it can be followed
-  - Test that it can be focused via keyboard
-  - Test that it cab be activated via keyboard
+- [ok] Make sure tests for [up-expand] are solid
+  - [ok] Test that it can be followed
+  - [NO!] Test that it can be focused via keyboard
+  - [NO!] Test that it cab be activated via keyboard
     - makeFollowable() does not imply makeClickable() right now, but it might be via clickableSelectors
     - If makeFolloable() would call makeClickable(), this would cause multiple compilations
-  - Test that it gets a role
+  - [NO!] Test that it gets a role
 
 - Do we have tests for [up-emit]?
   - Test that it can be focused via keyboard
@@ -68,6 +69,9 @@ Document [up-fail] and { fail } as:
 > With { fail: false } or [up-fail=false] Unpoly will always consider the response to be successful, even with a HTTP 4xx or 5xx status code.
 
 "Loading changed assets" could be simplified when only swapping stylesheets
+
+
+/opening-overlays should say how to open an overlay from local content
 
 
 Layer
