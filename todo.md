@@ -2,6 +2,13 @@ Priority
 ========
 
 
+unpoly-rails
+------------
+
+Check that we're requiring railties correctly
+https://makandracards.com/makandra/621789-extending-railties-in-gem-safely
+
+
 Clickable rework
 -----------------
 
@@ -10,41 +17,6 @@ Clickable rework
   - Remove clickable-behaviors partial
   - Remove [up-href] doc page (migrate via .htaccess)
 
-- Require [up-follow] for [up-href]
-  - [ok] Make sure we still get { cursor: pointer } for a span[up-follow][up-href]
-  - Migrate with warning, e.g.:
-    - up.macro('[up-href]:not([up-defer], [up-poll], [up-follow]', function(link) {
-        warn('Making non-interactive elements behave like a hyperlink, use [up-follow] in addition to [up-href] (found in %o)', link)
-        link.setAttribute('up-follow', '')
-      })
-    - We could also push it to clickableSelectors and followSelectors and still print the warning above.
-
-- [ok] Make sure tests for [up-expand] are solid
-  - [ok] Test that it can be followed
-  - [NO!] Test that it can be focused via keyboard
-  - [NO!] Test that it cab be activated via keyboard
-    - makeFollowable() does not imply makeClickable() right now, but it might be via clickableSelectors
-    - If makeFolloable() would call makeClickable(), this would cause multiple compilations
-  - [NO!] Test that it gets a role
-
-- Do we have tests for [up-emit]?
-  - Test that it can be focused via keyboard
-  - Test that it gets cursor pointer
-  - Test that it cab be activated via keyboard
-  - Test that it gets a role
-
-- Do we have tests for [up-back]?
-  - Test that it can be focused via keyboard
-  - Test that it gets cursor pointer
-  - Test that it cab be activated via keyboard
-  - Test that it gets a role
-
-- Clickable elements
-  - [role=link] for [up-follow][up-href]?
-  - Only use the pointer cursor when we set [role=link]
-  - Buttons are expected to be triggered using the Space or Enter key, while links are expected to be triggered using the Enter key.
-  - Test that making links or buttons clickable will not cause a second up:click
-  
 
 Defer and polling
 -----------------
