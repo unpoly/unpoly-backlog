@@ -9,76 +9,23 @@ Check that we're requiring railties correctly
 https://makandracards.com/makandra/621789-extending-railties-in-gem-safely
 
 
-Clickable rework
------------------
-
-- Doc clean-up
-  - Remove tag prefixes from all doc pages
-  - Remove clickable-behaviors partial
-  - Remove [up-href] doc page (migrate via .htaccess)
-
-
-Defer and polling
------------------
-  
-- Consider removing { pointer: cursor } for [up-defer][up-href]
-  - And [up-poll][up-href] later
-  - We should get this automatically with the [up-follow][up-href] change above
-  - Test anyway
-- Test that [up-defer][up-href] should not be followable
-- Test that [up-poll][up-href] should not be followable
-- Consider setting custom URLs for polling with [up-href] instead of [up-source]
-- Consider supporting all link options for [up-poll]
-  - up.radio.pollOptions()
-  - This would be analogue to [up-defer]
-    
 
 Docs
 ----
 
-Document [up-fail] and { fail } as:
-
-> With { fail: false } or [up-fail=false] Unpoly will always consider the response to be successful, even with a HTTP 4xx or 5xx status code.
-
-"Loading changed assets" could be simplified when only swapping stylesheets
-
-
-/opening-overlays should say how to open an overlay from local content
-
-
-Layer
------
-
-
-
-
-
-A11Y
-----
-
-
-
-History
--------
-
-- Publish { reason } property of up:location:changed
-  - It should probably be { reason: 'restore' }
-
-
-
-
-Others
-------
-
-- [up-validate] from a different URL
-  - https://github.com/unpoly/unpoly/issues/486
-  - This should make for a simpler code example
+/opening-overlays and [up-layer=new] should say how to open an overlay from local content
 
 
 
 Backlog
 =======
 
+- [up-validate] from a different URL
+  - https://github.com/unpoly/unpoly/issues/486
+  - This should make for a simpler code example
+- An a[href][up-defer] should be *un*clickable?
+  - Remove tabindex
+  - Remove pointer cursor
 - Remove isNull() and isUndefined()
   - The test is trivial, but it may be nice to not have to think aobut it
 - Allow to keep elements *without* remembering to mark elements as [up-keep]
