@@ -1,6 +1,14 @@
 Priority
 ========
 
+.up-scroll-bar-away: --up-original-xxx is set on the root instead of element
+
+
+Previews
+--------
+
+
+
 
 unpoly-rails
 ------------
