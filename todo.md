@@ -2,6 +2,9 @@ Priority
 ========
 
 .up-scroll-bar-away: --up-original-xxx is set on the root instead of element
+onEscapePressed(), eventCloser does not mute uncritical
+
+- Don't force-focus submit buttons. Prefer using the { submitter } prop.
 
 
 Previews

@@ -1,0 +1,16 @@
+<html>
+<body>
+
+  <form action="#" method="get">
+    <input type="text" name="foo">
+    <input type="submit">
+  </form>
+  
+  <script>
+    document.addEventListener('focusin', (event) => console.log("Focus on", event.target))
+    document.addEventListener('click', (event) => console.log("Click on %o (event %o)", event.target, event))
+    document.addEventListener('submit', (event) => event.preventDefault())
+  </script>
+
+</body>
+</html>
