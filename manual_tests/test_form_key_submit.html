@@ -9,7 +9,7 @@
   <script>
     document.addEventListener('focusin', (event) => console.log("Focus on", event.target))
     document.addEventListener('click', (event) => console.log("Click on %o (event %o)", event.target, event))
-    document.addEventListener('submit', (event) => event.preventDefault())
+    document.addEventListener('submit', (event) => { console.log("submitter is %o", event.submitter); event.preventDefault() })
   </script>
 
 </body>
