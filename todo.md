@@ -1,19 +1,60 @@
 Priority
 ========
 
+- Deprecate flatten() in favor of Array#flat()?
+- Test: Multiple destroy() calls will only call destructors once
+- Have a non-mocking test for up.render({ scrollBehavior })
+- Extract up.render() tests to a separate file
 
 
 Previews
 --------
 
+- Remove most methods from the up.Preview class
+- Expose revertible methods
+- Test
+  - Previews are used
+  - Previews are reverted before rendering
+  - Previews are reverted when aborting a fragment kills the request
+- Doc page /optimistic-rendering
+- up.Preview#layer
+  - Tests
+  - Is there an existing impl we can re-use?
+   
+
+
+swap            nix
+swapTarget      nix
+openLayer       nix                      
+insert          nix, would be useful!  e.insertTemporary() or similiar
+prepend         nix
+append          nix
+addClass        addTemporaryClass (unpublished)  rename to  addTempClass  or  addClassTemp  or  make undoing a feature of addClass (which we don't have!)
+disable         up.form.disable   (unpublished)  get rid of disableStack? also add as up.form.disableTemporary() ?
+setAttrs        setTemporaryAttrs (unpublished)  rename to  setTempAttrs  or  setAttrsTemp  or  make undoing a feature of setAttrs
+setStyle        setTemporaryStyle (unpublished)  rename to  setTempStyle  or  setStyleTemp  or  make undoing a feature of setStyle (expensive!)
+show            
+hide
+toggle          nix, would be useful!  e.toggleTemporary(element)   or   toggleTemp   or tempToggle   or make undoing a feature of toggle
+
+
+[ok] up.fragment.insertTemp()
+up.form.disableTemp()
+[ok] up.element.addClassTemp()
+[ok] up.element.setAttrsTemp()
+[ok] up.element.setStyleTemp()
+[POSTPONED] up.util.assignTemp()       => docs, test, @experimental    NO!
+
+Advantages of the "temp" suffix:
+
+- Sorted right behind the actual method
+- Work around grammar temporary / temporarily
 
 
 
-unpoly-rails
-------------
+up.form.undoableDisable
 
-Check that we're requiring railties correctly
-https://makandracards.com/makandra/621789-extending-railties-in-gem-safely
+up.form.disableUndo
 
 
 
