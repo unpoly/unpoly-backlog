@@ -1,60 +1,64 @@
 Priority
 ========
 
+
+Can we better support the back button in Overlays when we block "forward"?
+--------------------------------------------------------------------------
+
+- Replacing main within the overlay
+- Closing within the overlay
+
+
+
+Next release
+------------
+
+- Test if we can replace or use up.util.sequence() vs. up.util.cleaner()
+- Test that we support all kinds of destructor values
+  - function
+  - array of functions
+  - anything else is ignored
 - Deprecate flatten() in favor of Array#flat()?
 - Test: Multiple destroy() calls will only call destructors once
 - Have a non-mocking test for up.render({ scrollBehavior })
-- Extract up.render() tests to a separate file
+- [after merging hk/previews] Extract up.render() tests to a separate file
+- Rename renderOptions.layers to renderOptions.resolvedLayers (set in RenderOptions.preprocessed(), used by up.Change.* and up.Preview)
 
 
 Previews
 --------
 
+- Do we want [up-skeleton=<string>] ?
+  - We would need to decide what to do within overlays
+    - Show skeleton within overlay?
+    - Animation
+    - Different skeleton
+- Allow a function value for { preview }
+- I think we still have a problem when previews are interleaved
+  - Order is:
+    - preview1 adds class
+    - preview2 adds class (but gets noop undo)
+    - preview1 removes class (but should be shown)
+    - preview2 removes class (noop)
+  - If we solve this we can get rid of lower/raiseDisableStack()
+  - We want, but cannot have, process.nextTick()
+  - https://makandra.slack.com/archives/C02KGPZDE/p1709567970239409?thread_ts=1709567681.936389&cid=C02KGPZDE
 - Remove most methods from the up.Preview class
+- Previews should not be rendered when request is cached
 - Expose revertible methods
 - Test
   - Previews are used
   - Previews are reverted before rendering
   - Previews are reverted when aborting a fragment kills the request
+  - Previews are not rendered when request is cached
 - Doc page /optimistic-rendering
 - up.Preview#layer
   - Tests
   - Is there an existing impl we can re-use?
-   
-
-
-swap            nix
-swapTarget      nix
-openLayer       nix                      
-insert          nix, would be useful!  e.insertTemporary() or similiar
-prepend         nix
-append          nix
-addClass        addTemporaryClass (unpublished)  rename to  addTempClass  or  addClassTemp  or  make undoing a feature of addClass (which we don't have!)
-disable         up.form.disable   (unpublished)  get rid of disableStack? also add as up.form.disableTemporary() ?
-setAttrs        setTemporaryAttrs (unpublished)  rename to  setTempAttrs  or  setAttrsTemp  or  make undoing a feature of setAttrs
-setStyle        setTemporaryStyle (unpublished)  rename to  setTempStyle  or  setStyleTemp  or  make undoing a feature of setStyle (expensive!)
-show            
-hide
-toggle          nix, would be useful!  e.toggleTemporary(element)   or   toggleTemp   or tempToggle   or make undoing a feature of toggle
-
-
-[ok] up.fragment.insertTemp()
-up.form.disableTemp()
-[ok] up.element.addClassTemp()
-[ok] up.element.setAttrsTemp()
-[ok] up.element.setStyleTemp()
-[POSTPONED] up.util.assignTemp()       => docs, test, @experimental    NO!
-
-Advantages of the "temp" suffix:
-
-- Sorted right behind the actual method
-- Work around grammar temporary / temporarily
-
-
-
-up.form.undoableDisable
-
-up.form.disableUndo
+- Support multiple previews
+  - Do we run all? The first?
+    - The preview could also just return if not applicable
+  - Just allow a string with multiple previews, or an array
 
 
 
