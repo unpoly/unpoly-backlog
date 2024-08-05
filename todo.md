@@ -2,12 +2,14 @@ Priority
 ========
 
 
-Can we better support the back button in Overlays when we block "forward"?
---------------------------------------------------------------------------
+Perspective
+-----------
 
 - Replacing main within the overlay
 - Closing within the overlay
-
+- Support array fields with watch()?
+  - up.form.config.arrayFields = 'suffix' | 'all'
+- Remove params parsing for up.watch(), support formdata, ElementInternals
 
 
 Next release
