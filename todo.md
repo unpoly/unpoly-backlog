@@ -15,7 +15,7 @@ Perspective
 Next release
 ------------
 
-- Test if we can replace or use up.util.sequence() vs. up.util.cleaner()
+- Test if we can replace, use or merge up.util.sequence() vs. up.util.cleaner()
 - Test that we support all kinds of destructor values
   - function
   - array of functions
@@ -30,11 +30,13 @@ Next release
 Previews
 --------
 
-- Do we want [up-skeleton=<string>] ?
-  - We would need to decide what to do within overlays
-    - Show skeleton within overlay?
-    - Animation
-    - Different skeleton
+- For new layer requests, up.Request#fragment must be null
+  => It cannot, since this is the fragment we associate the request with (to detect conflicting requests)
+- For new layer requests, up.Preview#fragment must be null
+- Offer up.Preview#run('other-preview-name' | Function)
+  - Track its return value
+- Test that we don't add .up-can-clean when an element has no destructors (this is an issue in the current code)
+- It should be easy for up.form to express [up-disable] rules with up.preview()
 - Allow a function value for { preview }
 - I think we still have a problem when previews are interleaved
   - Order is:
@@ -740,4 +742,10 @@ Decisions
     => This is really hard to do right
 - Do we dare to restore history using up.render() instead of up.navigate()?
   => We override as much as want to re-use
+- Do we want [up-skeleton=<string>] ?
+  - We would need to decide what to do within overlays
+    - Show skeleton within overlay?
+    - Animation
+    - Different skeleton
+  => Later
 
