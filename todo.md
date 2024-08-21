@@ -1,12 +1,12 @@
 Priority
 ========
 
+- Can we update the cache for an /edit screen?
+
 
 Perspective
 -----------
 
-- Replacing main within the overlay
-- Closing within the overlay
 - Support array fields with watch()?
   - up.form.config.arrayFields = 'suffix' | 'all'
 - Remove params parsing for up.watch(), support formdata, ElementInternals
@@ -15,7 +15,6 @@ Perspective
 Next release
 ------------
 
-- Test if we can replace, use or merge up.util.sequence() vs. up.util.cleaner()
 - Test that we support all kinds of destructor values
   - function
   - array of functions
@@ -30,39 +29,58 @@ Next release
 Previews
 --------
 
-- For new layer requests, up.Request#fragment must be null
-  => It cannot, since this is the fragment we associate the request with (to detect conflicting requests)
-- For new layer requests, up.Preview#fragment must be null
 - Offer up.Preview#run('other-preview-name' | Function)
   - Track its return value
-- Test that we don't add .up-can-clean when an element has no destructors (this is an issue in the current code)
-- It should be easy for up.form to express [up-disable] rules with up.preview()
 - Allow a function value for { preview }
-- I think we still have a problem when previews are interleaved
-  - Order is:
-    - preview1 adds class
-    - preview2 adds class (but gets noop undo)
-    - preview1 removes class (but should be shown)
-    - preview2 removes class (noop)
-  - If we solve this we can get rid of lower/raiseDisableStack()
-  - We want, but cannot have, process.nextTick()
-  - https://makandra.slack.com/archives/C02KGPZDE/p1709567970239409?thread_ts=1709567681.936389&cid=C02KGPZDE
-- Remove most methods from the up.Preview class
-- Previews should not be rendered when request is cached
-- Expose revertible methods
 - Test
   - Previews are used
   - Previews are reverted before rendering
   - Previews are reverted when aborting a fragment kills the request
   - Previews are not rendered when request is cached
-- Doc page /optimistic-rendering
-- up.Preview#layer
-  - Tests
-  - Is there an existing impl we can re-use?
-- Support multiple previews
-  - Do we run all? The first?
-    - The preview could also just return if not applicable
-  - Just allow a string with multiple previews, or an array
+  - Preview function errors are global errors
+  - Preview REVERT errors are global errors
+  - Preview do not interleave
+    - preview1 adds class
+    - preview2 adds class (but gets noop undo)
+    - preview1 removes class (but should be shown)
+    - preview2 removes class (noop)
+  - Test up.Preview#target
+  - Test up.Preview#fragment
+    - For new layer requests, up.Preview#fragment must be null
+  - Test up.Preview#fragments
+    - For new layer requests, up.Preview#fragment must be null
+  - Test up.Preview#origin
+    - For new layer requests, up.Preview#fragment must be null
+  - Test up.Preview#layer
+    - Must be resolved up.Layer for UpdateLayer
+    - Must be the string "new" for OpenLayer
+  - Test up.Preview#run(string)
+  - Test up.Preview#run(fn)
+  - Test up.Preview#setAttrs()
+  - Test up.Preview#addClass()
+  - Test up.Preview#setStyle()
+  - Test up.Preview#disable()
+  - Test up.Preview#insert()
+  - Test up.Preview#swap()
+  - Test up.Preview#show()
+  - Test up.Preview#hide()
+- Allow multiple reviews
+  - { preview: 'foo bar' }
+  - { preview: ['foo', 'bar'] }
+  - { preview: [fn, fn] }
+- Find a way for existing functionality to be expressed with up.preview()
+  - [up-disable]
+  - [up-feedback] ("classes")
+- Docs for up.Preview class and its methods
+- Rename up.feedback to up.status or similiar
+  - Title "Loading indicators" or "Loading status"?
+    => No, up-current is not about loading
+    => "Status effects"?
+  - Doc page /loading-state "Rendering loading state"
+    - Link to disabling
+  - Move config.progressBar to up.status ?
+    - Rename /loading-indicators to /progress-bar ?
+  
 
 
 
@@ -748,4 +766,8 @@ Decisions
     - Animation
     - Different skeleton
   => Later
+- Consider renaming [up-feedback] to something else
+  - Maybe always have classes?
+    - This would mirror the exception of background, which is also false by default
+  => Delay this until we need the setting for something else
 
