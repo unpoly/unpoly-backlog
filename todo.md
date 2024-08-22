@@ -1,8 +1,6 @@
 Priority
 ========
 
-- Can we update the cache for an /edit screen?
-
 
 Perspective
 -----------
@@ -24,6 +22,7 @@ Next release
 - Have a non-mocking test for up.render({ scrollBehavior })
 - [after merging hk/previews] Extract up.render() tests to a separate file
 - Rename renderOptions.layers to renderOptions.resolvedLayers (set in RenderOptions.preprocessed(), used by up.Change.* and up.Preview)
+
 
 
 Previews
@@ -50,12 +49,9 @@ Previews
   - Test up.Preview#fragments
     - For new layer requests, up.Preview#fragment must be null
   - Test up.Preview#origin
-    - For new layer requests, up.Preview#fragment must be null
   - Test up.Preview#layer
     - Must be resolved up.Layer for UpdateLayer
     - Must be the string "new" for OpenLayer
-  - Test up.Preview#run(string)
-  - Test up.Preview#run(fn)
   - Test up.Preview#setAttrs()
   - Test up.Preview#addClass()
   - Test up.Preview#setStyle()
@@ -64,23 +60,31 @@ Previews
   - Test up.Preview#swap()
   - Test up.Preview#show()
   - Test up.Preview#hide()
+  - Test up.Preview#run(string)
+  - Test up.Preview#run(fn)
 - Allow multiple reviews
   - { preview: 'foo bar' }
   - { preview: ['foo', 'bar'] }
   - { preview: [fn, fn] }
+  - parse into { previews }
 - Find a way for existing functionality to be expressed with up.preview()
   - [up-disable]
   - [up-feedback] ("classes")
+  - We could just ask up.form.addPreviews, up.status.addPreviews, or make an up:fragment:preview event
+    - event.previews # => Array
 - Docs for up.Preview class and its methods
-- Rename up.feedback to up.status or similiar
-  - Title "Loading indicators" or "Loading status"?
-    => No, up-current is not about loading
-    => "Status effects"?
+- Rename up.feedback to up.status
+  - Title "Status effects"
   - Doc page /loading-state "Rendering loading state"
     - Link to disabling
+    - Link to .up-active
+    - Link to .up-loading
   - Move config.progressBar to up.status ?
-    - Rename /loading-indicators to /progress-bar ?
-  
+    - Is it weird that up:network:late and up:network:recover events are still in the up.network package?
+  - Rename /loading-indicators to /progress-bar ?
+    - Extract anything that is not about the progress bar
+  - Doc page /navigation-bars
+    - Redirect /nav-bars /nav-bar /navbars /navbar /nav
 
 
 
