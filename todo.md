@@ -28,40 +28,25 @@ Next release
 Previews
 --------
 
-- Offer up.Preview#run('other-preview-name' | Function)
-  - Track its return value
-- Allow a function value for { preview }
-- Test
-  - Previews are used
-  - Previews are reverted before rendering
-  - Previews are reverted when aborting a fragment kills the request
-  - Previews are not rendered when request is cached
-  - Preview function errors are global errors
-  - Preview REVERT errors are global errors
-  - Preview do not interleave
-    - preview1 adds class
-    - preview2 adds class (but gets noop undo)
-    - preview1 removes class (but should be shown)
-    - preview2 removes class (noop)
-  - Test up.Preview#target
-  - Test up.Preview#fragment
-    - For new layer requests, up.Preview#fragment must be null
-  - Test up.Preview#fragments
-    - For new layer requests, up.Preview#fragment must be null
-  - Test up.Preview#origin
-  - Test up.Preview#layer
-    - Must be resolved up.Layer for UpdateLayer
-    - Must be the string "new" for OpenLayer
-  - Test up.Preview#setAttrs()
-  - Test up.Preview#addClass()
-  - Test up.Preview#setStyle()
-  - Test up.Preview#disable()
-  - Test up.Preview#insert()
-  - Test up.Preview#swap()
-  - Test up.Preview#show()
-  - Test up.Preview#hide()
-  - Test up.Preview#run(string)
-  - Test up.Preview#run(fn)
+- Consider offering the new { layer } prop to guard events
+  - This would make it easier to e.g. auto-add a preview for new layers in up:link:follow
+  - Do we need to give a better name to { layer } so people understand it is not the origin layer?
+    - There is { targetLayer }, but that could be confused with event.target (which happens to be the origin layer!)
+    - { changeLayer }
+    - { updateLayer }
+    - { targetedLayer }
+    - { planLayer }
+    - { insertLayer }
+    - { renderLayer }
+  - Update docs for guardEvents
+    - up:link:follow
+    - up:form:submit
+    - up:link:preload
+    - up:deferred:load
+    - up:form:validate
+    - up:fragment:poll
+    
+- Remove tracking of aborted requests when we're not awaiting them anymore
 - Allow multiple reviews
   - { preview: 'foo bar' }
   - { preview: ['foo', 'bar'] }
@@ -70,22 +55,62 @@ Previews
 - Find a way for existing functionality to be expressed with up.preview()
   - [up-disable]
   - [up-feedback] ("classes")
-  - We could just ask up.form.addPreviews, up.status.addPreviews, or make an up:fragment:preview event
-    - event.previews # => Array
+  - Make an up:fragment:preview event
+    - event.previews # => Array or strings, not functions
+    - preventable does not show previews
+    - Same layer: emitted on the targeted fragment
+    - Open layer: emitted on the base layer's main target
+      - Really
+    - WAIT WHAT
+      - Who would want to prevent a list of unknown previews (e.g. internal 'disable')
+      - I would need to provide this event with a lot of options, e.g. the same as for up.Preview and its delegations, newLayer, etc.
+      - What I really want is some way to auto-apply a preview to a known selector or element
+      - What I also want is an (internal) way to add previews based on a render option
+      - Try this in the demo
 - Docs for up.Preview class and its methods
+- Doc page /loading-state "Rendering loading state"
+  - Show how the preview can manipulate the DOM
+  - Show how the preview can inspect the context
+  - Examples
+    - Example: Skeleton
+    - Example: Loading class for body
+    - Example: Preview Modal
+  - Previews are not applied when we have cached content to render
+    - Also not shown when cache-then-revalidate
+  - Multiple effects
+    - Space-separated
+    - Array
+  - Event
+    - Show that we can prevent
+    - Show that we can mutate event.previews
+  - Reverting effects
+    - undo()
+    - returning destructor
+    - Important: don't revert effects that you didn't cause
+      - Check if you need to do something
+      - All up.Preview methods do this
+  - Built-in previews
+    - Disabling forms while working
+      - Link to disabling
+    - Marking active elements with classes
+      - Link to .up-active
+      - Link to .up-loading
+    - Progress bar for late responses
+      - Link to progress bar
+- Decide whether we want to expose the ...Temp functions
 - Rename up.feedback to up.status
   - Title "Status effects"
-  - Doc page /loading-state "Rendering loading state"
-    - Link to disabling
-    - Link to .up-active
-    - Link to .up-loading
-  - Move config.progressBar to up.status ?
-    - Is it weird that up:network:late and up:network:recover events are still in the up.network package?
-  - Rename /loading-indicators to /progress-bar ?
-    - Extract anything that is not about the progress bar
-  - Doc page /navigation-bars
-    - Redirect /nav-bars /nav-bar /navbars /navbar /nav
-
+  - Package intro should summarize our fancy new doc pages
+- Move config.progressBar to up.status ?
+  - Is it weird that up:network:late and up:network:recover events are still in the up.network package?
+- Rename /loading-indicators to /progress-bar ?
+  - Extract anything that is not about the progress bar
+- Doc page /navigation-bars
+  - Redirect /nav-bars /nav-bar /navbars /navbar /nav
+- Use Preview skeletons for previews
+  - One for root
+  - One for layer 1 modals
+  
 
 
 Docs
@@ -98,6 +123,8 @@ Docs
 Backlog
 =======
 
+- Does it matter that guardEvents do not set up.layer.current?
+  - It should mostly be the right layer anyway, except for polling in the background or something
 - [up-validate] from a different URL
   - https://github.com/unpoly/unpoly/issues/486
   - This should make for a simpler code example
