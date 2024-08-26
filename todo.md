@@ -28,23 +28,8 @@ Next release
 Previews
 --------
 
-- Consider offering the new { layer } prop to guard events
-  - This would make it easier to e.g. auto-add a preview for new layers in up:link:follow
-  - Do we need to give a better name to { layer } so people understand it is not the origin layer?
-    - There is { targetLayer }, but that could be confused with event.target (which happens to be the origin layer!)
-    - { changeLayer }
-    - { updateLayer }
-    - { targetedLayer }
-    - { planLayer }
-    - { insertLayer }
-    - { renderLayer }
-  - Update docs for guardEvents
-    - up:link:follow
-    - up:form:submit
-    - up:link:preload
-    - up:deferred:load
-    - up:form:validate
-    - up:fragment:poll
+- Simplify the demo code
+  - We would need to swap children?
     
 - Remove tracking of aborted requests when we're not awaiting them anymore
 - Allow multiple reviews
@@ -801,4 +786,22 @@ Decisions
   - Maybe always have classes?
     - This would mirror the exception of background, which is also false by default
   => Delay this until we need the setting for something else
+- Consider offering a { renderLayer } prop to guard events
+  - This would make it easier to e.g. auto-add a preview for new layers in up:link:follow
+  - Do we need to give a better name to { layer } so people understand it is not the origin layer?
+    - There is { targetLayer }, but that could be confused with event.target (which happens to be the origin layer!)
+    - { changeLayer }
+    - { updateLayer }
+    - { targetedLayer }
+    - { planLayer }
+    - { insertLayer }
+    - { renderLayer }
+  - Update docs for guardEvents
+    - up:link:follow    [yes]
+    - up:form:submit    [yes]
+    - up:link:preload   [yes]
+    - up:deferred:load  [makes no sense]
+    - up:form:validate  [makes no sense]
+    - up:fragment:poll  [makes no sense]
+  => No, this becomes very complicated very fast
 
