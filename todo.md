@@ -5,53 +5,75 @@ Priority
 Perspective
 -----------
 
-- Support array fields with watch()?
-  - up.form.config.arrayFields = 'suffix' | 'all'
 - Remove params parsing for up.watch(), support formdata, ElementInternals
+  - We can just parse the entire form with new FormData(), then filter on contained elements
+- Support render lifecycle attributes for [up-defer] and [up-poll]
+  - [up-on-loaded]
+  - [up-on-rendered]
+  - [up-on-finished]
+  - [up-on-offline]
+  - [up-on-error]
+  - Right now this can be set by listening to a guardEvent and manipulating event.renderOptions
+  
 
 
 Next release
 ------------
 
-- Test that we support all kinds of destructor values
-  - function
-  - array of functions
-  - anything else is ignored
-- Deprecate flatten() in favor of Array#flat()?
-- Test: Multiple destroy() calls will only call destructors once
+- Deprecate flatten() in favor of Array#flat()
+  - Check if we need to for non-array lists
 - Have a non-mocking test for up.render({ scrollBehavior })
-- [after merging hk/previews] Extract up.render() tests to a separate file
 - Rename renderOptions.layers to renderOptions.resolvedLayers (set in RenderOptions.preprocessed(), used by up.Change.* and up.Preview)
-
 
 
 Previews
 --------
 
-- Simplify the demo code
-  - We would need to swap children?
-    
-- Remove tracking of aborted requests when we're not awaiting them anymore
-- Allow multiple reviews
-  - { preview: 'foo bar' }
-  - { preview: ['foo', 'bar'] }
-  - { preview: [fn, fn] }
-  - parse into { previews }
-- Find a way for existing functionality to be expressed with up.preview()
-  - [up-disable]
-  - [up-feedback] ("classes")
-  - Make an up:fragment:preview event
-    - event.previews # => Array or strings, not functions
-    - preventable does not show previews
-    - Same layer: emitted on the targeted fragment
-    - Open layer: emitted on the base layer's main target
-      - Really
-    - WAIT WHAT
-      - Who would want to prevent a list of unknown previews (e.g. internal 'disable')
-      - I would need to provide this event with a lot of options, e.g. the same as for up.Preview and its delegations, newLayer, etc.
-      - What I really want is some way to auto-apply a preview to a known selector or element
-      - What I also want is an (internal) way to add previews based on a render option
-      - Try this in the demo
+### TODO
+
+- The new up:fragment:load event makes no sense
+  - All the problems with previewing { renderLayer, fragments } while the user may mutate { renderOptions }, are the same vs. regular guard events
+  - If we want to preview { renderLayer, fragments }, we should do it on the guard event. Do it lazily (with defineProperty), so it's not a tax for everyone.
+  - Internal modules cannot use up:fragment:load to add their preview effects, because the user might mutate { renderOptions }
+    - Internal modules could rely on an internal event (up:request:loading or up:fragment:preview) event. At this point it is save to add a preview.
+      - There is already onLoading()
+- Parse [up-watch-preview] in FieldWatcher
+- Parse [up-watch-preview] in FormValidator
+- E2E-Test that watch passes on render options with [up-autosubmit][up-watch-disable]
+- E2E-Test that watch passes on render options with [up-autosubmit][up-watch-preview]
+- Replace jasmine.waitMicrotasks(10) with waiting a full task
+- Emit up:fragment:load and up:fragment:loaded on the first bindFragment (not on some layer or the origin)
+- Test and document that watchers get { disable, preview } options to pass on to rendering
+- Change the API to add previews to up:fragment:load
+  - from event.previews.push()
+  - to event.showPreview()
+- The up:fragment:load event should happen *before* the request, so we can change request options
+- Tests for up:fragment:load
+  - It is emitted
+  - It can be prevented
+  - It is emitted before up:request:load
+  - It can change renderOptions.url
+  - It can change renderOptions.target
+  - It can change renderOptions.layer
+  - It can add a a preview with event.showPreview()
+- Comment for fast-settle check in up.network
+- E2E-Test [up-preview] attribute for form submission
+- E2E-Test [up-preview] attribute for link follow
+- Make it easier to render a skeleton from a preview
+  - Demo: Use Preview skeletons for previews
+    - One for root
+    - One for layer 1 modals
+  - Maybe offer .swapContent()
+  - Maybe offer a way to open and revert-close an overlay with given layer options
+
+
+### Docs
+
+- Update render lifecycle
+  - With up:fragment:load
+  - With status effects (disable, preview)
+- Decide whether to publish up.Request#previews
+  - Should they be the parsed names or the functions?
 - Docs for up.Preview class and its methods
 - Doc page /loading-state "Rendering loading state"
   - Show how the preview can manipulate the DOM
@@ -68,6 +90,7 @@ Previews
   - Event
     - Show that we can prevent
     - Show that we can mutate event.previews
+  - Prefer to be additive
   - Reverting effects
     - undo()
     - returning destructor
@@ -82,7 +105,6 @@ Previews
       - Link to .up-loading
     - Progress bar for late responses
       - Link to progress bar
-- Decide whether we want to expose the ...Temp functions
 - Rename up.feedback to up.status
   - Title "Status effects"
   - Package intro should summarize our fancy new doc pages
@@ -92,10 +114,18 @@ Previews
   - Extract anything that is not about the progress bar
 - Doc page /navigation-bars
   - Redirect /nav-bars /nav-bar /navbars /navbar /nav
-- Use Preview skeletons for previews
-  - One for root
-  - One for layer 1 modals
-  
+- Document [up-preview]
+- Document { preview }
+- Document [up-watch-preview] wherever we also document [up-watch-disable] or [up-watch-feedback]
+- Document up:fragment:load
+  - All props
+  - Note about which renderOptions can still be changed
+  - event.showPreview()
+  - event.preventDefault()
+  - Say that is also emitted on cached requests
+- Document up:fragment:loaded
+  - Say that is also emitted on cached requests
+
 
 
 Docs
@@ -108,6 +138,8 @@ Docs
 Backlog
 =======
 
+- Support array fields with watch()?
+  - up.form.config.arrayFields = 'suffix' | 'all'
 - Does it matter that guardEvents do not set up.layer.current?
   - It should mostly be the right layer anyway, except for polling in the background or something
 - [up-validate] from a different URL
