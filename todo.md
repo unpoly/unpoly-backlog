@@ -20,6 +20,7 @@ Perspective
 Next release
 ------------
 
+- up.util.delegatePromise(obj, promiseProvider)
 - Deprecate flatten() in favor of Array#flat()
   - Check if we need to for non-array lists
 - Have a non-mocking test for up.render({ scrollBehavior })
@@ -33,10 +34,17 @@ Previews
 
 - The new up:fragment:load event makes no sense
   - All the problems with previewing { renderLayer, fragments } while the user may mutate { renderOptions }, are the same vs. regular guard events
-  - If we want to preview { renderLayer, fragments }, we should do it on the guard event. Do it lazily (with defineProperty), so it's not a tax for everyone.
   - Internal modules cannot use up:fragment:load to add their preview effects, because the user might mutate { renderOptions }
     - Internal modules could rely on an internal event (up:request:loading or up:fragment:preview) event. At this point it is save to add a preview.
       - There is already onLoading()
+
+- [NO! THAT'S A BOTTOMLESS HOLE!!] If we want to preview { renderLayer, fragments }, we should do it on the guard event. Do it lazily (with defineProperty), so it's not a tax for everyone.
+  - *or* offer a preview like
+    - up.render.peek()
+    - do we just want up.layer.get() ?
+      - no, that ignores the { target } when we have { layer: 'any' }
+    - this may not even be enough in case of close events
+
 - Parse [up-watch-preview] in FieldWatcher
 - Parse [up-watch-preview] in FormValidator
 - E2E-Test that watch passes on render options with [up-autosubmit][up-watch-disable]
