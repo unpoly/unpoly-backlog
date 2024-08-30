@@ -7,6 +7,9 @@ Perspective
 
 - Remove params parsing for up.watch(), support formdata, ElementInternals
   - We can just parse the entire form with new FormData(), then filter on contained elements
+    - We will still need to know form fields for that
+  - Replace up.Params.fromForm() with `new this(new FormData(form))`
+
 - Support render lifecycle attributes for [up-defer] and [up-poll]
   - [up-on-loaded]
   - [up-on-rendered]
@@ -23,65 +26,106 @@ Next release
 - up.util.delegatePromise(obj, promiseProvider)
 - Deprecate flatten() in favor of Array#flat()
   - Check if we need to for non-array lists
-- Have a non-mocking test for up.render({ scrollBehavior })
-- Rename renderOptions.layers to renderOptions.resolvedLayers (set in RenderOptions.preprocessed(), used by up.Change.* and up.Preview)
+- Internally, rename renderOptions.layers to renderOptions.resolvedLayers (set in RenderOptions.preprocessed(), used by up.Change.* and up.Preview)
+- Deprecate passing { mode } without { layer: 'new' }
+  - This shorthand is documented nowhere, so migration is optional
 
 
 Previews
 --------
 
+### Disabling forms from links
+
+This is an important built-in preview method, e.g. to cancel a form.
+
+- Support [up-disable="selector"] for links
+  - This already works
+  - Add tests
+    - E2E test
+    - Test that followOptions parses [up-disable]
+    
+  
+- Support disabling links
+  - a[up-disable] without a selector should disable the link by default
+    - This might require a different default in followOptions() vs. submitOptions()
+  - How do we show a disabled link?
+    - [up-clickable-disabled] attribute
+    - Bootstrap needs a way to apply the a.disabled class
+      => We need some compiler anyway, to set [aria-disabled="true"].
+         We can also set disabledLinkClasses there, or offer config.disableLink
+  - How will we handle disabling?
+    - Make it entirely configurable with config.disableLink = (link) ->
+      - Then we would also need config.enableLink
+    - pointer-events: none
+      - Minimal code
+      - Can not change the cursor
+      - We already have code in place to set [aria-disabled] and config.disabledLinkClasses
+    - Prevent emission of up:click
+      - Also on keyboard navigation
+      - We would *also* need to preventDefault() the underlying hyperlink, so they won't be followed by the browser 
+      - Would kind of play to the story of up:click being a higher-level event that honors additional up-attributes
+    - Immediately preventDefault() on up:click (which also prevents the underlying events)
+      - Clickable listeners that want to honor [up-disabled] would need to check event.defaultPrevented
+    - Stop propagation of up:click?
+      - But why even emit it then?
+    - Should we disable links (and clickables?) when disabling forms?
+      => Yes, both.
+    - A11y: Do we need to support [inert] or [aria-disabled=true]?
+      => Yes, [aria-disabled=true]
+  - We must also preventDefault() clicking on regular hyperlinks
+
+
+### Skeleton
+
+- E2E-Test [up-skeleton] attribute for form submission
+- E2E-Test [up-skeleton] attribute for link follow
+- Test all forms of showSkeleton()
+- Make sure showSkeleton() supports selectors for both the reference element and skeleton element
+- Previews must immediately be reverted when we're disconnected
+  - Does not seem to work when I stop the server right now!
+    - Maybe the issue is that *tracking* a request changes its state too late?
+- Tests and changes for openLayer()
+  - The openLayer() preview modal should abort the request when closed by the user
+  - The openLayer() preview modal should not pass on onDismiss and onDismissed handlers
+
+
 ### TODO
 
-- The new up:fragment:load event makes no sense
-  - All the problems with previewing { renderLayer, fragments } while the user may mutate { renderOptions }, are the same vs. regular guard events
-  - Internal modules cannot use up:fragment:load to add their preview effects, because the user might mutate { renderOptions }
-    - Internal modules could rely on an internal event (up:request:loading or up:fragment:preview) event. At this point it is save to add a preview.
-      - There is already onLoading()
+- Replace jasmine.waitMicrotasks(10) with waiting a full task
+- Emit up:fragment:loaded on the first bindFragment (not on some layer or the origin)
+- Comment for fast-settle check in up.network
+- E2E-Test [up-preview] attribute for form submission
+- E2E-Test [up-preview] attribute for link follow
 
-- [NO! THAT'S A BOTTOMLESS HOLE!!] If we want to preview { renderLayer, fragments }, we should do it on the guard event. Do it lazily (with defineProperty), so it's not a tax for everyone.
-  - *or* offer a preview like
-    - up.render.peek()
-    - do we just want up.layer.get() ?
-      - no, that ignores the { target } when we have { layer: 'any' }
-    - this may not even be enough in case of close events
+
+### Previews while watching
 
 - Parse [up-watch-preview] in FieldWatcher
 - Parse [up-watch-preview] in FormValidator
 - E2E-Test that watch passes on render options with [up-autosubmit][up-watch-disable]
 - E2E-Test that watch passes on render options with [up-autosubmit][up-watch-preview]
-- Replace jasmine.waitMicrotasks(10) with waiting a full task
-- Emit up:fragment:load and up:fragment:loaded on the first bindFragment (not on some layer or the origin)
-- Test and document that watchers get { disable, preview } options to pass on to rendering
-- Change the API to add previews to up:fragment:load
-  - from event.previews.push()
-  - to event.showPreview()
-- The up:fragment:load event should happen *before* the request, so we can change request options
-- Tests for up:fragment:load
-  - It is emitted
-  - It can be prevented
-  - It is emitted before up:request:load
-  - It can change renderOptions.url
-  - It can change renderOptions.target
-  - It can change renderOptions.layer
-  - It can add a a preview with event.showPreview()
-- Comment for fast-settle check in up.network
-- E2E-Test [up-preview] attribute for form submission
-- E2E-Test [up-preview] attribute for link follow
-- Make it easier to render a skeleton from a preview
-  - Demo: Use Preview skeletons for previews
-    - One for root
-    - One for layer 1 modals
-  - Maybe offer .swapContent()
-  - Maybe offer a way to open and revert-close an overlay with given layer options
+- Test and document that watchers get { disable, preview, feedback } options to pass on to rendering
+
+
+
 
 
 ### Docs
 
+- Consider whether { skeleton } is flexible enough for public API
+  - We cannot show skeletons with multiple fragments
+  - We cannot control the parent
+  - We did want to hide the openOverlay logic though
+    - Maybe only offer the preview.openLayer() function, but not the attribute?
+  - Maybe we could offer a callback form, e.g. <a href="/foo" up-preview="preview.showSkeleton('#foo', '#skeleton)">
+    - We already support this for JS functions
+    - To also support named previews we would need to look for "preview." in the string
+  => Keep it as experimental for now, we can always remove or extend it
 - Update render lifecycle
-  - With up:fragment:load
-  - With status effects (disable, preview)
+  - With status effects (disable, preview, skeleton, feedback)
 - Decide whether to publish up.Request#previews
   - Should they be the parsed names or the functions?
+  => NO!
 - Docs for up.Preview class and its methods
 - Doc page /loading-state "Rendering loading state"
   - Show how the preview can manipulate the DOM
@@ -111,13 +155,17 @@ Previews
     - Marking active elements with classes
       - Link to .up-active
       - Link to .up-loading
+    - Skeletons
     - Progress bar for late responses
       - Link to progress bar
+  - While watching
+- Extend /watch-options
 - Rename up.feedback to up.status
   - Title "Status effects"
   - Package intro should summarize our fancy new doc pages
 - Move config.progressBar to up.status ?
   - Is it weird that up:network:late and up:network:recover events are still in the up.network package?
+  - We also keep [up-disable] under up.form
 - Rename /loading-indicators to /progress-bar ?
   - Extract anything that is not about the progress bar
 - Doc page /navigation-bars
@@ -125,15 +173,15 @@ Previews
 - Document [up-preview]
 - Document { preview }
 - Document [up-watch-preview] wherever we also document [up-watch-disable] or [up-watch-feedback]
-- Document up:fragment:load
-  - All props
-  - Note about which renderOptions can still be changed
-  - event.showPreview()
-  - event.preventDefault()
-  - Say that is also emitted on cached requests
 - Document up:fragment:loaded
   - Say that is also emitted on cached requests
-
+- Document [up-skeleton]
+  - It also opens a new layer
+- Document { skeleton }
+  - It also opens a new layer
+- Document a[up-disable]
+  - Extract into its own doc page
+- Demo: Move all previews/skeleton from the JS to [up-] attributes
 
 
 Docs
