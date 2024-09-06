@@ -83,7 +83,8 @@ This is an important built-in preview method, e.g. to cancel a form.
 - Make sure showSkeleton() supports selectors for both the reference element and skeleton element
 - Previews must immediately be reverted when we're disconnected
   - Does not seem to work when I stop the server right now!
-    - Maybe the issue is that *tracking* a request changes its state too late?
+    - The undo function of showOverlay() tries to close the root layer
+    - Somehow up.layer.current is not modified sync as I thought
 - Tests and changes for openLayer()
   - The openLayer() preview modal should abort the request when closed by the user
   - The openLayer() preview modal should not pass on onDismiss and onDismissed handlers
