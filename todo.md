@@ -43,13 +43,12 @@ This is an important built-in preview method, e.g. to cancel a form.
   - Add tests
     - E2E test
     - Test that followOptions parses [up-disable]
-    
   
 - Support disabling links
   - a[up-disable] without a selector should disable the link by default
     - This might require a different default in followOptions() vs. submitOptions()
   - How do we show a disabled link?
-    - [up-clickable-disabled] attribute
+    - [up-disabled] attribute
     - Bootstrap needs a way to apply the a.disabled class
       => We need some compiler anyway, to set [aria-disabled="true"].
          We can also set disabledLinkClasses there, or offer config.disableLink
@@ -77,23 +76,31 @@ This is an important built-in preview method, e.g. to cancel a form.
 
 ### Skeleton
 
-- E2E-Test [up-skeleton] attribute for form submission
-- E2E-Test [up-skeleton] attribute for link follow
 - Test all forms of showSkeleton()
 - Make sure showSkeleton() supports selectors for both the reference element and skeleton element
 - Previews must immediately be reverted when we're disconnected
   - Does not seem to work when I stop the server right now!
     - The undo function of showOverlay() tries to close the root layer
     - Somehow up.layer.current is not modified sync as I thought
+    - Also up.layer.open() may throw 
 - Tests and changes for openLayer()
   - The openLayer() preview modal should abort the request when closed by the user
   - The openLayer() preview modal should not pass on onDismiss and onDismissed handlers
+- Consider whether { skeleton } is flexible enough for public API
+  - We cannot show skeletons with multiple fragments
+  - We cannot control the parent
+  - [NO!] Maybe we could offer a callback form, e.g. <a href="/foo" up-preview="preview.showSkeleton('#foo', '#skeleton')">
+    - We already support this for JS functions
+    - To also support named previews we would need to look for "preview." in the string
+    => All Preview methods would need to support selectors, which means we would need to think about layers
+  => Keep it as experimental for now, we can always remove or extend it
+
+
 
 
 ### TODO
 
 - Replace jasmine.waitMicrotasks(10) with waiting a full task
-- Emit up:fragment:loaded on the first bindFragment (not on some layer or the origin)
 - Comment for fast-settle check in up.network
 - E2E-Test [up-preview] attribute for form submission
 - E2E-Test [up-preview] attribute for link follow
@@ -103,6 +110,7 @@ This is an important built-in preview method, e.g. to cancel a form.
 
 - Parse [up-watch-preview] in FieldWatcher
 - Parse [up-watch-preview] in FormValidator
+- We would need [up-watch-skeleton] for [up-autosubmit]
 - E2E-Test that watch passes on render options with [up-autosubmit][up-watch-disable]
 - E2E-Test that watch passes on render options with [up-autosubmit][up-watch-preview]
 - Test and document that watchers get { disable, preview, feedback } options to pass on to rendering
@@ -113,15 +121,6 @@ This is an important built-in preview method, e.g. to cancel a form.
 
 ### Docs
 
-- Consider whether { skeleton } is flexible enough for public API
-  - We cannot show skeletons with multiple fragments
-  - We cannot control the parent
-  - We did want to hide the openOverlay logic though
-    - Maybe only offer the preview.openLayer() function, but not the attribute?
-  - Maybe we could offer a callback form, e.g. <a href="/foo" up-preview="preview.showSkeleton('#foo', '#skeleton)">
-    - We already support this for JS functions
-    - To also support named previews we would need to look for "preview." in the string
-  => Keep it as experimental for now, we can always remove or extend it
 - Update render lifecycle
   - With status effects (disable, preview, skeleton, feedback)
 - Decide whether to publish up.Request#previews
