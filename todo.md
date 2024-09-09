@@ -86,15 +86,6 @@ This is an important built-in preview method, e.g. to cancel a form.
 - Tests and changes for openLayer()
   - The openLayer() preview modal should abort the request when closed by the user
   - The openLayer() preview modal should not pass on onDismiss and onDismissed handlers
-- Consider whether { skeleton } is flexible enough for public API
-  - We cannot show skeletons with multiple fragments
-  - We cannot control the parent
-  - [NO!] Maybe we could offer a callback form, e.g. <a href="/foo" up-preview="preview.showSkeleton('#foo', '#skeleton')">
-    - We already support this for JS functions
-    - To also support named previews we would need to look for "preview." in the string
-    => All Preview methods would need to support selectors, which means we would need to think about layers
-  => Keep it as experimental for now, we can always remove or extend it
-
 
 
 
@@ -116,6 +107,12 @@ This is an important built-in preview method, e.g. to cancel a form.
 - Test and document that watchers get { disable, preview, feedback } options to pass on to rendering
 
 
+### Demo
+
+- Commit the changes we want to keep
+  - Re-enable cache
+- Make sure form group validation still works after Bootstrap 5 Upgrade
+- We we want to make latency configurable?
 
 
 
@@ -194,6 +191,7 @@ Docs
 Backlog
 =======
 
+- We often see multiple preloading entries in the log (mouseover, mousedown). Can we not log if we're already preloading?
 - Support array fields with watch()?
   - up.form.config.arrayFields = 'suffix' | 'all'
 - Does it matter that guardEvents do not set up.layer.current?
@@ -892,4 +890,13 @@ Decisions
     - up:form:validate  [makes no sense]
     - up:fragment:poll  [makes no sense]
   => No, this becomes very complicated very fast
+- Consider whether { skeleton } is flexible enough for public API
+  - We cannot show skeletons with multiple fragments
+    => But we're fine with that limitation for [up-transition]
+  - We cannot control the parent
+    => But we're fine with that limitation for [up-transition]
+  - [NO!] Maybe we could offer a callback form, e.g. <a href="/foo" up-preview="preview.showSkeleton('#foo', '#skeleton')">
+    - We already support this for JS functions
+    - To also support named previews we would need to look for "preview." in the string
+    => All Preview methods would need to support selectors, which means we would need to think about layers
 
