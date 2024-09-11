@@ -34,45 +34,7 @@ Next release
 Previews
 --------
 
-### Disabling forms from links
-
-This is an important built-in preview method, e.g. to cancel a form.
-
-- Support [up-disable="selector"] for links
-  - This already works
-  - Add tests
-    - E2E test
-    - Test that followOptions parses [up-disable]
-  
-- Support disabling links
-  - a[up-disable] without a selector should disable the link by default
-    - This might require a different default in followOptions() vs. submitOptions()
-  - How do we show a disabled link?
-    - [up-disabled] attribute
-    - Bootstrap needs a way to apply the a.disabled class
-      => We need some compiler anyway, to set [aria-disabled="true"].
-         We can also set disabledLinkClasses there, or offer config.disableLink
-  - How will we handle disabling?
-    - Make it entirely configurable with config.disableLink = (link) ->
-      - Then we would also need config.enableLink
-    - pointer-events: none
-      - Minimal code
-      - Can not change the cursor
-      - We already have code in place to set [aria-disabled] and config.disabledLinkClasses
-    - Prevent emission of up:click
-      - Also on keyboard navigation
-      - We would *also* need to preventDefault() the underlying hyperlink, so they won't be followed by the browser 
-      - Would kind of play to the story of up:click being a higher-level event that honors additional up-attributes
-    - Immediately preventDefault() on up:click (which also prevents the underlying events)
-      - Clickable listeners that want to honor [up-disabled] would need to check event.defaultPrevented
-    - Stop propagation of up:click?
-      - But why even emit it then?
-    - Should we disable links (and clickables?) when disabling forms?
-      => Yes, both.
-    - A11y: Do we need to support [inert] or [aria-disabled=true]?
-      => Yes, [aria-disabled=true]
-  - We must also preventDefault() clicking on regular hyperlinks
-
+- If a user calls preview functions in return values, it gives an infinite loop
 
 ### Skeleton
 
@@ -95,6 +57,7 @@ This is an important built-in preview method, e.g. to cancel a form.
 - Comment for fast-settle check in up.network
 - E2E-Test [up-preview] attribute for form submission
 - E2E-Test [up-preview] attribute for link follow
+- Support { disable: Element }
 
 
 ### Previews while watching
@@ -118,6 +81,12 @@ This is an important built-in preview method, e.g. to cancel a form.
 
 ### Docs
 
+- Expose up.form.disable() (since we also expose it via Preview#disable())
+- Docs for [up-disable]
+  - For [up-follow]
+  - For [up-submit]
+- Document that up:click is not emitted for disabled links
+- options.disable is now supported for links
 - Update render lifecycle
   - With status effects (disable, preview, skeleton, feedback)
 - Decide whether to publish up.Request#previews
@@ -176,8 +145,22 @@ This is an important built-in preview method, e.g. to cancel a form.
   - It also opens a new layer
 - Document { skeleton }
   - It also opens a new layer
-- Document a[up-disable]
-  - Extract into its own doc page
+- Document a[up-disable] and a[up-disabled]
+  - Extract into its own doc page "Disabling links"
+    - Explain how to style
+    - Comparison matrix
+      - [up-disable]: Disable elements while a link or form is loading
+      - [up-disabled]: Disable a link or clickable
+      - [disabled]: Disable a form field or button
+  - Does [up-disabled] go into up.link or up.form?
+    - Since it only affects links and clickables, it's OK to go into up.link
+  - Only on individual element?
+    - Yes
+  - Recommend to also set [aria-disabled]
+  - Explain that it stops both Unpoly and the browser from following link.
+  - Explain that up:click is no longer emitted.
+  - See disable forms while working
+
 - Demo: Move all previews/skeleton from the JS to [up-] attributes
 
 
