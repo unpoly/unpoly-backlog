@@ -23,41 +23,15 @@ Perspective
 Next release
 ------------
 
-- up.util.delegatePromise(obj, promiseProvider)
-- Deprecate flatten() in favor of Array#flat()
-  - Check if we need to for non-array lists
-- Internally, rename renderOptions.layers to renderOptions.resolvedLayers (set in RenderOptions.preprocessed(), used by up.Change.* and up.Preview)
-- Deprecate passing { mode } without { layer: 'new' }
-  - This shorthand is documented nowhere, so migration is optional
 
 
 Previews
 --------
 
-- If a user calls preview functions in return values, it gives an infinite loop
-
-### Skeleton
-
-- Test all forms of showSkeleton()
-- Make sure showSkeleton() supports selectors for both the reference element and skeleton element
-- Previews must immediately be reverted when we're disconnected
-  - Does not seem to work when I stop the server right now!
-    - The undo function of showOverlay() tries to close the root layer
-    - Somehow up.layer.current is not modified sync as I thought
-    - Also up.layer.open() may throw 
-- Tests and changes for openLayer()
-  - The openLayer() preview modal should abort the request when closed by the user
-  - The openLayer() preview modal should not pass on onDismiss and onDismissed handlers
-
-
-
 ### TODO
 
-- Replace jasmine.waitMicrotasks(10) with waiting a full task
-- Comment for fast-settle check in up.network
 - E2E-Test [up-preview] attribute for form submission
 - E2E-Test [up-preview] attribute for link follow
-- Support { disable: Element }
 
 
 ### Previews while watching
@@ -76,17 +50,19 @@ Previews
   - Re-enable cache
 - Make sure form group validation still works after Bootstrap 5 Upgrade
 - We we want to make latency configurable?
+  - Or show it?
+- Make a skeleton for cards
 
 
 
-### Docs
+### Docs & CHANGELOG
 
+- Support { disable: Element }
 - Expose up.form.disable() (since we also expose it via Preview#disable())
-- Docs for [up-disable]
-  - For [up-follow]
-  - For [up-submit]
-- Document that up:click is not emitted for disabled links
-- options.disable is now supported for links
+- Disabling forms from links
+  - Document that [up-disable] is now also available for [up-follow]
+  - Document that options.disable is now supported for up.follow()
+  - Add a section to /disabling-forms
 - Update render lifecycle
   - With status effects (disable, preview, skeleton, feedback)
 - Decide whether to publish up.Request#previews
@@ -125,7 +101,6 @@ Previews
     - Progress bar for late responses
       - Link to progress bar
   - While watching
-- Extend /watch-options
 - Rename up.feedback to up.status
   - Title "Status effects"
   - Package intro should summarize our fancy new doc pages
@@ -138,30 +113,16 @@ Previews
   - Redirect /nav-bars /nav-bar /navbars /navbar /nav
 - Document [up-preview]
 - Document { preview }
-- Document [up-watch-preview] wherever we also document [up-watch-disable] or [up-watch-feedback]
+- Document [up-watch-preview] and [up-watch-skeleton] wherever we also document [up-watch-disable] or [up-watch-feedback]
+  - Extend /watch-options with [up-watch-preview] and [up-watch-skeleton]
 - Document up:fragment:loaded
-  - Say that is also emitted on cached requests
+  - Say that is also emitted for cached requests, so render options can be mutated in the same way
 - Document [up-skeleton]
   - It also opens a new layer
 - Document { skeleton }
   - It also opens a new layer
-- Document a[up-disable] and a[up-disabled]
-  - Extract into its own doc page "Disabling links"
-    - Explain how to style
-    - Comparison matrix
-      - [up-disable]: Disable elements while a link or form is loading
-      - [up-disabled]: Disable a link or clickable
-      - [disabled]: Disable a form field or button
-  - Does [up-disabled] go into up.link or up.form?
-    - Since it only affects links and clickables, it's OK to go into up.link
-  - Only on individual element?
-    - Yes
-  - Recommend to also set [aria-disabled]
-  - Explain that it stops both Unpoly and the browser from following link.
-  - Explain that up:click is no longer emitted.
-  - See disable forms while working
-
 - Demo: Move all previews/skeleton from the JS to [up-] attributes
+- Demo: Make a skeleton for cards
 
 
 Docs
@@ -882,4 +843,6 @@ Decisions
     - We already support this for JS functions
     - To also support named previews we would need to look for "preview." in the string
     => All Preview methods would need to support selectors, which means we would need to think about layers
+- Deprecate flatten() in favor of Array#flat(), flatMap() in favor of Array#flatMap()
+  - No, we use this a lot of non-array values, in particular NodeLists
 
