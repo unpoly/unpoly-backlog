@@ -18,6 +18,12 @@ Perspective
   - [up-on-error]
   - Right now this can be set by listening to a guardEvent and manipulating event.renderOptions
   
+- Consider removing validation batching
+  - [PRO] Complexity of merging render params
+  - [PRO] People are surprised that events and requests affect multiple fields
+  - [ALT] Simplify merging
+    - { disable } passes array selectors (uniq)
+    - { 
 
 
 Next release
@@ -28,20 +34,25 @@ Next release
 Previews
 --------
 
-### TODO
+- When updating multiple fragments, should we run a single Preview with many { fragments }, or multiple Previews with one { fragment } each?
+  - A single preview makes sense with explicit targets (analogue to transition!),
+    but it falls apart with [up-validate] where the user has no controls over the first fragment
+  => Instantiate 1 Preview per fragment
+    - By default we only do this for the first fragment
+    - We allow { previewMap }, { skeletonMap }
+      - options.previewMap = dirtySolutions.mapObject((s) => [s.target, s.renderOptions.preview])
+      - options.preview = null
 
-- E2E-Test [up-preview] attribute for form submission
-- E2E-Test [up-preview] attribute for link follow
 
 
 ### Previews while watching
 
-- Parse [up-watch-preview] in FieldWatcher
-- Parse [up-watch-preview] in FormValidator
-- We would need [up-watch-skeleton] for [up-autosubmit]
+- Support [up-watch-preview] and [up-watch-skeleton] for watching
+- Support [up-watch-preview] and [up-watch-skeleton] for validation
 - E2E-Test that watch passes on render options with [up-autosubmit][up-watch-disable]
 - E2E-Test that watch passes on render options with [up-autosubmit][up-watch-preview]
-- Test and document that watchers get { disable, preview, feedback } options to pass on to rendering
+- E2E-Test that watch passes on render options with [up-validate][up-watch-disable]
+- E2E-Test that watch passes on render options with [up-validate][up-watch-preview]
 
 
 ### Demo
@@ -115,6 +126,15 @@ Previews
 - Document { preview }
 - Document [up-watch-preview] and [up-watch-skeleton] wherever we also document [up-watch-disable] or [up-watch-feedback]
   - Extend /watch-options with [up-watch-preview] and [up-watch-skeleton]
+  - [up-watch]
+  - up.watch()
+  - [up-validate] BUT NOT SKELETON
+  - up.validate() BUT NOT SKELETON
+  - [up-autosubmit]
+  - up.autosubmit()
+- Document that watchers get { disable, preview, feedback, skeleton } options to pass on to rendering
+  - With up.watch()
+  - With [up-watch]
 - Document up:fragment:loaded
   - Say that is also emitted for cached requests, so render options can be mutated in the same way
 - Document [up-skeleton]
@@ -845,4 +865,9 @@ Decisions
     => All Preview methods would need to support selectors, which means we would need to think about layers
 - Deprecate flatten() in favor of Array#flat(), flatMap() in favor of Array#flatMap()
   - No, we use this a lot of non-array values, in particular NodeLists
+
+- Do we want to keep { feedback }, [up-feedback] as an option, or applied it always?
+  - It's already a navigation default
+  - For programmatic up.render() calls, it's already activated by passing { origin }
+  => We can decide this later
 
