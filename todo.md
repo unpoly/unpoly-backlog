@@ -5,6 +5,12 @@ Priority
 Perspective
 -----------
 
+- Once we use native :has(), can we get replace up.Selector with CSS selector expansion?
+  - Excluding .up-destroying would just be :is(original-selector):not(.up-destroying, .up-destroying *)
+  - Matching layers would require a longer selector
+    - :is(original-selector):is([up-layer-index=3], [up-layer-index=3] * [up-layer-index=4])
+    - We could also run the lookup once per layer, which would also honor layer priority when looking up a single fragment in multiple layers, and then uniqing
+
 - Remove params parsing for up.watch(), support formdata, ElementInternals
   - We can just parse the entire form with new FormData(), then filter on contained elements
     - We will still need to know form fields for that
@@ -17,13 +23,7 @@ Perspective
   - [up-on-offline]
   - [up-on-error]
   - Right now this can be set by listening to a guardEvent and manipulating event.renderOptions
-  
-- Consider removing validation batching
-  - [PRO] Complexity of merging render params
-  - [PRO] People are surprised that events and requests affect multiple fields
-  - [ALT] Simplify merging
-    - { disable } passes array selectors (uniq)
-    - { 
+
 
 
 Next release
@@ -34,25 +34,16 @@ Next release
 Previews
 --------
 
-- When updating multiple fragments, should we run a single Preview with many { fragments }, or multiple Previews with one { fragment } each?
-  - A single preview makes sense with explicit targets (analogue to transition!),
-    but it falls apart with [up-validate] where the user has no controls over the first fragment
-  => Instantiate 1 Preview per fragment
-    - By default we only do this for the first fragment
-    - We allow { previewMap }, { skeletonMap }
-      - options.previewMap = dirtySolutions.mapObject((s) => [s.target, s.renderOptions.preview])
-      - options.preview = null
-
-
-
-### Previews while watching
-
-- Support [up-watch-preview] and [up-watch-skeleton] for watching
-- Support [up-watch-preview] and [up-watch-skeleton] for validation
-- E2E-Test that watch passes on render options with [up-autosubmit][up-watch-disable]
-- E2E-Test that watch passes on render options with [up-autosubmit][up-watch-preview]
-- E2E-Test that watch passes on render options with [up-validate][up-watch-disable]
-- E2E-Test that watch passes on render options with [up-validate][up-watch-preview]
+- Consider making { feedback: true } a default render option
+- Do we want to be smarter about template lookup?
+  - Look in origin layers first
+  - Basically up.layer.getAll('closest', { origin: this.origin })
+- Do we want to support previews/skeleton for [up-poll]?
+- Do we want to support previews/skeleton for [up-defer]?
+  - I think they already do.
+    - It's a matter of testing
+    - It's a matter of documenting.
+      - The docs already talk about fallback state. We  could destinguish "while it's loading".
 
 
 ### Demo
@@ -143,12 +134,7 @@ Previews
   - It also opens a new layer
 - Demo: Move all previews/skeleton from the JS to [up-] attributes
 - Demo: Make a skeleton for cards
-
-
-Docs
-----
-
-/opening-overlays and [up-layer=new] should say how to open an overlay from local content
+- /opening-overlays and [up-layer=new] should say how to open an overlay from local content
 
 
 
