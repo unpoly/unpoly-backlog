@@ -8,8 +8,11 @@ Perspective
 - Once we use native :has(), can we get replace up.Selector with CSS selector expansion?
   - Excluding .up-destroying would just be :is(original-selector):not(.up-destroying, .up-destroying *)
   - Matching layers would require a longer selector
-    - :is(original-selector):is([up-layer-index=3], [up-layer-index=3] * [up-layer-index=4])
+    - E.g. for { layer: 3 }
+      - :is(original-selector):is([up-layer-index=3], [up-layer-index=3] *):not([up-layer-index=4], [up-layer-index=4] *)
+        - We only need the [up-layer=4] part if that (1) exists and (2) is excluded
     - We could also run the lookup once per layer, which would also honor layer priority when looking up a single fragment in multiple layers, and then uniqing
+      - This would still still require an abstraction over every function that flatMaps und uniqs
 
 - Remove params parsing for up.watch(), support formdata, ElementInternals
   - We can just parse the entire form with new FormData(), then filter on contained elements
@@ -35,15 +38,10 @@ Previews
 --------
 
 - Consider making { feedback: true } a default render option
+  - Does that mean we want up.fragment.config.renderOptions ?
 - Do we want to be smarter about template lookup?
   - Look in origin layers first
-  - Basically up.layer.getAll('closest', { origin: this.origin })
-- Do we want to support previews/skeleton for [up-poll]?
-- Do we want to support previews/skeleton for [up-defer]?
-  - I think they already do.
-    - It's a matter of testing
-    - It's a matter of documenting.
-      - The docs already talk about fallback state. We  could destinguish "while it's loading".
+
 
 
 ### Demo
@@ -135,7 +133,9 @@ Previews
 - Demo: Move all previews/skeleton from the JS to [up-] attributes
 - Demo: Make a skeleton for cards
 - /opening-overlays and [up-layer=new] should say how to open an overlay from local content
-
+- [up-defer] supports [up-preview], [up-skeleton]
+  - The docs already talk about fallback state. We  could destinguish "while it's loading".
+- [up-poll] supports [up-preview], [up-skeleton]
 
 
 Backlog
