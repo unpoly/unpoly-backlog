@@ -13,11 +13,17 @@ Perspective
         - We only need the [up-layer=4] part if that (1) exists and (2) is excluded
     - We could also run the lookup once per layer, which would also honor layer priority when looking up a single fragment in multiple layers, and then uniqing
       - This would still still require an abstraction over every function that flatMaps und uniqs
-
+    - But there is also the requirement that we must selectors in priority. I don't think this will work.
+    
 - Remove params parsing for up.watch(), support formdata, ElementInternals
   - We can just parse the entire form with new FormData(), then filter on contained elements
     - We will still need to know form fields for that
   - Replace up.Params.fromForm() with `new this(new FormData(form))`
+
+- Consider waiting for custom elements to be defined
+  - For focus
+  - For scrolling
+  - For watching
 
 - Support render lifecycle attributes for [up-defer] and [up-poll]
   - [up-on-loaded]
@@ -32,13 +38,23 @@ Perspective
 Next release
 ------------
 
+- up.focus(): Consider waiting until custom elements are defined (but bail if focus set set somewhere else)
+
 
 
 Previews
 --------
 
 - Consider making { feedback: true } a default render option
-  - Does that mean we want up.fragment.config.renderOptions ?
+  - Also expose up.fragment.config.renderOptions 
+- All Preview methods should default to the fragment as reference
+  - Possibly even lookup selectors in the origin layer
+  - This is hard for insert(), as it now has 2 optional args
+    - preview.insert(newElement)
+    - preview.insert(reference, newElement)
+    - preview.insert(reference, 'beforeend', newElement)
+    - preview.insert('beforeend', newElement)
+    - preview.insert('#selector', 'beforeend', newElement)
 - Do we want to be smarter about template lookup?
   - Look in origin layers first
 
@@ -46,17 +62,29 @@ Previews
 
 ### Demo
 
+- Make sure form group validation still works after Bootstrap 5 Upgrade
 - Commit the changes we want to keep
   - Re-enable cache
-- Make sure form group validation still works after Bootstrap 5 Upgrade
+- Make the yellow flash prettier
+  - Or configurable
+- Change the "tasks" tab to use optimistic rendering everywhere
+  - New task: Use a server side validation to show revert, e.g. uniquness
+  - Toggle task
+  - Updating a task could use skeletons
+- Set tour bubbles for the new functionality
 - We we want to make latency configurable?
-  - Or show it?
+  - At least show it
 - Make a skeleton for cards
 
 
 
 ### Docs & CHANGELOG
 
+- CHANGELOG: Native :has() is required
+- Remove :has doc entry
+- Remove mentions that we polyfill :has
+- "Network issues" should talk about previews and skeletons under "Slow server responses"
+  - Right now they only talk about feedback classes
 - Support { disable: Element }
 - Expose up.form.disable() (since we also expose it via Preview#disable())
 - Disabling forms from links
