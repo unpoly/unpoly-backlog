@@ -5,68 +5,29 @@ Priority
 Perspective
 -----------
 
-- Once we use native :has(), can we get replace up.Selector with CSS selector expansion?
-  - Excluding .up-destroying would just be :is(original-selector):not(.up-destroying, .up-destroying *)
-  - Matching layers would require a longer selector
-    - E.g. for { layer: 3 }
-      - :is(original-selector):is([up-layer-index=3], [up-layer-index=3] *):not([up-layer-index=4], [up-layer-index=4] *)
-        - We only need the [up-layer=4] part if that (1) exists and (2) is excluded
-    - We could also run the lookup once per layer, which would also honor layer priority when looking up a single fragment in multiple layers, and then uniqing
-      - This would still still require an abstraction over every function that flatMaps und uniqs
-    - But there is also the requirement that we must selectors in priority. I don't think this will work.
-    
 - Remove params parsing for up.watch(), support formdata, ElementInternals
   - We can just parse the entire form with new FormData(), then filter on contained elements
     - We will still need to know form fields for that
   - Replace up.Params.fromForm() with `new this(new FormData(form))`
 
-- Consider waiting for custom elements to be defined
-  - For focus
-  - For scrolling
-  - For watching
-
-- Support render lifecycle attributes for [up-defer] and [up-poll]
-  - [up-on-loaded]
-  - [up-on-rendered]
-  - [up-on-finished]
-  - [up-on-offline]
-  - [up-on-error]
-  - Right now this can be set by listening to a guardEvent and manipulating event.renderOptions
-
+- Consider [up-zone] as an origin-aware lookup without further logic
 
 
 Next release
 ------------
-
-- up.focus(): Consider waiting until custom elements are defined (but bail if focus set set somewhere else)
 
 
 
 Previews
 --------
 
-- Consider making { feedback: true } a default render option
-  - Also expose up.fragment.config.renderOptions 
-- All Preview methods should default to the fragment as reference
-  - Possibly even lookup selectors in the origin layer
-  - This is hard for insert(), as it now has 2 optional args
-    - preview.insert(newElement)
-    - preview.insert(reference, newElement)
-    - preview.insert(reference, 'beforeend', newElement)
-    - preview.insert('beforeend', newElement)
-    - preview.insert('#selector', 'beforeend', newElement)
-- Do we want to be smarter about template lookup?
-  - Look in origin layers first
-
-
 
 ### Demo
 
+- Make a skeleton for forms (new, edit)
 - Make sure form group validation still works after Bootstrap 5 Upgrade
 - Commit the changes we want to keep
   - Re-enable cache
-- Make the yellow flash prettier
-  - Or configurable
 - Change the "tasks" tab to use optimistic rendering everywhere
   - New task: Use a server side validation to show revert, e.g. uniquness
   - Toggle task
@@ -74,7 +35,18 @@ Previews
 - Set tour bubbles for the new functionality
 - We we want to make latency configurable?
   - At least show it
+
+
+### Cards
+
+- Repair preloading
 - Make a skeleton for cards
+
+
+### Guide
+
+- Skeleton for menu
+- Skeleton for main area
 
 
 
@@ -82,7 +54,7 @@ Previews
 
 - CHANGELOG: Native :has() is required
 - Remove :has doc entry
-- Remove mentions that we polyfill :has
+- Remove mentions that we polyfill
 - "Network issues" should talk about previews and skeletons under "Slow server responses"
   - Right now they only talk about feedback classes
 - Support { disable: Element }
@@ -129,6 +101,10 @@ Previews
     - Progress bar for late responses
       - Link to progress bar
   - While watching
+- Explain where skeleton templates are looked up
+- Explain how to use lazy-loading skeleton templates
+  - Don't load them for up-requests
+  - Load them deferred
 - Rename up.feedback to up.status
   - Title "Status effects"
   - Package intro should summarize our fancy new doc pages
@@ -166,9 +142,22 @@ Previews
 - [up-poll] supports [up-preview], [up-skeleton]
 
 
+
+
 Backlog
 =======
 
+- Consider waiting for custom elements to be defined
+  - For focus
+  - For scrolling
+  - For watching
+- Support render lifecycle attributes for [up-defer] and [up-poll]
+  - [up-on-loaded]
+  - [up-on-rendered]
+  - [up-on-finished]
+  - [up-on-offline]
+  - [up-on-error]
+  - Right now this can be set by listening to a guardEvent and manipulating event.renderOptions
 - We often see multiple preloading entries in the log (mouseover, mousedown). Can we not log if we're already preloading?
 - Support array fields with watch()?
   - up.form.config.arrayFields = 'suffix' | 'all'
