@@ -11,10 +11,36 @@ Perspective
   - Replace up.Params.fromForm() with `new this(new FormData(form))`
 
 - Consider [up-zone] as an origin-aware lookup without further logic
+  - Also support `:zone` as a new pseudo
+    - Layer priority beats zone priority
+  - config.zoneSelectors = ['[up-zone]', ':main]
+  - config.noZoneSelectors = ['[up-zone=false]']
+  - I think without an { origin } we only want to check out `:main`. Maybe it's not configurable?
+  - Do we want to allow [up-zone="name"] (and include it in targetDerivers), or should it be [up-zone][id="foo"]?
+    - If we want to get rid of [up-href] (to enable morphing), we should encourage the use of IDs
 
 
 Next release
 ------------
+
+- Test that setting up.fragment.config.navigateOptions.cache = false disables preloading
+
+- [TEST] Revalidating: Do we show skeletons? => yes :(
+- [TEST] Revalidating: Do we disable when revalidating? => yes :(
+- [DONE] Revalidating: Do we show previews => no, but test
+- [DONE] Revalidating: Do we show feedback => no, but test
+- [TEST] Preloading: Do we show skeletons? => ???
+- [TEST] Preloading: Do we disable when revalidating? => ???
+- [DONE] Preloading: Do we show previews => no, but test
+- [TEST] Preloading: Do we show feedback => ???
+
+
+- Could we remove previewEffects in showPreviews, by looking at { expiredResponse, preloading } ??
+
+- Test that preview.openOverlay() does not change history, even with { location, title, history: true }
+- Test that preview.openOverlay() ignores { url, content, fragment } options
+- Consider replacing { background: true } with { progressBar: false }
+  - Alternately, should background: true imply NO_PREVIEWS ?
 
 
 
@@ -24,6 +50,7 @@ Previews
 
 ### Demo
 
+- Use explicit [up-skeleton] attributes on every link
 - Make a skeleton for forms (new, edit)
 - Make sure form group validation still works after Bootstrap 5 Upgrade
 - Commit the changes we want to keep
@@ -33,8 +60,6 @@ Previews
   - Toggle task
   - Updating a task could use skeletons
 - Set tour bubbles for the new functionality
-- We we want to make latency configurable?
-  - At least show it
 
 
 ### Cards
@@ -52,6 +77,7 @@ Previews
 
 ### Docs & CHANGELOG
 
+- up.Response#rtt
 - CHANGELOG: Native :has() is required
 - Remove :has doc entry
 - Remove mentions that we polyfill
