@@ -1,3 +1,7 @@
+
+
+
+
 Priority
 ========
 
@@ -25,18 +29,6 @@ Next release
 
 - Test that setting up.fragment.config.navigateOptions.cache = false disables preloading
 
-- [TEST] Revalidating: Do we show skeletons? => yes :(
-- [TEST] Revalidating: Do we disable when revalidating? => yes :(
-- [DONE] Revalidating: Do we show previews => no, but test
-- [DONE] Revalidating: Do we show feedback => no, but test
-- [TEST] Preloading: Do we show skeletons? => ???
-- [TEST] Preloading: Do we disable when revalidating? => ???
-- [DONE] Preloading: Do we show previews => no, but test
-- [TEST] Preloading: Do we show feedback => ???
-
-
-- Could we remove previewEffects in showPreviews, by looking at { expiredResponse, preloading } ??
-
 - Test that preview.openOverlay() does not change history, even with { location, title, history: true }
 - Test that preview.openOverlay() ignores { url, content, fragment } options
 - Consider replacing { background: true } with { progressBar: false }
@@ -47,10 +39,18 @@ Next release
 Previews
 --------
 
+- When I have my own preview I don't also want the progress bar. But I can only disable it with { background: true }, which I don't want.
+  - Maybe get rid of the "background" distinction?
+    - But we also use it for up:network:late
+
+
 
 ### Demo
 
+
+- "up.reload('.table', { skeleton: '#table-skeleton' })" will show a .table inside a .table ...
 - Use explicit [up-skeleton] attributes on every link
+- Revert reloadTable() funktion
 - Make a skeleton for forms (new, edit)
 - Make sure form group validation still works after Bootstrap 5 Upgrade
 - Commit the changes we want to keep
@@ -60,6 +60,7 @@ Previews
   - Toggle task
   - Updating a task could use skeletons
 - Set tour bubbles for the new functionality
+
 
 
 ### Cards
