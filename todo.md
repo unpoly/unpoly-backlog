@@ -42,7 +42,10 @@ Previews
 - When I have my own preview I don't also want the progress bar. But I can only disable it with { background: true }, which I don't want.
   - Maybe get rid of the "background" distinction?
     - But we also use it for up:network:late
+  => I think it's OK to keep that extra info for late requests
+- Do we want to keep the change that meta has { request, response }?
 
+- Consider publishing booleanOrString or booleanOrNumber
 
 
 ### Demo
