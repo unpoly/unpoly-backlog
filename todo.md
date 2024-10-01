@@ -27,41 +27,15 @@ Perspective
 Next release
 ------------
 
-- Test that setting up.fragment.config.navigateOptions.cache = false disables preloading
-
-- Test that preview.openOverlay() does not change history, even with { location, title, history: true }
-- Test that preview.openOverlay() ignores { url, content, fragment } options
-- Consider replacing { background: true } with { progressBar: false }
-  - Alternately, should background: true imply NO_PREVIEWS ?
-
-
 
 Previews
 --------
 
-- When I have my own preview I don't also want the progress bar. But I can only disable it with { background: true }, which I don't want.
-  - Maybe get rid of the "background" distinction?
-    - But we also use it for up:network:late
-  => I think it's OK to keep that extra info for late requests
-- Do we want to keep the change that meta has { request, response }?
-
-- Consider publishing booleanOrString or booleanOrNumber
 
 
 ### Demo
 
-
-- "up.reload('.table', { skeleton: '#table-skeleton' })" will show a .table inside a .table ...
-- Use explicit [up-skeleton] attributes on every link
-- Revert reloadTable() funktion
-- Make a skeleton for forms (new, edit)
 - Make sure form group validation still works after Bootstrap 5 Upgrade
-- Commit the changes we want to keep
-  - Re-enable cache
-- Change the "tasks" tab to use optimistic rendering everywhere
-  - New task: Use a server side validation to show revert, e.g. uniquness
-  - Toggle task
-  - Updating a task could use skeletons
 - Set tour bubbles for the new functionality
 
 
@@ -177,6 +151,7 @@ Previews
 Backlog
 =======
 
+- Consider publishing booleanOrString or booleanOrNumber
 - Consider waiting for custom elements to be defined
   - For focus
   - For scrolling
@@ -903,4 +878,9 @@ Decisions
   - It's already a navigation default
   - For programmatic up.render() calls, it's already activated by passing { origin }
   => We can decide this later
+- Do we want Preview#affix?
+  - Check if it helps with the demo
+  => Not for now. I'm myself moving away from affix.
+- Previews should know about placement?
+  - Unsure. Later.
 
