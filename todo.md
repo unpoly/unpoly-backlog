@@ -31,6 +31,13 @@ Next release
 Previews
 --------
 
+- The name "preview" doesn't work as well for spinners
+  - Can we find something more generic?
+    - <form up-status="btn-spinner">
+    - <form up-teaser="btn-spinner">
+    - <form up-working="btn-spinner">
+    - <form up-loading="btn-spinner">
+
 
 
 ### Demo
@@ -105,6 +112,8 @@ Previews
     - Progress bar for late responses
       - Link to progress bar
   - While watching
+- Rework the section "Styling active elements" in /up-active.
+  - It should link to the new status guides
 - Explain where skeleton templates are looked up
 - Explain how to use lazy-loading skeleton templates
   - Don't load them for up-requests
