@@ -9,6 +9,13 @@ Priority
 Perspective
 -----------
 
+- Support X-Up-Open-Layer: { type, ...VISUAL_OPTIONS }
+  - Works for both success and failed response. There is no X-Up-Fail-Layer option.
+  - Ensure that X-Up-Target also works for both success and failed response. There is no X-Up-Fail-Target option.
+  - Support unpoly-rails
+  - Recommend to also set X-Up-Target
+    - unpoly-rails could accept a { target }
+
 - Remove params parsing for up.watch(), support formdata, ElementInternals
   - We can just parse the entire form with new FormData(), then filter on contained elements
     - We will still need to know form fields for that
@@ -23,6 +30,15 @@ Perspective
   - Do we want to allow [up-zone="name"] (and include it in targetDerivers), or should it be [up-zone][id="foo"]?
     - If we want to get rid of [up-href] (to enable morphing), we should encourage the use of IDs
 
+- Consider syntax to place a placeholder in a target
+  - [up-placeholder="#spinner-template in :origin"]
+  - Does not work for { placeholder: Element } form.
+    - The closest form here would be placeholderMap.
+      - Which we already have :D
+    - Would not work with 'main-spinner' from the demo, since we're not hiding content here
+- Consider publishing { dataMap, skeletonMap/placeholderMap, previewMap } as @experimental
+  - Check if we have tests here
+
 
 Next release
 ------------
@@ -31,18 +47,27 @@ Next release
 Previews
 --------
 
-- The name "preview" doesn't work as well for spinners
-  - Can we find something more generic?
-    - <form up-status="btn-spinner">
-    - <form up-teaser="btn-spinner">
-    - <form up-working="btn-spinner">
-    - <form up-loading="btn-spinner">
+### Naming
+
+up-tease="main-spinner"
+up-tease-placeholder="#spinner"
+up-tease="placeholder: <div>...</div>"
+  not better than up-tease="teaser.showPlaceholder()"
+
+
+### Inline
+
+- Allow inline { placeholder } functions
+  - Nonceable
+- Allow inline { preview } functions
+  - Nonceable
 
 
 
 ### Demo
 
 - Make sure form group validation still works after Bootstrap 5 Upgrade
+- Make gentler spinner within modals
 - Set tour bubbles for the new functionality
 
 
@@ -62,7 +87,10 @@ Previews
 
 ### Docs & CHANGELOG
 
-- up.Response#rtt
+- badResponseTime => lateTime
+  - config.lateTime
+  - { lateTime }
+  - [up-late-time]
 - CHANGELOG: Native :has() is required
 - Remove :has doc entry
 - Remove mentions that we polyfill
@@ -153,7 +181,12 @@ Previews
 - [up-defer] supports [up-preview], [up-skeleton]
   - The docs already talk about fallback state. We  could destinguish "while it's loading".
 - [up-poll] supports [up-preview], [up-skeleton]
+- Consider an authentication modal in https://unpoly.com/up:fragment:loaded#changing-render-options
 
+
+### Release
+
+- Merge, push and deploy the new demo
 
 
 
@@ -892,4 +925,6 @@ Decisions
   => Not for now. I'm myself moving away from affix.
 - Previews should know about placement?
   - Unsure. Later.
+- Rename "preview" to "teaser"?
+  - => It's too confusing with { placeholder }
 
