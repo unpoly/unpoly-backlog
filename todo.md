@@ -1,13 +1,22 @@
-
-
-
-
 Priority
 ========
 
 
 Perspective
 -----------
+
+- Callback to run before any render pass (see davidsums popup discussion)
+  - up:render:prepare
+  - Would we rename up:fragment events to get pressure off the up:fragment namespace?
+    - up:render:load
+    - up:render:loaded
+    - up:render:keep       :(
+    - up:render:offline
+    - up:render:inserted   :(
+    - up:render:hungry     :(
+    - This would leave up:fragment:poll
+
+- Open overlays from template selectors
 
 - Support X-Up-Open-Layer: { type, ...VISUAL_OPTIONS }
   - Works for both success and failed response. There is no X-Up-Fail-Layer option.
@@ -36,6 +45,7 @@ Perspective
     - The closest form here would be placeholderMap.
       - Which we already have :D
     - Would not work with 'main-spinner' from the demo, since we're not hiding content here
+
 - Consider publishing { dataMap, skeletonMap/placeholderMap, previewMap } as @experimental
   - Check if we have tests here
 
@@ -47,20 +57,38 @@ Next release
 Previews
 --------
 
+- Test moving and position-revert
+- Exposing the temp functions would make it easier to compose some effects
+- It would be nice to run previews with a different origin or fragment
+  - up.Preview.fromRequest() ?
+
+
+### Delays
+
+- [up-preview-delay]
+- { previewDelay }
+- up.feedback.config.previewDelay
+- Make sure the delay does *not* apply to { disable, disableMap }
+
+
+### LateTime
+
+- Should we rename { lateTime }?
+  - We already have "delay" and "age", so let's not have a third thing
+  - With [up-time] it is a timestamp, not a duration
+  - { lateDelay } => Would be consistent with previewDelay
+  - { lateAge } => Would be consistent with expireAge and evictAge
+
+
+
 ### Naming
 
-up-tease="main-spinner"
-up-tease-placeholder="#spinner"
-up-tease="placeholder: <div>...</div>"
-  not better than up-tease="teaser.showPlaceholder()"
+
 
 
 ### Inline
 
-- Allow inline { placeholder } functions
-  - Nonceable
-- Allow inline { preview } functions
-  - Nonceable
+- Test up.element.booleanOrInvocationOrString()
 
 
 
@@ -87,6 +115,9 @@ up-tease="placeholder: <div>...</div>"
 
 ### Docs & CHANGELOG
 
+- up.fragment.insertTemp() and up.Preview#insert must mention that:
+  - The element is compiled and destroyed
+  - An attached element is moved back to its original position (and not compiled or destroyed)
 - badResponseTime => lateTime
   - config.lateTime
   - { lateTime }
@@ -94,6 +125,8 @@ up-tease="placeholder: <div>...</div>"
 - CHANGELOG: Native :has() is required
 - Remove :has doc entry
 - Remove mentions that we polyfill
+- Dynamic preview callbacks
+- Dynamic placeholder callbacks
 - "Network issues" should talk about previews and skeletons under "Slow server responses"
   - Right now they only talk about feedback classes
 - Support { disable: Element }
