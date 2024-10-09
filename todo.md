@@ -5,6 +5,8 @@ Priority
 Perspective
 -----------
 
+- Maybe check for support of `:is()` in up.browser.isSupported()
+
 - Callback to run before any render pass (see davidsums popup discussion)
   - up:render:prepare
   - Would we rename up:fragment events to get pressure off the up:fragment namespace?
@@ -53,22 +55,43 @@ Perspective
 Next release
 ------------
 
+- Consider targeting the form-group if it has a good selector
+  - For the server, it is not ideal when the X-Up-Target changes as the form grows from 1 group (where .form-group would be good) to 2 groups
+    - We would need to divide into config.strongTargetDerivers and config.targetDerivers
+    - Evaluate with up.fragment.toTarget(element, { strong: true })
+- Replace up.error.report() with window.reportError()
+  - Possibly include in isSupported() check
+
 
 Previews
 --------
 
-- Test moving and position-revert
+- If a preview is used after it ended, immediately undo the new action
 - Exposing the temp functions would make it easier to compose some effects
 - It would be nice to run previews with a different origin or fragment
   - up.Preview.fromRequest() ?
+- Rework [up-placeholder] attr parsing so we can also use it for [content] and [fragment]
+  - up.element.elementProviderAttr()
+    - ^<[^>]+>                       => parse Element from HTML. Return Element.
+    - ^([\w-]+|*)?(#|.|:[a-z]{3,})   => Selector, but keep as string for origin/layer-aware lookup later
+    - tryParseInvocation()           => parse Function that returns Element (not a selector). Test that it supports nonces!!!
+    - Text                           => parse Text Nodes into Wrapper Element
+- Support templates and selectors for [content] and [fragment]
+  - Where would we look up a selector? In up.ResponseDoc?
+    - Or in up.Content, which instantiates up.ResponseDoc
+      - Preview looks up with up.fragment.get(value, { layer: 'closest', origin: this.origin })
+    - We need to extract buildPlaceholder() to up.fragment.provideElement(value, origin) or something
+      - Decide whether to wrap text nodes here or up.element.elementProviderAttr()
+  - Where would we parse HTML / wrap text?
+    - If we do it in elementProviderAttr it is not available in { option } form
+    - => So we stay with booleanOrInvocationOrString
+      => Everything else is made in provideElement(value, { origin, callbackArgs: [] })
+        - This must return nil for `false` or missing (falsy)
 
 
 ### Delays
 
-- [up-preview-delay]
-- { previewDelay }
-- up.feedback.config.previewDelay
-- Make sure the delay does *not* apply to { disable, disableMap }
+- Moved to docs
 
 
 ### LateTime
@@ -215,6 +238,15 @@ Previews
   - The docs already talk about fallback state. We  could destinguish "while it's loading".
 - [up-poll] supports [up-preview], [up-skeleton]
 - Consider an authentication modal in https://unpoly.com/up:fragment:loaded#changing-render-options
+- Delaying previews
+
+  up.preview('foo', (preview) => {
+    up.util.timer(1000, function() {
+      if (!preview.ended) {
+        preview.run('other')      
+      }
+    })
+  }) 
 
 
 ### Release
