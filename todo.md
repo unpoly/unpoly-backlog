@@ -66,6 +66,40 @@ Next release
 Previews
 --------
 
+- Invocation parsing could lead to XSS without CSP
+  - This is super relevant for [up-content] which it would be reasonable to fill with user content
+  - <a up-content="<%= user_record.help_text %>">
+    - User can put any invocation in there and we will eval the entire string
+    - We would need to require "<" start character again, and discard anything else
+    - Maybe crash if we see neither HTML nor selector nor invocation?
+      - But the user can make an invocation easily
+      - Also invocations survive HTML escaping
+    - Require CSP?
+    - Multiply attributes
+      - up-content-html                          { contentHTML }
+      - up-content-template | up-content-from    { contentTemplate }
+      - up-content-function | up-content-from    { contentFunction }
+      - up-placeholder-html
+      - up-placeholder-template | up-placeholder-from
+      - up-placeholder-function | up-placeholder-from
+    - We can detect selector vs. invocation, but not vs. arbitrary user content
+      - It is weird that we no longer have symmetry with the { option } form, where we *can* detect forms
+        - { content: "string" } (parse HTML)
+        - { content: fn() }     (run function)
+        - { content: Element }  (finished element, or template element for cloning)
+        - We don't support selector lookup for the { option } form
+          - This affects showPlaceholder() etc.
+      - We could parse all the attributes into the same { content } option
+        - Look up selectors eagerly, in the attribute parser
+          - Turns selectors into looked up elements (e.g. <template> reference)
+          - Turns functions into functions
+        - parser.callback('content', { attr: ['up-content-function'] })
+        - parser.template('content', { attr: ['up-content-template'] })
+    - The more problematic [up-content] case now makes { placeholder, preview } less convenient
+      - I'm sad that for [up-placeholder] the most used form ([up-placeholder="#foo"]) is now the longest form ([up-placeholder-template="#foo"])
+      - What do we do with [up-preview], where we *can* distinguish between names and invocations?
+      - Maybe we keep { placeholder, preview } as it is and think about { content } differently
+    
 - If a preview is used after it ended, immediately undo the new action
 - Exposing the temp functions would make it easier to compose some effects
 - It would be nice to run previews with a different origin or fragment
@@ -258,6 +292,33 @@ Previews
 Backlog
 =======
 
+
+
+- Can we find a way to implement the new-task action as a server-rendered template?
+  template = preview.cloneTemplate('#foo', { '{{text}}': params.text })
+  
+    clone = preview.cloneTemplate('#foo', { '.task-item--text': params.text })
+    clone = preview.cloneTemplate('#index', { 'tr': rows => rows.slice(20).forEach((row) => row.remove() })
+    
+    clone = preview.cloneTemplate('#foo')
+    clone.querySelector('.task-item--text').innerText = params.text
+
+    clone = preview.cloneTemplate('#index')
+    [...clone.querySelectorAll('tr)].slice(max).forEach((row) => row.remove())
+
+
+    // 169 bytes
+    function cloneTemplate(template, processors = {}) {
+      let result = template.content.cloneNode(true)
+      for (let [selector, processor] of Object.entries(selectorMap)) {
+        let matches = u.toArray(result.querySelectorAll(selector))
+        if (u.isFunction(processor)) {
+          processor(matches)
+        } else {
+          matches[0].innerHTML = processor
+        }
+      }
+    }
 - Consider publishing booleanOrString or booleanOrNumber
 - Consider waiting for custom elements to be defined
   - For focus
