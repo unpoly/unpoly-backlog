@@ -51,76 +51,36 @@ Perspective
 - Consider publishing { dataMap, skeletonMap/placeholderMap, previewMap } as @experimental
   - Check if we have tests here
 
+- Consider publishing up.script.clean()
+  - Would we need a fallback for { layer }?
+
+
 
 Next release
 ------------
 
-- Consider targeting the form-group if it has a good selector
-  - For the server, it is not ideal when the X-Up-Target changes as the form grows from 1 group (where .form-group would be good) to 2 groups
-    - We would need to divide into config.strongTargetDerivers and config.targetDerivers
-    - Evaluate with up.fragment.toTarget(element, { strong: true })
 - Replace up.error.report() with window.reportError()
   - Possibly include in isSupported() check
+- Test that up.destroy() on a detached element doesn't run destructors a second time
+  
 
 
 Previews
 --------
 
-- Invocation parsing could lead to XSS without CSP
-  - This is super relevant for [up-content] which it would be reasonable to fill with user content
-  - <a up-content="<%= user_record.help_text %>">
-    - User can put any invocation in there and we will eval the entire string
-    - We would need to require "<" start character again, and discard anything else
-    - Maybe crash if we see neither HTML nor selector nor invocation?
-      - But the user can make an invocation easily
-      - Also invocations survive HTML escaping
-    - Require CSP?
-    - Multiply attributes
-      - up-content-html                          { contentHTML }
-      - up-content-template | up-content-from    { contentTemplate }
-      - up-content-function | up-content-from    { contentFunction }
-      - up-placeholder-html
-      - up-placeholder-template | up-placeholder-from
-      - up-placeholder-function | up-placeholder-from
-    - We can detect selector vs. invocation, but not vs. arbitrary user content
-      - It is weird that we no longer have symmetry with the { option } form, where we *can* detect forms
-        - { content: "string" } (parse HTML)
-        - { content: fn() }     (run function)
-        - { content: Element }  (finished element, or template element for cloning)
-        - We don't support selector lookup for the { option } form
-          - This affects showPlaceholder() etc.
-      - We could parse all the attributes into the same { content } option
-        - Look up selectors eagerly, in the attribute parser
-          - Turns selectors into looked up elements (e.g. <template> reference)
-          - Turns functions into functions
-        - parser.callback('content', { attr: ['up-content-function'] })
-        - parser.template('content', { attr: ['up-content-template'] })
-    - The more problematic [up-content] case now makes { placeholder, preview } less convenient
-      - I'm sad that for [up-placeholder] the most used form ([up-placeholder="#foo"]) is now the longest form ([up-placeholder-template="#foo"])
-      - What do we do with [up-preview], where we *can* distinguish between names and invocations?
-      - Maybe we keep { placeholder, preview } as it is and think about { content } differently
-    
+- Separate function forms, but parse into the { option }
+  - [up-placeholder-fn]
+  - [up-preview-fn]
+  
+- Test that { content, fragment } can lookup templates
+
+- up-preview='{"foo": [1, 2, 3], "bar": [4, 5, 6] }'
+
 - If a preview is used after it ended, immediately undo the new action
 - Exposing the temp functions would make it easier to compose some effects
-- It would be nice to run previews with a different origin or fragment
-  - up.Preview.fromRequest() ?
-- Rework [up-placeholder] attr parsing so we can also use it for [content] and [fragment]
-  - up.element.elementProviderAttr()
-    - ^<[^>]+>                       => parse Element from HTML. Return Element.
-    - ^([\w-]+|*)?(#|.|:[a-z]{3,})   => Selector, but keep as string for origin/layer-aware lookup later
-    - tryParseInvocation()           => parse Function that returns Element (not a selector). Test that it supports nonces!!!
-    - Text                           => parse Text Nodes into Wrapper Element
-- Support templates and selectors for [content] and [fragment]
-  - Where would we look up a selector? In up.ResponseDoc?
-    - Or in up.Content, which instantiates up.ResponseDoc
-      - Preview looks up with up.fragment.get(value, { layer: 'closest', origin: this.origin })
-    - We need to extract buildPlaceholder() to up.fragment.provideElement(value, origin) or something
-      - Decide whether to wrap text nodes here or up.element.elementProviderAttr()
-  - Where would we parse HTML / wrap text?
-    - If we do it in elementProviderAttr it is not available in { option } form
-    - => So we stay with booleanOrInvocationOrString
-      => Everything else is made in provideElement(value, { origin, callbackArgs: [] })
-        - This must return nil for `false` or missing (falsy)
+- Allow previews with args
+  - Basically preview.run('mine', 'arg1', 'arg2) would yield both args to the preview fn
+  - This replaces "running preview with a different origin"
 
 
 ### Delays
@@ -172,6 +132,14 @@ Previews
 
 ### Docs & CHANGELOG
 
+- up.element.createFromHTML({ content }) accepts NodeList or Array?
+- { content, fragment } changes
+  - They now accept a template selector
+  - Passing user-controlled content safely
+    - must be escaped
+    - should be wrapped in HTML tag as to not be interpreted as a selector
+    - e.g. `<div>${up.util.escapeHTML(foo)}</div>`
+  - { content } accepts a NodeList
 - up.fragment.insertTemp() and up.Preview#insert must mention that:
   - The element is compiled and destroyed
   - An attached element is moved back to its original position (and not compiled or destroyed)
