@@ -5,8 +5,6 @@ Priority
 Perspective
 -----------
 
-- Maybe check for support of `:is()` in up.browser.isSupported()
-
 - Callback to run before any render pass (see davidsums popup discussion)
   - up:render:prepare
   - Would we rename up:fragment events to get pressure off the up:fragment namespace?
@@ -53,60 +51,26 @@ Perspective
 
 - Consider publishing up.script.clean()
   - Would we need a fallback for { layer }?
+  
+- Consider removing { content } option of createFromSelector(), affix(), etc. in favor of a third argument for constructing nested things
 
 
 
 Next release
 ------------
 
-- Replace up.error.report() with window.reportError()
-  - Possibly include in isSupported() check
-- Test that up.destroy() on a detached element doesn't run destructors a second time
-  
+
+
 
 
 Previews
 --------
-
-- Separate function forms, but parse into the { option }
-  - [up-placeholder-fn]
-  - [up-preview-fn]
   
-- Test that { content, fragment } can lookup templates
-
-- up-preview='{"foo": [1, 2, 3], "bar": [4, 5, 6] }'
-
 - If a preview is used after it ended, immediately undo the new action
 - Exposing the temp functions would make it easier to compose some effects
 - Allow previews with args
   - Basically preview.run('mine', 'arg1', 'arg2) would yield both args to the preview fn
   - This replaces "running preview with a different origin"
-
-
-### Delays
-
-- Moved to docs
-
-
-### LateTime
-
-- Should we rename { lateTime }?
-  - We already have "delay" and "age", so let's not have a third thing
-  - With [up-time] it is a timestamp, not a duration
-  - { lateDelay } => Would be consistent with previewDelay
-  - { lateAge } => Would be consistent with expireAge and evictAge
-
-
-
-### Naming
-
-
-
-
-### Inline
-
-- Test up.element.booleanOrInvocationOrString()
-
 
 
 ### Demo
@@ -119,7 +83,6 @@ Previews
 
 ### Cards
 
-- Repair preloading
 - Make a skeleton for cards
 
 
@@ -641,8 +604,8 @@ Documentation
   - Background requests are promoted to the foreground if they are a cache hit for a new, non-background request
 
 
-Icebox
-======
+Icebox / Tar pits
+=================
 
 - Allow late registrations of compilers and macros without priority
   => OK for compilers, but what about macros? They have an intrinsic priority (before all compilers)
@@ -715,11 +678,6 @@ Icebox
         - => This is really already solved through { history: 'auto' }, which only updates history if updating :main
 - Rendering: allow { scrollBehavior: 'smooth' } when we're not morphing
   - Could we even allow this *when* morphing?
-- What is the purpose of up.error.emitGlobal?
-  - Don't we throw a compound error that would be tracked?
-    - We do
-    - But the error does not bubble up
-    - What do we want here?
 - New up.render() options to clone from a template
   - { documentTemplate }, { fragmentTemplate }, { contentTemplate }
   - Separate doc page "Rendering from local content"
@@ -795,11 +753,6 @@ Icebox
   - up.Offline
   - up.AbortError
     - has { name: 'AbortError' }
-
-
-Decisions
-=========
-
 - Should the old "clear" be "expire" or "evict"?
   => We really want to push our new defaults for both
   => I think it should be "expire". Most users set a lower expire time.
@@ -1021,4 +974,6 @@ Decisions
   - Unsure. Later.
 - Rename "preview" to "teaser"?
   - => It's too confusing with { placeholder }
+- Test that re-attaching an helloing an destroyed element can be compiled again
+  - This is not trivial because destructors would need to clean up Element#upAppliedCompilers
 
