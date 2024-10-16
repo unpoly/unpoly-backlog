@@ -54,6 +54,8 @@ Perspective
   
 - Consider removing { content } option of createFromSelector(), affix(), etc. in favor of a third argument for constructing nested things
 
+- ReDOS: up.util.parseTokens() should split with simpler patterns, then trim the results
+
 
 
 Next release
@@ -66,17 +68,11 @@ Next release
 Previews
 --------
   
-- If a preview is used after it ended, immediately undo the new action
-- Exposing the temp functions would make it easier to compose some effects
-- Allow previews with args
-  - Basically preview.run('mine', 'arg1', 'arg2) would yield both args to the preview fn
-  - This replaces "running preview with a different origin"
 
 
 ### Demo
 
 - Make sure form group validation still works after Bootstrap 5 Upgrade
-- Make gentler spinner within modals
 - Set tour bubbles for the new functionality
 
 
@@ -95,123 +91,177 @@ Previews
 
 ### Docs & CHANGELOG
 
-- up.element.createFromHTML({ content }) accepts NodeList or Array?
-- { content, fragment } changes
-  - They now accept a template selector
+- CHANGELOG
+  - Explain that the demo shows new optimistic rendering, check "Extra latency"
+  - badResponseTime => lateDelay
+    - config.lateDelay
+    - { lateDelay }
+    - [up-late-time]
+  - Go through entire Git log
+
+- Exposing the temp functions would make it easier to compose some effects without accepting an (preview) arg
+  - Expose up.form.disable() (since we also expose it via Preview#disable())
+
+- up.element.createFromSelector(selector, { content }) accepts NodeList or Array<Elements> (brief: List<Element>)
+  - The same for affix({ content })
+
+- New doc page "Rendering strings or templates"    /rendering-strings
+  - { content, fragment } changes
+    - They now accept a template selector
+    - { content } accepts a NodeList
   - Passing user-controlled content safely
     - must be escaped
     - should be wrapped in HTML tag as to not be interpreted as a selector
     - e.g. `<div>${up.util.escapeHTML(foo)}</div>`
-  - { content } accepts a NodeList
-- up.fragment.insertTemp() and up.Preview#insert must mention that:
-  - The element is compiled and destroyed
-  - An attached element is moved back to its original position (and not compiled or destroyed)
-- badResponseTime => lateTime
-  - config.lateTime
-  - { lateTime }
-  - [up-late-time]
-- CHANGELOG: Native :has() is required
-- Remove :has doc entry
-- Remove mentions that we polyfill
-- Dynamic preview callbacks
-- Dynamic placeholder callbacks
-- "Network issues" should talk about previews and skeletons under "Slow server responses"
-  - Right now they only talk about feedback classes
-- Support { disable: Element }
-- Expose up.form.disable() (since we also expose it via Preview#disable())
-- Disabling forms from links
-  - Document that [up-disable] is now also available for [up-follow]
-  - Document that options.disable is now supported for up.follow()
-  - Add a section to /disabling-forms
-- Update render lifecycle
-  - With status effects (disable, preview, skeleton, feedback)
-- Decide whether to publish up.Request#previews
-  - Should they be the parsed names or the functions?
-  => NO!
+    - Also recommend a strict CSP
+  - Explain where placeholder templates are looked up
+
 - Docs for up.Preview class and its methods
-- Doc page /loading-state "Rendering loading state"
+  - up.Preview#insert (and up.fragment.insertTemp()) must mention that:
+    - The element is compiled and destroyed
+    - An attached element is moved back to its original position (and not compiled or destroyed)
+
+- :has() removal
+  - CHANGELOG: Native :has() is required and the app will not boot without
+  - Remove :has doc entry
+  - Remove mentions that we polyfill
+  - Rework up.element/up.fragment distinction
+
+- Dynamic previews/placeholders
+  - Placeholders
+    - #template as .modifier syntax
+    - Explain that you can compile template clones
+    - Explain that you can always use [up-preview] or [up-preview-fn].
+  - Previews can take arguments
+  - In JavaScript you can use { preview: Function } or { placeholder: Function }
+
+- "Network issues" should talk about previews and placeholders under "Slow server responses"
+  - Right now they only talk about feedback classes
+
+- Change with disabling
+  - We now support { disable: Element }
+  - We now support { disable: Array<Element|string> }
+  - Disabling forms from links
+    - Document that [up-disable] is now also available for [up-follow]
+    - Document that options.disable is now supported for up.follow()
+    - Add a section to /disabling-forms
+
+- Update render lifecycle
+  - With status effects (disable, preview, placeholder, feedback)
+
+- Doc page /loading-state "Showing loading state"
   - Show how the preview can manipulate the DOM
+
   - Show how the preview can inspect the context
+
   - Examples
-    - Example: Skeleton
-    - Example: Loading class for body
-    - Example: Preview Modal
+    - Example: Placeholder
+    - Example: Add a TODO
+
   - Previews are not applied when we have cached content to render
     - Also not shown when cache-then-revalidate
-  - Multiple effects
+
+  - Multiple preview effects
     - Space-separated
     - Array
-  - Event
-    - Show that we can prevent
-    - Show that we can mutate event.previews
   - Prefer to be additive
+
   - Reverting effects
     - undo()
     - returning destructor
     - Important: don't revert effects that you didn't cause
       - Check if you need to do something
       - All up.Preview methods do this
+
+  - Placeholders
+    - As HTML
+    - As template cloning
+    - Placeholder for OpenLayer change will open a new temporary layer
+      - This will be reverted in case the server renders unexpected content
+    - Dynamic placeholders
+
+
   - Built-in previews
     - Disabling forms while working
       - Link to disabling
     - Marking active elements with classes
       - Link to .up-active
       - Link to .up-loading
-    - Skeletons
+
+    - Placeholders
+
     - Progress bar for late responses
       - Link to progress bar
+
   - While watching
+
+  - Delaying previews
+
+        up.preview('foo', (preview) => {
+          up.util.timer(1000, function() {
+            if (!preview.ended) {
+              preview.run('other')      
+            }
+          })
+        }) 
+
+  - Optimistic rendering
+    - Point to demo example & code
+
+- Rename /loading-indicators to /progress-bar ?
+  - Extract anything that is not about the progress bar
+
 - Rework the section "Styling active elements" in /up-active.
   - It should link to the new status guides
-- Explain where skeleton templates are looked up
-- Explain how to use lazy-loading skeleton templates
-  - Don't load them for up-requests
-  - Load them deferred
+
 - Rename up.feedback to up.status
   - Title "Status effects"
   - Package intro should summarize our fancy new doc pages
-- Move config.progressBar to up.status ?
-  - Is it weird that up:network:late and up:network:recover events are still in the up.network package?
-  - We also keep [up-disable] under up.form
-- Rename /loading-indicators to /progress-bar ?
-  - Extract anything that is not about the progress bar
+
 - Doc page /navigation-bars
   - Redirect /nav-bars /nav-bar /navbars /navbar /nav
-- Document [up-preview]
-- Document { preview }
-- Document [up-watch-preview] and [up-watch-skeleton] wherever we also document [up-watch-disable] or [up-watch-feedback]
-  - Extend /watch-options with [up-watch-preview] and [up-watch-skeleton]
-  - [up-watch]
-  - up.watch()
-  - [up-validate] BUT NOT SKELETON
-  - up.validate() BUT NOT SKELETON
-  - [up-autosubmit]
-  - up.autosubmit()
-- Document that watchers get { disable, preview, feedback, skeleton } options to pass on to rendering
-  - With up.watch()
-  - With [up-watch]
+
+- Document new render options
+  - Do this after we have the new doc pages
+  - up.render()
+    - Document { preview: string|Function|Array<string|Function> }
+    - Document { placeholder: string|Function|Element }
+      - It also opens a new layer
+  - [up-follow]
+    - Document [up-preview]
+    - Document [up-preview-fn]
+    - Document [up-placeholder]    
+      - It also opens a new layer
+  - HTML options ({ content, fragment, placeholder }) also allow a template
+
+- New watch/validate options
+  - Document [up-watch-preview] and [up-watch-placeholder] wherever we also document [up-watch-disable] or [up-watch-feedback]
+    - [up-watch]
+    - up.watch()
+    - [up-validate] 
+    - up.validate()
+    - [up-autosubmit]
+    - up.autosubmit()
+  - Extend /watch-options with [up-watch-preview] and [up-watch-placeholder]
+  - Watcher callbacks get { disable, preview, feedback, placeholder } options to pass on to rendering
+    - With up.watch()
+    - With [up-watch]
+
 - Document up:fragment:loaded
   - Say that is also emitted for cached requests, so render options can be mutated in the same way
-- Document [up-skeleton]
-  - It also opens a new layer
-- Document { skeleton }
-  - It also opens a new layer
-- Demo: Move all previews/skeleton from the JS to [up-] attributes
-- Demo: Make a skeleton for cards
-- /opening-overlays and [up-layer=new] should say how to open an overlay from local content
-- [up-defer] supports [up-preview], [up-skeleton]
-  - The docs already talk about fallback state. We  could destinguish "while it's loading".
-- [up-poll] supports [up-preview], [up-skeleton]
-- Consider an authentication modal in https://unpoly.com/up:fragment:loaded#changing-render-options
-- Delaying previews
 
-  up.preview('foo', (preview) => {
-    up.util.timer(1000, function() {
-      if (!preview.ended) {
-        preview.run('other')      
-      }
-    })
-  }) 
+- /opening-overlays and [up-layer=new] should say how to open an overlay from local content
+
+- [up-defer] supports [up-preview], [up-placeholder]
+  - The docs already talk about fallback state. We could destinguish "while it's loading".
+
+- [up-poll] supports [up-preview], [up-placeholder]
+
+- Consider an authentication modal in https://unpoly.com/up:fragment:loaded#changing-render-options
+
+- Add a note to { content, fragment, placeholder } that these are not safe for unsanitized input
+  - Also to [up-content, up-fragment, up-placeholder]
+  - Link to section in /rendering-strings
 
 
 ### Release
@@ -349,6 +399,8 @@ Backlog
 - The log message "Could not match primary target" should not appear when we're only working with fallback targets, and we happen to use the second one. E.g. first one is [up-main=modal], second one is [up-main].
 - Print a warning when we can find no better form group than the <form> itself
 - Run macros (but not compilers) *before* history changes
+  - This is super hard due to the way UpdateLayer and OpenLayer works
+  - In particular we also give the guarantee that the current layer renders before other (hungry) layers
 - Give layers an [index] attribute so users don't style based on [nesting]
   - Do we give root an [index] as well?
     - We cannot use [index] here
@@ -364,8 +416,6 @@ Backlog
   - Is this really important?
 - Consider parsing scroll-margin-top, scroll-margin-bottom for revealing
 - Allow [up-emit] for buttons
-- Docs: Mention that [up-href], [up-alias] cannot be set by a macro
-  - Or run macros before updating history
 - Docs: Explain how to convert JSON responses to HTML responses (discussion #562)
 - Convert .sass files to .scss
 - While morphing or destroying, disable pointer events on old element
@@ -976,4 +1026,8 @@ Icebox / Tar pits
   - => It's too confusing with { placeholder }
 - Test that re-attaching an helloing an destroyed element can be compiled again
   - This is not trivial because destructors would need to clean up Element#upAppliedCompilers
+- Move config.progressBar to up.status ?
+  - Is it weird that up:network:late and up:network:recover events are still in the up.network package?
+  - We also keep [up-disable] under up.form
+  => Keep it there
 
