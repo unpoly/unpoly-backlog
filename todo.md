@@ -53,9 +53,12 @@ Perspective
   - Would we need a fallback for { layer }?
   
 - Consider removing { content } option of createFromSelector(), affix(), etc. in favor of a third argument for constructing nested things
+  - When we make this change we should also fix the inconsistency that a string arg is considered HTML, but Array<string> is considered text (and will be escaped)
 
 - ReDOS: up.util.parseTokens() should split with simpler patterns, then trim the results
 
+- Allow to set custom close animation from link
+  - Also support (or document?) up.layer.open({ closeAnimation })
 
 
 Next release
@@ -67,7 +70,41 @@ Next release
 
 Previews
 --------
-  
+
+### Refactor `as` again
+
+- Support "Relaxed JSON"
+  - Single Quotes
+  - Unquoted Attribute Keys
+  - New doc page /relaxed-json
+  - Simplify all examples and link to Relaxed JSON doc page
+    - up.element.jsonAttr()
+    - [up-emit-props]
+    - up.data()
+    - [up-data]
+    - Passing data to compilers
+    - [up-headers] (multiple doc entries)
+    - [up-params] (multiple doc entries)
+    - [up-context]
+    - X-Up-Target
+    - X-Up-Accept-Layer
+    - X-Up-Dismiss-Layer
+    - X-Up-Events
+    - Multiple tokens in [up-show-for] and [up-hide-for]
+    - X-Up-Title
+    - NOT relaxed: up.Response.json
+    - [up-accept]
+    - [up-dismiss]
+    
+  - Talk about Relaxed JSON in up.element.jsonAttr()
+  - Make sure we accept relaxed JSON if everywhere we parse JSON
+- Support [up-placeholder="#template { rows: 20 }"] syntax
+- Get rid of "#template as .short" syntax
+- Consider supporting an [up-preview="spinner { size: 30 }"] syntax
+  - JSON is yielded to preview function
+  - This means dropping support for multiple previews in a single attribute
+  - Maybe drop support for [up-preview-fn]
+
 
 
 ### Demo
@@ -99,15 +136,11 @@ Previews
     - [up-late-time]
   - Go through entire Git log
 
-- Exposing the temp functions would make it easier to compose some effects without accepting an (preview) arg
-  - Expose up.form.disable() (since we also expose it via Preview#disable())
-
-- up.element.createFromSelector(selector, { content }) accepts NodeList or Array<Elements> (brief: List<Element>)
-  - The same for affix({ content })
-
 - New doc page "Rendering strings or templates"    /rendering-strings
   - { content, fragment } changes
     - They now accept a template selector
+      - #template as .modifier syntax
+      - Explain that you can compile template clones
     - { content } accepts a NodeList
   - Passing user-controlled content safely
     - must be escaped
@@ -232,7 +265,9 @@ Previews
     - Document [up-preview-fn]
     - Document [up-placeholder]    
       - It also opens a new layer
-  - HTML options ({ content, fragment, placeholder }) also allow a template
+  - HTML options ({ content, fragment, placeholder })
+    - also allow a template
+    - Accept a List<Node>
 
 - New watch/validate options
   - Document [up-watch-preview] and [up-watch-placeholder] wherever we also document [up-watch-disable] or [up-watch-feedback]
@@ -274,6 +309,10 @@ Backlog
 =======
 
 
+
+- Exposing the temp functions would make it easier to compose some effects without accepting an (preview) arg
+  - Expose up.form.disable() (since we also expose it via Preview#disable())
+  => I'm not sure how useful this is in practice. Not needed in the demo.
 
 - Can we find a way to implement the new-task action as a server-rendered template?
   template = preview.cloneTemplate('#foo', { '{{text}}': params.text })
