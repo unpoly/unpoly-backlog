@@ -74,8 +74,6 @@ Previews
 ### Refactor `as` again
 
 - Support "Relaxed JSON"
-  - Single Quotes
-  - Unquoted Attribute Keys
   - New doc page /relaxed-json
   - Simplify all examples and link to Relaxed JSON doc page
     - up.element.jsonAttr()
@@ -95,11 +93,7 @@ Previews
     - NOT relaxed: up.Response.json
     - [up-accept]
     - [up-dismiss]
-    
   - Talk about Relaxed JSON in up.element.jsonAttr()
-  - Make sure we accept relaxed JSON if everywhere we parse JSON
-- Support [up-placeholder="#template { rows: 20 }"] syntax
-- Get rid of "#template as .short" syntax
 - Consider supporting an [up-preview="spinner { size: 30 }"] syntax
   - JSON is yielded to preview function
   - This means dropping support for multiple previews in a single attribute
