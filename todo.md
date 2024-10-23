@@ -38,6 +38,10 @@ Perspective
   - I think without an { origin } we only want to check out `:main`. Maybe it's not configurable?
   - Do we want to allow [up-zone="name"] (and include it in targetDerivers), or should it be [up-zone][id="foo"]?
     - If we want to get rid of [up-href] (to enable morphing), we should encourage the use of IDs
+  - If we want to mount arbitrary pages to mount in an [up-zone] it should be a parent.
+    - e.g. <up-zone><main>content</main></up-zone>
+      - But then we would have duplicate <main>
+    
 
 - Consider syntax to place a placeholder in a target
   - [up-placeholder="#spinner-template in :origin"]
@@ -59,6 +63,11 @@ Perspective
 
 - Allow to set custom close animation from link
   - Also support (or document?) up.layer.open({ closeAnimation })
+  
+- Consider contracting more attributes into shorthand values
+  - E.g. [up-emit] and [up-emit-props] should be just one thing
+  - E.g. [up-scroll] and [up-scroll-behavior] should just be one thing
+  - E.g. [up-transition] and [up-easing] and [up-duration] should just be one thing
 
 
 Next release
@@ -95,11 +104,42 @@ Previews
     - [up-dismiss]
   - Talk about Relaxed JSON in up.element.jsonAttr()
 - Consider supporting an [up-preview="spinner { size: 30 }"] syntax
-  - JSON is yielded to preview function
-  - This means dropping support for multiple previews in a single attribute
-  - Maybe drop support for [up-preview-fn]
+  - parseScalarJSONPairs() will no longer split at spaces for [up-preview="foo bar"]
+  - Do we need a better separator after all?
+    - [up-preview="glow { size: 30 }, btn-spinner { speed: 'fast' }"]
+    - [up-preview="glow { size: 30 } and btn-spinner { speed: 'fast' }"]
+    - [up-scroll=""]
+    - I like the comma, but it might break a selector like [up-placeholder="template:not(.foo, .bar) { ... }"
+      - We could also strip out parentheses
+        - return maskPattern(str, [QUOTED_STRING, PARENTHESES])
+        - But then we would need to un-mask recursively
+          - We may already need now, because we're escaping
+      - This would not be consistent with existing delimiters that use "or"
+        - [up-preview="glow and btn-spinner"] [up-preview="glow, btn-spinner"]
+        - [up-preview="glow { size: 30 } and btn-spinner { speed: 'fast' }"]    [up-preview="glow { size: 30 }, btn-spinner { speed: 'fast' }"]
+        - [up-scroll="hash or reset"]         [up-scroll="hash, reset"]
+        - [up-layer="parent or root"]         [up-layer="parent, root"]
+        - [up-focus="hash or reset"]          [up-focus="hash, reset"]
+        - [up-dismissable="key button"]       [up-dismissable="key, button"]    [up-dismissable="key or button"]  # is this "and" or "or"? probably "or"
+        - [up-alias="/users/$id /users/new"]  [up-alias="/users/$id or /users/new"] [up-alias="/users/$id, /users/new"]    # looks bad with comma
+        - [up-show-for="value1 value2"]       [up-show-for="value1, value2"] # is this "and" or "or"? probably "or" since it can only be one.
+        - DEBUNKED PRO and/or: A reader immediately understands if she's looking at a union or intersection. E.g. [up-layer="parent or root"] is clearer than [up-layer="parent root"]
+          => But we cannot offer the same for the array form 
+        - PRO and/or: Parsing is easier. E.g. we can split preview string at "and", then find the first curly brace
+        - CON and/or: You need to know if it's AND or OR
+        - DEBUNKED CON and/or: The keywords could be a value for [up-show-for] / [up-hide-for]
+          => (but we do offer the JSON syntax, and we could offer strings)
+        - CON and/or: It is unknown everywhere else
+        - PRO comma: It's closer to the array form
+        - PRO comma: It's a known microsyntax
+        - PRO comma: It looks better for [up-preview]
+        - CON comma: It looks shitty for [up-alias]
 
-
+  - Drop support for [up-preview-fn]
+  - Add [up-on-follow] ?
+  - Add [up-on-submit] ?
+  - Add [up-on-poll]   ?
+  
 
 ### Demo
 
