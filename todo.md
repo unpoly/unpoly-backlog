@@ -68,6 +68,9 @@ Perspective
   - E.g. [up-emit] and [up-emit-props] should be just one thing
   - E.g. [up-scroll] and [up-scroll-behavior] should just be one thing
   - E.g. [up-transition] and [up-easing] and [up-duration] should just be one thing
+  
+- Evtl. sollte [up-back] den letzten History-Eintrag im Root (?)-Layer nehmen?
+  - Back vs. Modals allgemein betrachten
 
 
 Next release
