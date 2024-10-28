@@ -71,6 +71,10 @@ Perspective
   
 - Evtl. sollte [up-back] den letzten History-Eintrag im Root (?)-Layer nehmen?
   - Back vs. Modals allgemein betrachten
+  
+- In the layer config, openAnimation and closeAnimation is a function, but it receives no useful args
+  - Give it { layer, value }
+  - Document it
 
 
 Next release
@@ -105,19 +109,21 @@ Previews
     - NOT relaxed: up.Response.json
     - [up-accept]
     - [up-dismiss]
+    - [up-show-for], [up-hide-for].
   - Talk about Relaxed JSON in up.element.jsonAttr()
 - Consider supporting an [up-preview="spinner { size: 30 }"] syntax
-  - parseScalarJSONPairs() will no longer split at spaces for [up-preview="foo bar"]
-  - Do we need a better separator after all?
+  - Test support for multiple previews with params
     - [up-preview="glow { size: 30 }, btn-spinner { speed: 'fast' }"]
-    - [up-preview="glow { size: 30 } and btn-spinner { speed: 'fast' }"]
-    - [up-scroll=""]
-    - I like the comma, but it might break a selector like [up-placeholder="template:not(.foo, .bar) { ... }"
-      - We could also strip out parentheses
-        - return maskPattern(str, [QUOTED_STRING, PARENTHESES])
-        - But then we would need to un-mask recursively
-          - We may already need now, because we're escaping
-      - This would not be consistent with existing delimiters that use "or"
+    - Rewrite all parseToken() calls
+      - For simple strings we want to allow space/comma/or, with the odd { json } thing
+      - For complex strings we want to allow comma/or and return { masked, restore }
+      - unpoly-migrate.js will warn of future deprecation with "or", but we keep it for a while (even without migrate)
+      
+      - For each check tests
+      - For each check docs
+      - For each check if we need to set { complex: true }
+        - And make a complex check with comma separator
+
         - [up-preview="glow and btn-spinner"] [up-preview="glow, btn-spinner"]
         - [up-preview="glow { size: 30 } and btn-spinner { speed: 'fast' }"]    [up-preview="glow { size: 30 }, btn-spinner { speed: 'fast' }"]
         - [up-scroll="hash or reset"]         [up-scroll="hash, reset"]
@@ -126,17 +132,10 @@ Previews
         - [up-dismissable="key button"]       [up-dismissable="key, button"]    [up-dismissable="key or button"]  # is this "and" or "or"? probably "or"
         - [up-alias="/users/$id /users/new"]  [up-alias="/users/$id or /users/new"] [up-alias="/users/$id, /users/new"]    # looks bad with comma
         - [up-show-for="value1 value2"]       [up-show-for="value1, value2"] # is this "and" or "or"? probably "or" since it can only be one.
-        - DEBUNKED PRO and/or: A reader immediately understands if she's looking at a union or intersection. E.g. [up-layer="parent or root"] is clearer than [up-layer="parent root"]
-          => But we cannot offer the same for the array form 
-        - PRO and/or: Parsing is easier. E.g. we can split preview string at "and", then find the first curly brace
-        - CON and/or: You need to know if it's AND or OR
-        - DEBUNKED CON and/or: The keywords could be a value for [up-show-for] / [up-hide-for]
-          => (but we do offer the JSON syntax, and we could offer strings)
-        - CON and/or: It is unknown everywhere else
-        - PRO comma: It's closer to the array form
-        - PRO comma: It's a known microsyntax
-        - PRO comma: It looks better for [up-preview]
-        - CON comma: It looks shitty for [up-alias]
+        - [up-hide-for]
+        - up.on('foo bar')
+        - up.on('foo, bar')
+      - Document comma as the canonical form everywhere
 
   - Drop support for [up-preview-fn]
   - Add [up-on-follow] ?
@@ -172,11 +171,32 @@ Previews
     - { lateDelay }
     - [up-late-time]
   - Go through entire Git log
+  - Explain that we are now smarter at splitting complex selectors at
+  - Explain that tokens now default to comma-separation
+    - Space-separation still possible
+    - or-separation is deprecated
+    - This affects
+      - [up-show-for]
+      - [up-hide-for]
+      - [up-scroll]
+      - [up-focus]
+      - [up-layer] or { layer }
+      - up.on()
+      - URLPatterns
+        - [up-alias]
+        - [up-accept-location]
+        - [up-dismiss-location]
+        - up.cache.expire()
+        - X-Up-Expire-Cache
+        - [up-expire-cache] { expireCache } 
+        - up.cache.evict()
+        - X-Up-Evict-Cache
+        - [up-evict-cache] { evictCache }
 
 - New doc page "Rendering strings or templates"    /rendering-strings
   - { content, fragment } changes
     - They now accept a template selector
-      - #template as .modifier syntax
+      - #template { data } syntax
       - Explain that you can compile template clones
     - { content } accepts a NodeList
   - Passing user-controlled content safely
@@ -334,6 +354,8 @@ Previews
 - Add a note to { content, fragment, placeholder } that these are not safe for unsanitized input
   - Also to [up-content, up-fragment, up-placeholder]
   - Link to section in /rendering-strings
+
+- Document [up-fail-target], { failTarget } and link to failed-responses#rendering-failed-responses-differently
 
 
 ### Release
