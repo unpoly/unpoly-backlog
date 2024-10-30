@@ -6,7 +6,7 @@ Perspective
 -----------
 
 - Callback to run before any render pass (see davidsums popup discussion)
-  - up:render:prepare
+  - up:render:prepare or up:render:setup or up:render:options
   - Would we rename up:fragment events to get pressure off the up:fragment namespace?
     - up:render:load
     - up:render:loaded
@@ -66,7 +66,7 @@ Perspective
   
 - Consider contracting more attributes into shorthand values
   - E.g. [up-emit] and [up-emit-props] should be just one thing
-  - E.g. [up-scroll] and [up-scroll-behavior] should just be one thing
+  - E.g. [up-scroll] and [up-scroll-behavior] should just be one thing (but what about all the reveal attributes? reveal-snap/top/pading/max)
   - E.g. [up-transition] and [up-easing] and [up-duration] should just be one thing
   
 - Evtl. sollte [up-back] den letzten History-Eintrag im Root (?)-Layer nehmen?
@@ -87,61 +87,8 @@ Next release
 Previews
 --------
 
-### Refactor `as` again
+- Can we support templates for { document } ?
 
-- Support "Relaxed JSON"
-  - New doc page /relaxed-json
-  - Simplify all examples and link to Relaxed JSON doc page
-    - up.element.jsonAttr()
-    - [up-emit-props]
-    - up.data()
-    - [up-data]
-    - Passing data to compilers
-    - [up-headers] (multiple doc entries)
-    - [up-params] (multiple doc entries)
-    - [up-context]
-    - X-Up-Target
-    - X-Up-Accept-Layer
-    - X-Up-Dismiss-Layer
-    - X-Up-Events
-    - Multiple tokens in [up-show-for] and [up-hide-for]
-    - X-Up-Title
-    - NOT relaxed: up.Response.json
-    - [up-accept]
-    - [up-dismiss]
-    - [up-show-for], [up-hide-for].
-  - Talk about Relaxed JSON in up.element.jsonAttr()
-- Consider supporting an [up-preview="spinner { size: 30 }"] syntax
-  - Test support for multiple previews with params
-    - [up-preview="glow { size: 30 }, btn-spinner { speed: 'fast' }"]
-    - Rewrite all parseToken() calls
-      - For simple strings we want to allow space/comma/or, with the odd { json } thing
-      - For complex strings we want to allow comma/or and return { masked, restore }
-      - unpoly-migrate.js will warn of future deprecation with "or", but we keep it for a while (even without migrate)
-      
-      - For each check tests
-      - For each check docs
-      - For each check if we need to set { complex: true }
-        - And make a complex check with comma separator
-
-        - [up-preview="glow and btn-spinner"] [up-preview="glow, btn-spinner"]
-        - [up-preview="glow { size: 30 } and btn-spinner { speed: 'fast' }"]    [up-preview="glow { size: 30 }, btn-spinner { speed: 'fast' }"]
-        - [up-scroll="hash or reset"]         [up-scroll="hash, reset"]
-        - [up-layer="parent or root"]         [up-layer="parent, root"]
-        - [up-focus="hash or reset"]          [up-focus="hash, reset"]
-        - [up-dismissable="key button"]       [up-dismissable="key, button"]    [up-dismissable="key or button"]  # is this "and" or "or"? probably "or"
-        - [up-alias="/users/$id /users/new"]  [up-alias="/users/$id or /users/new"] [up-alias="/users/$id, /users/new"]    # looks bad with comma
-        - [up-show-for="value1 value2"]       [up-show-for="value1, value2"] # is this "and" or "or"? probably "or" since it can only be one.
-        - [up-hide-for]
-        - up.on('foo bar')
-        - up.on('foo, bar')
-      - Document comma as the canonical form everywhere
-
-  - Drop support for [up-preview-fn]
-  - Add [up-on-follow] ?
-  - Add [up-on-submit] ?
-  - Add [up-on-poll]   ?
-  
 
 ### Demo
 
@@ -184,6 +131,7 @@ Previews
       - up.on()
       - URLPatterns
         - [up-alias]
+        - [up-dismissable], { dismissable }
         - [up-accept-location]
         - [up-dismiss-location]
         - up.cache.expire()
@@ -192,6 +140,29 @@ Previews
         - up.cache.evict()
         - X-Up-Evict-Cache
         - [up-evict-cache] { evictCache }
+
+- Document "Relaxed JSON"
+  - New doc page /relaxed-json
+  - Simplify all examples and link to Relaxed JSON doc page
+    - up.element.jsonAttr()
+    - [up-emit-props]
+    - up.data()
+    - [up-data]
+    - Passing data to compilers
+    - [up-headers] (multiple doc entries)
+    - [up-params] (multiple doc entries)
+    - [up-context]
+    - X-Up-Target
+    - X-Up-Accept-Layer
+    - X-Up-Dismiss-Layer
+    - X-Up-Events
+    - Multiple tokens in [up-show-for] and [up-hide-for]
+    - X-Up-Title
+    - NOT relaxed: up.Response.json
+    - [up-accept]
+    - [up-dismiss]
+    - [up-show-for], [up-hide-for].
+  - Talk about Relaxed JSON in up.element.jsonAttr()
 
 - New doc page "Rendering strings or templates"    /rendering-strings
   - { content, fragment } changes
@@ -324,6 +295,7 @@ Previews
       - It also opens a new layer
   - HTML options ({ content, fragment, placeholder })
     - also allow a template
+    - Also accept a function (is this tested?)
     - Accept a List<Node>
 
 - New watch/validate options
