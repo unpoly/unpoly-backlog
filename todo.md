@@ -41,7 +41,8 @@ Perspective
   - If we want to mount arbitrary pages to mount in an [up-zone] it should be a parent.
     - e.g. <up-zone><main>content</main></up-zone>
       - But then we would have duplicate <main>
-    
+
+- Maybe all guardEvents should have a loadPage() method
 
 - Consider syntax to place a placeholder in a target
   - [up-placeholder="#spinner-template in :origin"]
@@ -50,16 +51,22 @@ Perspective
       - Which we already have :D
     - Would not work with 'main-spinner' from the demo, since we're not hiding content here
 
-- Consider publishing { dataMap, skeletonMap/placeholderMap, previewMap } as @experimental
+- Consider publishing { dataMap, placeholderMap, previewMap } as @experimental
   - Check if we have tests here
+  - Check whether a single { map } option (or an object target) would be superior
+    - up.render({ target: { '.foo': { data: { key: 123 }, placeholder: 'spinner' }, '.bar': {} }, url: '/path' })
+    - up.render({ target: { '.foo, .bar' }, dataMap: { '.foo'. { key: 123 } }, placeholderMap: { '.foo': 'spinner' }, url: '/path' })
+    - up.render({ target: { '.foo, .bar' }, map: { '.foo'. { data: { key: 123 }, placeholder: '.spinner' } }, url: '/path' })
+    => Doing something to the primary is a very common use case and great now
+
+    
 
 - Consider publishing up.script.clean()
   - Would we need a fallback for { layer }?
+  - Supporting the use case "recompile later" is hard because then we would need to update the idempotent-compiler-fn-tracking
   
 - Consider removing { content } option of createFromSelector(), affix(), etc. in favor of a third argument for constructing nested things
   - When we make this change we should also fix the inconsistency that a string arg is considered HTML, but Array<string> is considered text (and will be escaped)
-
-- ReDOS: up.util.parseTokens() should split with simpler patterns, then trim the results
 
 - Allow to set custom close animation from link
   - Also support (or document?) up.layer.open({ closeAnimation })
@@ -76,6 +83,11 @@ Perspective
   - Give it { layer, value }
   - Document it
 
+- Consider up.RenderResult#primary or up.RenderResult#fallback
+  - Updating ":main" via { fallback: true } must yield #primary === true
+  - So maybe #primary, #expected, #intended or similiar is a better name than #fallback
+
+
 
 Next release
 ------------
@@ -87,7 +99,6 @@ Next release
 Previews
 --------
 
-- Can we support templates for { document } ?
 
 
 ### Demo
@@ -163,6 +174,8 @@ Previews
     - [up-dismiss]
     - [up-show-for], [up-hide-for].
   - Talk about Relaxed JSON in up.element.jsonAttr()
+  
+- Document [up-placeholder] and [up-preview] in up.status (main), up-follow and up.render()
 
 - New doc page "Rendering strings or templates"    /rendering-strings
   - { content, fragment } changes
@@ -209,6 +222,8 @@ Previews
 
 - Update render lifecycle
   - With status effects (disable, preview, placeholder, feedback)
+  - Diagram
+  - Callback table
 
 - Doc page /loading-state "Showing loading state"
   - Show how the preview can manipulate the DOM
@@ -241,20 +256,22 @@ Previews
       - This will be reverted in case the server renders unexpected content
     - Dynamic placeholders
 
-
   - Built-in previews
-    - Disabling forms while working
-      - Link to disabling
-    - Marking active elements with classes
-      - Link to .up-active
-      - Link to .up-loading
+    - Just a short list with links to existing docs
+      - Disabling forms while working
+        - Link to disabling
+      - Marking active elements with classes
+        - Link to .up-active
+        - Link to .up-loading
 
-    - Placeholders
+      - Placeholders
 
-    - Progress bar for late responses
-      - Link to progress bar
+      - Progress bar for late responses
+        - Link to progress bar
 
   - While watching
+    - [up-watch-disable]
+    - [up-watch-preview]
 
   - Delaying previews
 
@@ -291,7 +308,7 @@ Previews
   - [up-follow]
     - Document [up-preview]
     - Document [up-preview-fn]
-    - Document [up-placeholder]    
+    - Document [up-placeholder]
       - It also opens a new layer
   - HTML options ({ content, fragment, placeholder })
     - also allow a template
@@ -315,6 +332,8 @@ Previews
   - Say that is also emitted for cached requests, so render options can be mutated in the same way
 
 - /opening-overlays and [up-layer=new] should say how to open an overlay from local content
+  - String
+  - <template>
 
 - [up-defer] supports [up-preview], [up-placeholder]
   - The docs already talk about fallback state. We could destinguish "while it's loading".
@@ -328,6 +347,9 @@ Previews
   - Link to section in /rendering-strings
 
 - Document [up-fail-target], { failTarget } and link to failed-responses#rendering-failed-responses-differently
+
+- Check if the unpoly.com homepage needs to mention status effects and optimistic rendering
+  - Instantly respond with loading state, render optimistically, handle offline
 
 
 ### Release
