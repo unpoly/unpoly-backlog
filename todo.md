@@ -59,8 +59,6 @@ Perspective
     - up.render({ target: { '.foo, .bar' }, map: { '.foo'. { data: { key: 123 }, placeholder: '.spinner' } }, url: '/path' })
     => Doing something to the primary is a very common use case and great now
 
-    
-
 - Consider publishing up.script.clean()
   - Would we need a fallback for { layer }?
   - Supporting the use case "recompile later" is hard because then we would need to update the idempotent-compiler-fn-tracking
@@ -86,6 +84,13 @@ Perspective
 - Consider up.RenderResult#primary or up.RenderResult#fallback
   - Updating ":main" via { fallback: true } must yield #primary === true
   - So maybe #primary, #expected, #intended or similiar is a better name than #fallback
+
+- Rename "loading partial" to "filling partial" or similiar
+  - up:partial:fill
+  - up.partial.fill()
+  - So "load" remains the term for sending a request
+  - So we can offer [up-on-fill]
+  
 
 
 
@@ -157,9 +162,9 @@ Previews
   - Simplify all examples and link to Relaxed JSON doc page
     - up.element.jsonAttr()
     - [up-emit-props]
-    - up.data()
     - [up-data]
-    - Passing data to compilers
+    - [up-use-data]
+    - /data
     - [up-headers] (multiple doc entries)
     - [up-params] (multiple doc entries)
     - [up-context]
