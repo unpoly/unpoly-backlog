@@ -128,6 +128,7 @@ Previews
 ### Docs & CHANGELOG
 
 - CHANGELOG
+  - native :has required
   - Explain that the demo shows new optimistic rendering, check "Extra latency"
   - badResponseTime => lateDelay
     - config.lateDelay
@@ -136,16 +137,18 @@ Previews
   - Go through entire Git log
   - Explain that we are now smarter at splitting complex selectors at
   - Explain that tokens now default to comma-separation
-    - Space-separation still possible
+    - Comma is canonical
+    - Space-separation still possible in most cases
     - or-separation is deprecated
+    - Also make sure to update doc pages!
     - This affects
-      - [up-show-for]
-      - [up-hide-for]
-      - [up-scroll]
-      - [up-focus]
-      - [up-layer] or { layer }
-      - up.on()
-      - URLPatterns
+      - [docs updated] [up-show-for]
+      - [docs updated] [up-hide-for]
+      - [docs updated] [up-scroll]
+      - [docs updated] [up-focus]
+      - [docs updated] [up-layer] or { layer }
+      - [docs updated] up.on()
+      - [docs updated] URLPatterns
         - [up-alias]
         - [up-dismissable], { dismissable }
         - [up-accept-location]
@@ -157,43 +160,8 @@ Previews
         - X-Up-Evict-Cache
         - [up-evict-cache] { evictCache }
 
-- Document "Relaxed JSON"
-  - New doc page /relaxed-json
-  - Simplify all examples and link to Relaxed JSON doc page
-    - up.element.jsonAttr()
-    - [up-emit-props]
-    - [up-data]
-    - [up-use-data]
-    - /data
-    - [up-headers] (multiple doc entries)
-    - [up-params] (multiple doc entries)
-    - [up-context]
-    - X-Up-Target
-    - X-Up-Accept-Layer
-    - X-Up-Dismiss-Layer
-    - X-Up-Events
-    - Multiple tokens in [up-show-for] and [up-hide-for]
-    - X-Up-Title
-    - NOT relaxed: up.Response.json
-    - [up-accept]
-    - [up-dismiss]
-    - [up-show-for], [up-hide-for].
-  - Talk about Relaxed JSON in up.element.jsonAttr()
-  
-- Document [up-placeholder] and [up-preview] in up.status (main), up-follow and up.render()
 
-- New doc page "Rendering strings or templates"    /rendering-strings
-  - { content, fragment } changes
-    - They now accept a template selector
-      - #template { data } syntax
-      - Explain that you can compile template clones
-    - { content } accepts a NodeList
-  - Passing user-controlled content safely
-    - must be escaped
-    - should be wrapped in HTML tag as to not be interpreted as a selector
-    - e.g. `<div>${up.util.escapeHTML(foo)}</div>`
-    - Also recommend a strict CSP
-  - Explain where placeholder templates are looked up
+- Document [up-placeholder] and [up-preview] in up.status (main), up-follow and up.render()
 
 - Docs for up.Preview class and its methods
   - up.Preview#insert (and up.fragment.insertTemp()) must mention that:
@@ -339,6 +307,7 @@ Previews
 - /opening-overlays and [up-layer=new] should say how to open an overlay from local content
   - String
   - <template>
+  - Extract segments from /providing-html
 
 - [up-defer] supports [up-preview], [up-placeholder]
   - The docs already talk about fallback state. We could destinguish "while it's loading".
@@ -346,10 +315,6 @@ Previews
 - [up-poll] supports [up-preview], [up-placeholder]
 
 - Consider an authentication modal in https://unpoly.com/up:fragment:loaded#changing-render-options
-
-- Add a note to { content, fragment, placeholder } that these are not safe for unsanitized input
-  - Also to [up-content, up-fragment, up-placeholder]
-  - Link to section in /rendering-strings
 
 - Document [up-fail-target], { failTarget } and link to failed-responses#rendering-failed-responses-differently
 
