@@ -16,14 +16,18 @@ Perspective
     - up:render:hungry     :(
     - This would leave up:fragment:poll
 
+- Consider a callback to manipulate render options before interactive element
+  - Either element-specific ([up-on-follow], [up-on-submit], etc.)
+  - Or generic ([up-on-use="..."], [up-setup="..."], [up-before], [up-guard], [up-on-run] [up-on-activate="..."], [up-on-start])
+    - Use is short, but conflicts with [up-use-data] and does not work for polling
+
 - Open overlays from template selectors
 
 - Support X-Up-Open-Layer: { type, ...VISUAL_OPTIONS }
   - Works for both success and failed response. There is no X-Up-Fail-Layer option.
-  - Ensure that X-Up-Target also works for both success and failed response. There is no X-Up-Fail-Target option.
-  - Support unpoly-rails
+  - Ensure that X-Up-Target also works for both success and failed response. There is no X-Up-Fail-Target header in the response.
+  - Support unpoly-rails (up.layer.open())
   - Recommend to also set X-Up-Target
-    - unpoly-rails could accept a { target }
 
 - Remove params parsing for up.watch(), support formdata, ElementInternals
   - We can just parse the entire form with new FormData(), then filter on contained elements
@@ -41,15 +45,10 @@ Perspective
   - If we want to mount arbitrary pages to mount in an [up-zone] it should be a parent.
     - e.g. <up-zone><main>content</main></up-zone>
       - But then we would have duplicate <main>
+        - section[up-main=zone]?
 
 - Maybe all guardEvents should have a loadPage() method
-
-- Consider syntax to place a placeholder in a target
-  - [up-placeholder="#spinner-template in :origin"]
-  - Does not work for { placeholder: Element } form.
-    - The closest form here would be placeholderMap.
-      - Which we already have :D
-    - Would not work with 'main-spinner' from the demo, since we're not hiding content here
+  - So it's more discoverable then event.loadPage()
 
 - Consider publishing { dataMap, placeholderMap, previewMap } as @experimental
   - Check if we have tests here
@@ -91,6 +90,7 @@ Perspective
   - So "load" remains the term for sending a request
   - So we can offer [up-on-fill]
   
+-
 
 
 
@@ -128,7 +128,7 @@ Previews
 ### Docs & CHANGELOG
 
 - CHANGELOG
-  - native :has required
+  - Native :has() is required and the app will not boot without
   - Explain that the demo shows new optimistic rendering, check "Extra latency"
   - badResponseTime => lateDelay
     - config.lateDelay
@@ -168,20 +168,6 @@ Previews
     - The element is compiled and destroyed
     - An attached element is moved back to its original position (and not compiled or destroyed)
 
-- :has() removal
-  - CHANGELOG: Native :has() is required and the app will not boot without
-  - Remove :has doc entry
-  - Remove mentions that we polyfill
-  - Rework up.element/up.fragment distinction
-
-- Dynamic previews/placeholders
-  - Placeholders
-    - #template as .modifier syntax
-    - Explain that you can compile template clones
-    - Explain that you can always use [up-preview] or [up-preview-fn].
-  - Previews can take arguments
-  - In JavaScript you can use { preview: Function } or { placeholder: Function }
-
 - "Network issues" should talk about previews and placeholders under "Slow server responses"
   - Right now they only talk about feedback classes
 
@@ -194,12 +180,11 @@ Previews
     - Add a section to /disabling-forms
 
 - Update render lifecycle
-  - With status effects (disable, preview, placeholder, feedback)
-  - Diagram
   - Callback table
 
 - Doc page /loading-state "Showing loading state"
   - Show how the preview can manipulate the DOM
+    - Prefer to be additive
 
   - Show how the preview can inspect the context
 
@@ -213,8 +198,7 @@ Previews
   - Multiple preview effects
     - Space-separated
     - Array
-  - Prefer to be additive
-
+  
   - Reverting effects
     - undo()
     - returning destructor
@@ -223,11 +207,21 @@ Previews
       - All up.Preview methods do this
 
   - Placeholders
-    - As HTML
+    - As embedded HTML
     - As template cloning
+    - As function call in a preview
     - Placeholder for OpenLayer change will open a new temporary layer
       - This will be reverted in case the server renders unexpected content
-    - Dynamic placeholders
+    - Dynamic placeholders with embedded data object
+
+  - Dynamic previews/placeholders
+    - Placeholders
+      - #template as .modifier syntax
+      - Explain that you can compile template clones
+      - Explain that you can always use [up-preview] or [up-preview-fn].
+    - Previews can take arguments
+    - In JavaScript you can use { preview: Function } or { placeholder: Function }
+
 
   - Built-in previews
     - Just a short list with links to existing docs
@@ -258,6 +252,9 @@ Previews
 
   - Optimistic rendering
     - Point to demo example & code
+    - Signaling severe network problems (up:fragment:offline)
+  - Showing loading state
+
 
 - Rename /loading-indicators to /progress-bar ?
   - Extract anything that is not about the progress bar
@@ -301,9 +298,6 @@ Previews
     - With up.watch()
     - With [up-watch]
 
-- Document up:fragment:loaded
-  - Say that is also emitted for cached requests, so render options can be mutated in the same way
-
 - /opening-overlays and [up-layer=new] should say how to open an overlay from local content
   - String
   - <template>
@@ -316,10 +310,11 @@ Previews
 
 - Consider an authentication modal in https://unpoly.com/up:fragment:loaded#changing-render-options
 
-- Document [up-fail-target], { failTarget } and link to failed-responses#rendering-failed-responses-differently
-
 - Check if the unpoly.com homepage needs to mention status effects and optimistic rendering
   - Instantly respond with loading state, render optimistically, handle offline
+
+- Checken dass @see auf den Module-Pages die wichtigsten Sachen enthält
+
 
 
 ### Release
