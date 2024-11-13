@@ -104,6 +104,9 @@ Next release
 Previews
 --------
 
+- [up-revalidate-preview]
+- up.cache.getResponse()
+
 
 
 ### Demo
@@ -128,6 +131,7 @@ Previews
 ### Docs & CHANGELOG
 
 - CHANGELOG
+  - up.Request#ended
   - Native :has() is required and the app will not boot without
   - Explain that the demo shows new optimistic rendering, check "Extra latency"
   - badResponseTime => lateDelay
@@ -314,6 +318,8 @@ Previews
   - Instantly respond with loading state, render optimistically, handle offline
 
 - Checken dass @see auf den Module-Pages die wichtigsten Sachen enthält
+
+- up:request:loaded should say it's low level and consider up:fragment:loaded instead
 
 
 
