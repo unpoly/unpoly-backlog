@@ -97,6 +97,8 @@ Perspective
 Next release
 ------------
 
+@stable
+
 
 
 
@@ -106,6 +108,7 @@ Previews
 
 - [up-revalidate-preview]
 - up.cache.getResponse()
+- up.Preview.prototype.revalidating
 
 
 
@@ -277,10 +280,12 @@ Previews
   - Do this after we have the new doc pages
   - up.render()
     - Document { preview: string|Function|Array<string|Function> }
+    - Document { revalidatePreview }
     - Document { placeholder: string|Function|Element }
       - It also opens a new layer
   - [up-follow]
     - Document [up-preview]
+    - Document [up-revalidate-preview]
     - Document [up-preview-fn]
     - Document [up-placeholder]
       - It also opens a new layer
