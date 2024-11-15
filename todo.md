@@ -28,6 +28,10 @@ Perspective
   - Ensure that X-Up-Target also works for both success and failed response. There is no X-Up-Fail-Target header in the response.
   - Support unpoly-rails (up.layer.open())
   - Recommend to also set X-Up-Target
+  
+- FM required overriding of history from the server
+  - They really wanted { navigate }, no?
+    - But can we really change navigation options at that point?
 
 - Remove params parsing for up.watch(), support formdata, ElementInternals
   - We can just parse the entire form with new FormData(), then filter on contained elements
@@ -90,7 +94,8 @@ Perspective
   - So "load" remains the term for sending a request
   - So we can offer [up-on-fill]
   
--
+- Consider X-Up-Redirect so we can get rid of param-transporting in unpoly-rails
+  - Unpoly would track all X-Up params of request and response
 
 
 
@@ -106,14 +111,12 @@ Next release
 Previews
 --------
 
-- [up-revalidate-preview]
-- up.cache.getResponse()
-- up.Preview.prototype.revalidating
-
+- Put a method for template cloning somewhere
 
 
 ### Demo
 
+- The demo is broken
 - Make sure form group validation still works after Bootstrap 5 Upgrade
 - Set tour bubbles for the new functionality
 
@@ -167,6 +170,8 @@ Previews
         - X-Up-Evict-Cache
         - [up-evict-cache] { evictCache }
 
+
+- X-Up-Target should mention (in the first paragraph) that it is both request and response header
 
 - Document [up-placeholder] and [up-preview] in up.status (main), up-follow and up.render()
 
