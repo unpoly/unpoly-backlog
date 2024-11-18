@@ -112,6 +112,8 @@ Previews
 --------
 
 - Put a method for template cloning somewhere
+  - preview.cloneTemplate
+  - up.fragment.cloneTemplate(templateOrSelector, { origin, data })
 
 
 ### Demo
