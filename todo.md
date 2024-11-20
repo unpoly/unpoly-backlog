@@ -111,9 +111,11 @@ Next release
 Previews
 --------
 
-- Put a method for template cloning somewhere
-  - preview.cloneTemplate
-  - up.fragment.cloneTemplate(templateOrSelector, { origin, data })
+- Do we need to publish parseNodesFromHTML() so people can build their own template handler?
+  - Should probably createNodesFromHTML()
+- Do we want to preview.useTemplate()?
+  - use/clone?
+
 
 
 ### Demo
@@ -195,6 +197,13 @@ Previews
 
 - Update render lifecycle
   - Callback table
+  
+  
+- Doc page for <template>
+  - Compile with data
+  - Inline data
+  - Manipulate in onRendered
+  - Templating engine
 
 - Doc page /loading-state "Showing loading state"
   - Show how the preview can manipulate the DOM
