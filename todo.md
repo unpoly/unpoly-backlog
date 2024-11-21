@@ -112,9 +112,10 @@ Previews
 --------
 
 - Do we need to publish parseNodesFromHTML() so people can build their own template handler?
-  - Should probably createNodesFromHTML()
-- Do we want to preview.useTemplate()?
-  - use/clone?
+  - Yes, we mention in the docs
+  - Should probably be createNodesFromHTML()
+
+- Set layer.current to the base layer when applying and reverting previews
 
 
 
@@ -183,6 +184,7 @@ Previews
   - up.Preview#insert (and up.fragment.insertTemp()) must mention that:
     - The element is compiled and destroyed
     - An attached element is moved back to its original position (and not compiled or destroyed)
+    - You can refer to a template
 
 - "Network issues" should talk about previews and placeholders under "Slow server responses"
   - Right now they only talk about feedback classes
