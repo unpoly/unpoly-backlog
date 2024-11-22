@@ -291,9 +291,6 @@ Previews
   - Title "Status effects"
   - Package intro should summarize our fancy new doc pages
 
-- Doc page /navigation-bars
-  - Redirect /nav-bars /nav-bar /navbars /navbar /nav
-
 - Document new render options
   - Do this after we have the new doc pages
   - up.render()
