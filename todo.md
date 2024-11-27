@@ -102,7 +102,7 @@ Perspective
 Next release
 ------------
 
-@stable
+@stable for [up-flashes]
 
 
 
@@ -111,11 +111,16 @@ Next release
 Previews
 --------
 
-- Do we need to publish parseNodesFromHTML() so people can build their own template handler?
-  - Yes, we mention in the docs
-  - Should probably be createNodesFromHTML()
 
-- Set layer.current to the base layer when applying and reverting previews
+- What if there is user input in the reverted preview?
+  - E.g. we want to show the "Edit task" input instantly, but keep input as we revert with the real thing
+    => Preview fns could manipulate event.renderOptions
+    => If we already have a template, we could just render a template with [up-fragment] and not make a request
+- I think previews (and placeholders) currently break { focus: 'keep' }
+- Do we have a meta.previewing prop for compilers?
+- Consider removing defaults for preview method args
+  - It only makes sense for placeholders
+  - In the docs I feel I want to be more explicit
 
 
 
@@ -176,6 +181,8 @@ Previews
         - [up-evict-cache] { evictCache }
 
 
+- Publish up.element.createNodesFromHTML()
+
 - X-Up-Target should mention (in the first paragraph) that it is both request and response header
 
 - Document [up-placeholder] and [up-preview] in up.status (main), up-follow and up.render()
@@ -199,7 +206,8 @@ Previews
 
 - Update render lifecycle
   - Callback table
-  
+
+- Consider documenting minimustache
   
 - Doc page for <template>
   - Compile with data
@@ -341,6 +349,8 @@ Previews
 
 - up:request:loaded should say it's low level and consider up:fragment:loaded instead
 
+- Fix incomplete paragraph in /network-issues
+  - After "Preloading links before disconnects"
 
 
 ### Release
