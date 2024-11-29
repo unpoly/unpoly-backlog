@@ -351,6 +351,8 @@ Previews
 
 - Fix incomplete paragraph in /network-issues
   - After "Preloading links before disconnects"
+  
+- Does the docs for followSelectors still include CoffeeScript comments?
 
 
 ### Release
