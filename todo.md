@@ -102,31 +102,16 @@ Perspective
 Next release
 ------------
 
-@stable for [up-flashes]
-
-
-
+- Test with Cards
+- Test with SF (?)
 
 
 Previews
 --------
 
-
-- What if there is user input in the reverted preview?
-  - E.g. we want to show the "Edit task" input instantly, but keep input as we revert with the real thing
-    => Preview fns could manipulate event.renderOptions
-    => If we already have a template, we could just render a template with [up-fragment] and not make a request
-- I think previews (and placeholders) currently break { focus: 'keep' }
-- Do we have a meta.previewing prop for compilers?
-- Consider removing defaults for preview method args
-  - It only makes sense for placeholders
-  - In the docs I feel I want to be more explicit
-
-
-
 ### Demo
 
-- The demo is broken
+- Make sure tests are green
 - Make sure form group validation still works after Bootstrap 5 Upgrade
 - Set tour bubbles for the new functionality
 
@@ -134,13 +119,11 @@ Previews
 
 ### Cards
 
-- Make a skeleton for cards
+- [later] Make a skeleton for cards
+  - It uses Bootstrap
 
 
 ### Guide
-
-- Skeleton for menu
-- Skeleton for main area
 
 
 
@@ -179,7 +162,7 @@ Previews
         - up.cache.evict()
         - X-Up-Evict-Cache
         - [up-evict-cache] { evictCache }
-
+  - Progress bar timing during chains of requests
 
 - Publish up.element.createNodesFromHTML()
 
@@ -207,89 +190,44 @@ Previews
 - Update render lifecycle
   - Callback table
 
-- Consider documenting minimustache
-  
-- Doc page for <template>
-  - Compile with data
-  - Inline data
-  - Manipulate in onRendered
-  - Templating engine
+- Doc page /loading-state "Loading state" should be an overview of all functionality while waiting for requests
+  - Just a short list with links to existing docs
 
-- Doc page /loading-state "Showing loading state"
-  - Show how the preview can manipulate the DOM
-    - Prefer to be additive
+- Doc page "Placeholders"
+  - As embedded HTML
+  - As template cloning
+  - As function call in a preview
+  - Placeholder for OpenLayer change will open a new temporary layer
+    - This will be reverted in case the server renders unexpected content
+  - Dynamic placeholders with embedded data object
 
-  - Show how the preview can inspect the context
-
-  - Examples
-    - Example: Placeholder
-    - Example: Add a TODO
-
-  - Previews are not applied when we have cached content to render
-    - Also not shown when cache-then-revalidate
-
-  - Multiple preview effects
-    - Space-separated
-    - Array
-  
-  - Reverting effects
-    - undo()
-    - returning destructor
-    - Important: don't revert effects that you didn't cause
-      - Check if you need to do something
-      - All up.Preview methods do this
-
-  - Placeholders
-    - As embedded HTML
-    - As template cloning
-    - As function call in a preview
-    - Placeholder for OpenLayer change will open a new temporary layer
-      - This will be reverted in case the server renders unexpected content
-    - Dynamic placeholders with embedded data object
-
-  - Dynamic previews/placeholders
+  - Dynamic placeholders
     - Placeholders
       - #template as .modifier syntax
       - Explain that you can compile template clones
       - Explain that you can always use [up-preview] or [up-preview-fn].
-    - Previews can take arguments
-    - In JavaScript you can use { preview: Function } or { placeholder: Function }
+
+- Somewhere talk about loading state while watching
+  - [up-watch-disable]
+  - [up-watch-preview]
+  - For [up-watch]
+  - For [up-validate]
 
 
-  - Built-in previews
-    - Just a short list with links to existing docs
-      - Disabling forms while working
-        - Link to disabling
-      - Marking active elements with classes
-        - Link to .up-active
-        - Link to .up-loading
+- New watch/validate options
+  - Document [up-watch-preview] and [up-watch-placeholder] wherever we also document [up-watch-disable] or [up-watch-feedback]
+    - [up-watch]
+    - up.watch()
+    - [up-validate] 
+    - up.validate()
+    - [up-autosubmit]
+    - up.autosubmit()
+  - Extend /watch-options with [up-watch-preview] and [up-watch-placeholder]
+  - Watcher callbacks get { disable, preview, feedback, placeholder } options to pass on to rendering
+    - With up.watch()
+    - With [up-watch]
 
-      - Placeholders
-
-      - Progress bar for late responses
-        - Link to progress bar
-
-  - While watching
-    - [up-watch-disable]
-    - [up-watch-preview]
-
-  - Delaying previews
-
-        up.preview('foo', (preview) => {
-          up.util.timer(1000, function() {
-            if (!preview.ended) {
-              preview.run('other')      
-            }
-          })
-        }) 
-
-  - Optimistic rendering
-    - Point to demo example & code
-    - Signaling severe network problems (up:fragment:offline)
-  - Showing loading state
-
-
-- Rename /loading-indicators to /progress-bar ?
+- Rename /loading-indicators to /progress-bar
   - Extract anything that is not about the progress bar
 
 - Rework the section "Styling active elements" in /up-active.
@@ -317,24 +255,6 @@ Previews
     - Also accept a function (is this tested?)
     - Accept a List<Node>
 
-- New watch/validate options
-  - Document [up-watch-preview] and [up-watch-placeholder] wherever we also document [up-watch-disable] or [up-watch-feedback]
-    - [up-watch]
-    - up.watch()
-    - [up-validate] 
-    - up.validate()
-    - [up-autosubmit]
-    - up.autosubmit()
-  - Extend /watch-options with [up-watch-preview] and [up-watch-placeholder]
-  - Watcher callbacks get { disable, preview, feedback, placeholder } options to pass on to rendering
-    - With up.watch()
-    - With [up-watch]
-
-- /opening-overlays and [up-layer=new] should say how to open an overlay from local content
-  - String
-  - <template>
-  - Extract segments from /providing-html
-
 - [up-defer] supports [up-preview], [up-placeholder]
   - The docs already talk about fallback state. We could destinguish "while it's loading".
 
@@ -346,11 +266,6 @@ Previews
   - Instantly respond with loading state, render optimistically, handle offline
 
 - Checken dass @see auf den Module-Pages die wichtigsten Sachen enthält
-
-- up:request:loaded should say it's low level and consider up:fragment:loaded instead
-
-- Fix incomplete paragraph in /network-issues
-  - After "Preloading links before disconnects"
   
 - Does the docs for followSelectors still include CoffeeScript comments?
 
@@ -365,7 +280,13 @@ Backlog
 =======
 
 
-
+- Do we need a meta.previewing prop for compilers?
+  - This would need to be a global prop because we allow arbitrary code
+    - up.status.previewing
+  - We could also pass it explicitly when { hello }ing from Preview functions
+    - insert()
+    - openLayer()
+    - This would be less code than a global flag
 - Exposing the temp functions would make it easier to compose some effects without accepting an (preview) arg
   - Expose up.form.disable() (since we also expose it via Preview#disable())
   => I'm not sure how useful this is in practice. Not needed in the demo.
@@ -1125,4 +1046,8 @@ Icebox / Tar pits
   - Is it weird that up:network:late and up:network:recover events are still in the up.network package?
   - We also keep [up-disable] under up.form
   => Keep it there
+- What if there is user input in the reverted preview?
+  - E.g. we want to show the "Edit task" input instantly, but keep input as we revert with the real thing
+    => Preview fns could manipulate event.renderOptions
+    => If we already have a template, we could just render a template with [up-fragment] and not make a request
 
