@@ -163,8 +163,19 @@ Previews
         - X-Up-Evict-Cache
         - [up-evict-cache] { evictCache }
   - Progress bar timing during chains of requests
+  - Feedback classes are enabled by default
+
+- Finish "Feedback classes"
+  - Reduce documentation for .up-active and .up-current
 
 - Publish up.element.createNodesFromHTML()
+
+- Grep for "feedback" or "navigation feedback" or "up-active" or "up-loading"
+  - This often talks about the old up.feedback module und should now be more generically about preview effects or status effects
+  - Sometimes it also talks about feedback classes in particular and should no longer link to /up.status
+  - The concept of "with feedback" is no longer, as feedback classes are enabled by default
+
+- Rework "Showing that the form is processing"
 
 - X-Up-Target should mention (in the first paragraph) that it is both request and response header
 
@@ -266,6 +277,7 @@ Previews
   - Instantly respond with loading state, render optimistically, handle offline
 
 - Checken dass @see auf den Module-Pages die wichtigsten Sachen enthält
+  - Nicht nur die Guide Pages sondern auch die neuen Selektoren
   
 - Does the docs for followSelectors still include CoffeeScript comments?
 
