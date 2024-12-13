@@ -2,6 +2,14 @@ Priority
 ========
 
 
+Emergency Maintenance
+---------------------
+
+- why does safari show blue outlines
+- tel selectors
+
+
+
 Perspective
 -----------
 
@@ -99,15 +107,13 @@ Perspective
 
 
 
-Next release
-------------
+Preview release
+---------------
 
 - Test with Cards
 - Test with SF (?)
+- Ensure that we no longer have an up-focus-hidden on <body> because wasFocusLost() is implemented differently
 
-
-Previews
---------
 
 ### Demo
 
