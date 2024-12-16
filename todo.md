@@ -287,6 +287,27 @@ Preview release
   
 - Does the docs for followSelectors still include CoffeeScript comments?
 
+- Rework compiler docs (unpoly/unpoly#688)
+  - Extract docs from up.compiler() into its own guide page /compöilers "Initializing JavaScript"
+  - Fix existing links to /up.compiler and /up.compiler#destructor
+  - Make examples for all three destructor forms:
+    - Returning a function
+    - Returning an array of functions
+    - Using up.destructor
+  - Section for async compilers
+    - Timing issues if the element is detached before it is compiled
+    - If they return a function, it will not run as a destructor
+    - Maybe asyncCompiler helper
+    - Note that this will be improved in the future
+
+- Make a doc page for custom elements (unpoly/unpoly#688)
+  - Explain that you can just use defineElement
+  - Explain that you can use compilers for simple cases
+  - Show how custom elements can participate in form submissions
+    - config.fieldSelectors
+    - Support { name, value, disabled }
+    - Note that Unpoly does not support formAssociated or formdata event, but that this will be improved in the future
+
 
 ### Release
 
