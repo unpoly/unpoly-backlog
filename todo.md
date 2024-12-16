@@ -13,97 +13,7 @@ Emergency Maintenance
 Perspective
 -----------
 
-- Callback to run before any render pass (see davidsums popup discussion)
-  - up:render:prepare or up:render:setup or up:render:options
-  - Would we rename up:fragment events to get pressure off the up:fragment namespace?
-    - up:render:load
-    - up:render:loaded
-    - up:render:keep       :(
-    - up:render:offline
-    - up:render:inserted   :(
-    - up:render:hungry     :(
-    - This would leave up:fragment:poll
 
-- Consider a callback to manipulate render options before interactive element
-  - Either element-specific ([up-on-follow], [up-on-submit], etc.)
-  - Or generic ([up-on-use="..."], [up-setup="..."], [up-before], [up-guard], [up-on-run] [up-on-activate="..."], [up-on-start])
-    - Use is short, but conflicts with [up-use-data] and does not work for polling
-
-- Open overlays from template selectors
-
-- Support X-Up-Open-Layer: { type, ...VISUAL_OPTIONS }
-  - Works for both success and failed response. There is no X-Up-Fail-Layer option.
-  - Ensure that X-Up-Target also works for both success and failed response. There is no X-Up-Fail-Target header in the response.
-  - Support unpoly-rails (up.layer.open())
-  - Recommend to also set X-Up-Target
-  
-- FM required overriding of history from the server
-  - They really wanted { navigate }, no?
-    - But can we really change navigation options at that point?
-
-- Remove params parsing for up.watch(), support formdata, ElementInternals
-  - We can just parse the entire form with new FormData(), then filter on contained elements
-    - We will still need to know form fields for that
-  - Replace up.Params.fromForm() with `new this(new FormData(form))`
-
-- Consider [up-zone] as an origin-aware lookup without further logic
-  - Also support `:zone` as a new pseudo
-    - Layer priority beats zone priority
-  - config.zoneSelectors = ['[up-zone]', ':main]
-  - config.noZoneSelectors = ['[up-zone=false]']
-  - I think without an { origin } we only want to check out `:main`. Maybe it's not configurable?
-  - Do we want to allow [up-zone="name"] (and include it in targetDerivers), or should it be [up-zone][id="foo"]?
-    - If we want to get rid of [up-href] (to enable morphing), we should encourage the use of IDs
-  - If we want to mount arbitrary pages to mount in an [up-zone] it should be a parent.
-    - e.g. <up-zone><main>content</main></up-zone>
-      - But then we would have duplicate <main>
-        - section[up-main=zone]?
-
-- Maybe all guardEvents should have a loadPage() method
-  - So it's more discoverable then event.loadPage()
-
-- Consider publishing { dataMap, placeholderMap, previewMap } as @experimental
-  - Check if we have tests here
-  - Check whether a single { map } option (or an object target) would be superior
-    - up.render({ target: { '.foo': { data: { key: 123 }, placeholder: 'spinner' }, '.bar': {} }, url: '/path' })
-    - up.render({ target: { '.foo, .bar' }, dataMap: { '.foo'. { key: 123 } }, placeholderMap: { '.foo': 'spinner' }, url: '/path' })
-    - up.render({ target: { '.foo, .bar' }, map: { '.foo'. { data: { key: 123 }, placeholder: '.spinner' } }, url: '/path' })
-    => Doing something to the primary is a very common use case and great now
-
-- Consider publishing up.script.clean()
-  - Would we need a fallback for { layer }?
-  - Supporting the use case "recompile later" is hard because then we would need to update the idempotent-compiler-fn-tracking
-  
-- Consider removing { content } option of createFromSelector(), affix(), etc. in favor of a third argument for constructing nested things
-  - When we make this change we should also fix the inconsistency that a string arg is considered HTML, but Array<string> is considered text (and will be escaped)
-
-- Allow to set custom close animation from link
-  - Also support (or document?) up.layer.open({ closeAnimation })
-  
-- Consider contracting more attributes into shorthand values
-  - E.g. [up-emit] and [up-emit-props] should be just one thing
-  - E.g. [up-scroll] and [up-scroll-behavior] should just be one thing (but what about all the reveal attributes? reveal-snap/top/pading/max)
-  - E.g. [up-transition] and [up-easing] and [up-duration] should just be one thing
-  
-- Evtl. sollte [up-back] den letzten History-Eintrag im Root (?)-Layer nehmen?
-  - Back vs. Modals allgemein betrachten
-  
-- In the layer config, openAnimation and closeAnimation is a function, but it receives no useful args
-  - Give it { layer, value }
-  - Document it
-
-- Consider up.RenderResult#primary or up.RenderResult#fallback
-  - Updating ":main" via { fallback: true } must yield #primary === true
-  - So maybe #primary, #expected, #intended or similiar is a better name than #fallback
-
-- Rename "loading partial" to "filling partial" or similiar
-  - up:partial:fill
-  - up.partial.fill()
-  - So "load" remains the term for sending a request
-  - So we can offer [up-on-fill]
-  
-- Consider X-Up-Redirect so we can get rid of param-transporting in unpoly-rails
-  - Unpoly would track all X-Up params of request and response
 
 
 
@@ -318,6 +228,99 @@ Preview release
 Backlog
 =======
 
+- Consider moving .up-scrollbar-away to html instead of body (v4?)
+
+- Callback to run before any render pass (see davidsums popup discussion)
+  - up:render:prepare or up:render:setup or up:render:options
+  - Would we rename up:fragment events to get pressure off the up:fragment namespace?
+    - up:render:load
+    - up:render:loaded
+    - up:render:keep       :(
+    - up:render:offline
+    - up:render:inserted   :(
+    - up:render:hungry     :(
+    - This would leave up:fragment:poll
+
+- Consider a callback to manipulate render options before interactive element
+  - Either element-specific ([up-on-follow], [up-on-submit], etc.)
+  - Or generic ([up-on-use="..."], [up-setup="..."], [up-before], [up-guard], [up-on-run] [up-on-activate="..."], [up-on-start])
+    - Use is short, but conflicts with [up-use-data] and does not work for polling
+
+- Open overlays from template selectors
+
+- Support X-Up-Open-Layer: { type, ...VISUAL_OPTIONS }
+  - Works for both success and failed response. There is no X-Up-Fail-Layer option.
+  - Ensure that X-Up-Target also works for both success and failed response. There is no X-Up-Fail-Target header in the response.
+  - Support unpoly-rails (up.layer.open())
+  - Recommend to also set X-Up-Target
+  
+- FM required overriding of history from the server
+  - They really wanted { navigate }, no?
+    - But can we really change navigation options at that point?
+
+- Remove params parsing for up.watch(), support formdata, ElementInternals
+  - We can just parse the entire form with new FormData(), then filter on contained elements
+    - We will still need to know form fields for that
+  - Replace up.Params.fromForm() with `new this(new FormData(form))`
+
+- Consider [up-zone] as an origin-aware lookup without further logic
+  - Also support `:zone` as a new pseudo
+    - Layer priority beats zone priority
+  - config.zoneSelectors = ['[up-zone]', ':main]
+  - config.noZoneSelectors = ['[up-zone=false]']
+  - I think without an { origin } we only want to check out `:main`. Maybe it's not configurable?
+  - Do we want to allow [up-zone="name"] (and include it in targetDerivers), or should it be [up-zone][id="foo"]?
+    - If we want to get rid of [up-href] (to enable morphing), we should encourage the use of IDs
+  - If we want to mount arbitrary pages to mount in an [up-zone] it should be a parent.
+    - e.g. <up-zone><main>content</main></up-zone>
+      - But then we would have duplicate <main>
+        - section[up-main=zone]?
+
+- Maybe all guardEvents should have a loadPage() method
+  - So it's more discoverable then event.loadPage()
+
+- Consider publishing { dataMap, placeholderMap, previewMap } as @experimental
+  - Check if we have tests here
+  - Check whether a single { map } option (or an object target) would be superior
+    - up.render({ target: { '.foo': { data: { key: 123 }, placeholder: 'spinner' }, '.bar': {} }, url: '/path' })
+    - up.render({ target: { '.foo, .bar' }, dataMap: { '.foo'. { key: 123 } }, placeholderMap: { '.foo': 'spinner' }, url: '/path' })
+    - up.render({ target: { '.foo, .bar' }, map: { '.foo'. { data: { key: 123 }, placeholder: '.spinner' } }, url: '/path' })
+    => Doing something to the primary is a very common use case and great now
+
+- Consider publishing up.script.clean()
+  - Would we need a fallback for { layer }?
+  - Supporting the use case "recompile later" is hard because then we would need to update the idempotent-compiler-fn-tracking
+  
+- Consider removing { content } option of createFromSelector(), affix(), etc. in favor of a third argument for constructing nested things
+  - When we make this change we should also fix the inconsistency that a string arg is considered HTML, but Array<string> is considered text (and will be escaped)
+
+- Allow to set custom close animation from link
+  - Also support (or document?) up.layer.open({ closeAnimation })
+  
+- Consider contracting more attributes into shorthand values
+  - E.g. [up-emit] and [up-emit-props] should be just one thing
+  - E.g. [up-scroll] and [up-scroll-behavior] should just be one thing (but what about all the reveal attributes? reveal-snap/top/pading/max)
+  - E.g. [up-transition] and [up-easing] and [up-duration] should just be one thing
+  
+- Evtl. sollte [up-back] den letzten History-Eintrag im Root (?)-Layer nehmen?
+  - Back vs. Modals allgemein betrachten
+  
+- In the layer config, openAnimation and closeAnimation is a function, but it receives no useful args
+  - Give it { layer, value }
+  - Document it
+
+- Consider up.RenderResult#primary or up.RenderResult#fallback
+  - Updating ":main" via { fallback: true } must yield #primary === true
+  - So maybe #primary, #expected, #intended or similiar is a better name than #fallback
+
+- Rename "loading partial" to "filling partial" or similiar
+  - up:partial:fill
+  - up.partial.fill()
+  - So "load" remains the term for sending a request
+  - So we can offer [up-on-fill]
+  
+- Consider X-Up-Redirect so we can get rid of param-transporting in unpoly-rails
+  - Unpoly would track all X-Up params of request and response
 
 - Do we need a meta.previewing prop for compilers?
   - This would need to be a global prop because we allow arbitrary code
