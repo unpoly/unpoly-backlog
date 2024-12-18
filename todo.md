@@ -23,14 +23,8 @@ Preview release
 - Test with Cards
 - Test with SF (?)
 - Ensure that we no longer have an up-focus-hidden on <body> because wasFocusLost() is implemented differently
-
-
-### Demo
-
-- Make sure tests are green
-- Make sure form group validation still works after Bootstrap 5 Upgrade
-- Set tour bubbles for the new functionality
-
+- Close https://github.com/unpoly/unpoly/issues/513 after `master` merge
+  
 
 
 ### Cards
@@ -54,7 +48,7 @@ Preview release
     - { lateDelay }
     - [up-late-time]
   - Go through entire Git log
-  - Explain that we are now smarter at splitting complex selectors at
+  - Explain that we are now smarter at splitting complex selectors
   - Explain that tokens now default to comma-separation
     - Comma is canonical
     - Space-separation still possible in most cases
@@ -80,59 +74,39 @@ Preview release
         - [up-evict-cache] { evictCache }
   - Progress bar timing during chains of requests
   - Feedback classes are enabled by default
-
-- Finish "Feedback classes"
-  - Reduce documentation for .up-active and .up-current
-
-- Publish up.element.createNodesFromHTML()
+  - [up-content] accepts mixed Element/Text string
+  - { content } accepts List<Node> or mixed Element/Text string
+  
+- Rework /watch-options#showing-feedback-while-working
 
 - Grep for "feedback" or "navigation feedback" or "up-active" or "up-loading"
   - This often talks about the old up.feedback module und should now be more generically about preview effects or status effects
   - Sometimes it also talks about feedback classes in particular and should no longer link to /up.status
   - The concept of "with feedback" is no longer, as feedback classes are enabled by default
 
-- Rework "Showing that the form is processing"
-
-- X-Up-Target should mention (in the first paragraph) that it is both request and response header
-
-- Document [up-placeholder] and [up-preview] in up.status (main), up-follow and up.render()
-
 - Docs for up.Preview class and its methods
   - up.Preview#insert (and up.fragment.insertTemp()) must mention that:
     - The element is compiled and destroyed
     - An attached element is moved back to its original position (and not compiled or destroyed)
     - You can refer to a template
+  - up.Preview#fragment must explain that this the first fragment of a multi-fragment update
+  - up.Preview#showPlaceholder must talk about overlay case
 
 - "Network issues" should talk about previews and placeholders under "Slow server responses"
   - Right now they only talk about feedback classes
 
+- Rework "Showing that the form is processing"
+
 - Change with disabling
   - We now support { disable: Element }
-  - We now support { disable: Array<Element|string> }
+  - We now support disabling multiple elemewnts { disable: Array<Element|string> }
   - Disabling forms from links
     - Document that [up-disable] is now also available for [up-follow]
     - Document that options.disable is now supported for up.follow()
     - Add a section to /disabling-forms
 
 - Update render lifecycle
-  - Callback table
-
-- Doc page /loading-state "Loading state" should be an overview of all functionality while waiting for requests
-  - Just a short list with links to existing docs
-
-- Doc page "Placeholders"
-  - As embedded HTML
-  - As template cloning
-  - As function call in a preview
-  - Placeholder for OpenLayer change will open a new temporary layer
-    - This will be reverted in case the server renders unexpected content
-  - Dynamic placeholders with embedded data object
-
-  - Dynamic placeholders
-    - Placeholders
-      - #template as .modifier syntax
-      - Explain that you can compile template clones
-      - Explain that you can always use [up-preview] or [up-preview-fn].
+  - Callback table should mention preview things
 
 - Somewhere talk about loading state while watching
   - [up-watch-disable]
@@ -140,6 +114,7 @@ Preview release
   - For [up-watch]
   - For [up-validate]
 
+- Expand "Displaying a fallback while content is loading" in /lazy-loading#pending
 
 - New watch/validate options
   - Document [up-watch-preview] and [up-watch-placeholder] wherever we also document [up-watch-disable] or [up-watch-feedback]
@@ -157,31 +132,6 @@ Preview release
 - Rename /loading-indicators to /progress-bar
   - Extract anything that is not about the progress bar
 
-- Rework the section "Styling active elements" in /up-active.
-  - It should link to the new status guides
-
-- Rename up.feedback to up.status
-  - Title "Status effects"
-  - Package intro should summarize our fancy new doc pages
-
-- Document new render options
-  - Do this after we have the new doc pages
-  - up.render()
-    - Document { preview: string|Function|Array<string|Function> }
-    - Document { revalidatePreview }
-    - Document { placeholder: string|Function|Element }
-      - It also opens a new layer
-  - [up-follow]
-    - Document [up-preview]
-    - Document [up-revalidate-preview]
-    - Document [up-preview-fn]
-    - Document [up-placeholder]
-      - It also opens a new layer
-  - HTML options ({ content, fragment, placeholder })
-    - also allow a template
-    - Also accept a function (is this tested?)
-    - Accept a List<Node>
-
 - [up-defer] supports [up-preview], [up-placeholder]
   - The docs already talk about fallback state. We could destinguish "while it's loading".
 
@@ -194,6 +144,8 @@ Preview release
 
 - Checken dass @see auf den Module-Pages die wichtigsten Sachen enthält
   - Nicht nur die Guide Pages sondern auch die neuen Selektoren
+
+- Fix broken links for unpoly-site
   
 - Does the docs for followSelectors still include CoffeeScript comments?
 
@@ -217,10 +169,13 @@ Preview release
     - config.fieldSelectors
     - Support { name, value, disabled }
     - Note that Unpoly does not support formAssociated or formdata event, but that this will be improved in the future
-
+    
 
 ### Release
 
+- npm package
+- Merge, push, deploy unpoly.com
+- unpoly-rails
 - Merge, push and deploy the new demo
 
 
