@@ -23,6 +23,8 @@ Preview release
 - Test with Cards
 - Test with SF (?)
 - Ensure that we no longer have an up-focus-hidden on <body> because wasFocusLost() is implemented differently
+- We seem to have removed "we process { disable } around a JS watcher()"
+  - This doesn't work conceptually with our fast-resolve callbacks
 - Close https://github.com/unpoly/unpoly/issues/513 after `master` merge
   
 
@@ -77,13 +79,6 @@ Preview release
   - [up-content] accepts mixed Element/Text string
   - { content } accepts List<Node> or mixed Element/Text string
   
-- Rework /watch-options#showing-feedback-while-working
-
-- Grep for "feedback" or "navigation feedback" or "up-active" or "up-loading"
-  - This often talks about the old up.feedback module und should now be more generically about preview effects or status effects
-  - Sometimes it also talks about feedback classes in particular and should no longer link to /up.status
-  - The concept of "with feedback" is no longer, as feedback classes are enabled by default
-
 - Docs for up.Preview class and its methods
   - up.Preview#insert (and up.fragment.insertTemp()) must mention that:
     - The element is compiled and destroyed
@@ -92,11 +87,6 @@ Preview release
   - up.Preview#fragment must explain that this the first fragment of a multi-fragment update
   - up.Preview#showPlaceholder must talk about overlay case
 
-- "Network issues" should talk about previews and placeholders under "Slow server responses"
-  - Right now they only talk about feedback classes
-
-- Rework "Showing that the form is processing"
-
 - Change with disabling
   - We now support { disable: Element }
   - We now support disabling multiple elemewnts { disable: Array<Element|string> }
@@ -104,17 +94,6 @@ Preview release
     - Document that [up-disable] is now also available for [up-follow]
     - Document that options.disable is now supported for up.follow()
     - Add a section to /disabling-forms
-
-- Update render lifecycle
-  - Callback table should mention preview things
-
-- Somewhere talk about loading state while watching
-  - [up-watch-disable]
-  - [up-watch-preview]
-  - For [up-watch]
-  - For [up-validate]
-
-- Expand "Displaying a fallback while content is loading" in /lazy-loading#pending
 
 - New watch/validate options
   - Document [up-watch-preview] and [up-watch-placeholder] wherever we also document [up-watch-disable] or [up-watch-feedback]
@@ -129,13 +108,7 @@ Preview release
     - With up.watch()
     - With [up-watch]
 
-- Rename /loading-indicators to /progress-bar
-  - Extract anything that is not about the progress bar
-
-- [up-defer] supports [up-preview], [up-placeholder]
-  - The docs already talk about fallback state. We could destinguish "while it's loading".
-
-- [up-poll] supports [up-preview], [up-placeholder]
+- Rework /watch-options#showing-feedback-while-working
 
 - Consider an authentication modal in https://unpoly.com/up:fragment:loaded#changing-render-options
 
@@ -145,8 +118,6 @@ Preview release
 - Checken dass @see auf den Module-Pages die wichtigsten Sachen enthält
   - Nicht nur die Guide Pages sondern auch die neuen Selektoren
 
-- Fix broken links for unpoly-site
-  
 - Does the docs for followSelectors still include CoffeeScript comments?
 
 - Rework compiler docs (unpoly/unpoly#688)
@@ -169,6 +140,12 @@ Preview release
     - config.fieldSelectors
     - Support { name, value, disabled }
     - Note that Unpoly does not support formAssociated or formdata event, but that this will be improved in the future
+    
+- Make a doc page for polling
+  - Extract from [up-poll]
+  - Own section for "Reloading when re-focusing a tab"?
+
+- Fix broken links for unpoly-site
     
 
 ### Release
