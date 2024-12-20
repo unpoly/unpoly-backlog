@@ -78,6 +78,9 @@ Preview release
   - Feedback classes are enabled by default
   - [up-content] accepts mixed Element/Text string
   - { content } accepts List<Node> or mixed Element/Text string
+  - up.watch() will no longer process a { disable } option. It is up to the callback. Any [up-watch-disable] option will be passed to the callback as a third `options` argument.
+  - [up-watch] gets an `options` argument.
+  ** COMPLETE THE REST OF THE CHANGELOG **
   
 - Docs for up.Preview class and its methods
   - up.Preview#insert (and up.fragment.insertTemp()) must mention that:
@@ -95,21 +98,6 @@ Preview release
     - Document that options.disable is now supported for up.follow()
     - Add a section to /disabling-forms
 
-- New watch/validate options
-  - Document [up-watch-preview] and [up-watch-placeholder] wherever we also document [up-watch-disable] or [up-watch-feedback]
-    - [up-watch]
-    - up.watch()
-    - [up-validate] 
-    - up.validate()
-    - [up-autosubmit]
-    - up.autosubmit()
-  - Extend /watch-options with [up-watch-preview] and [up-watch-placeholder]
-  - Watcher callbacks get { disable, preview, feedback, placeholder } options to pass on to rendering
-    - With up.watch()
-    - With [up-watch]
-
-- Rework /watch-options#showing-feedback-while-working
-
 - Consider an authentication modal in https://unpoly.com/up:fragment:loaded#changing-render-options
 
 - Check if the unpoly.com homepage needs to mention status effects and optimistic rendering
@@ -118,10 +106,8 @@ Preview release
 - Checken dass @see auf den Module-Pages die wichtigsten Sachen enthält
   - Nicht nur die Guide Pages sondern auch die neuen Selektoren
 
-- Does the docs for followSelectors still include CoffeeScript comments?
-
 - Rework compiler docs (unpoly/unpoly#688)
-  - Extract docs from up.compiler() into its own guide page /compöilers "Initializing JavaScript"
+  - Extract docs from up.compiler() into its own guide page /compilers "Initializing JavaScript"
   - Fix existing links to /up.compiler and /up.compiler#destructor
   - Make examples for all three destructor forms:
     - Returning a function
@@ -132,6 +118,37 @@ Preview release
     - If they return a function, it will not run as a destructor
     - Maybe asyncCompiler helper
     - Note that this will be improved in the future
+
+    - ```
+      // Registers an `up.compiler()` function that returns a promise for its destructor function.
+      export default function asyncCompiler(...compilerArgs) {
+        const compilerFn = compilerArgs.pop()
+
+        up.compiler(...compilerArgs, (...passArgs) => {
+          // Call the compiler function passed by the user.
+          const returnValue = compilerFn(...passArgs)
+
+          // Return a new destructor function that awaits the asynchronous
+          // return value and uses the fulfillment value as a destructor.
+          return async () => {
+            // The async function could return different types of values:
+            //
+            // (1) A destructor function
+            // (2) An array of destructor functions
+            // (3) A value that is not a function (which we discard)
+            let destructorCandidates = await returnValue
+            destructorCandidates = up.util.wrapList(destructorCandidates)
+
+            for (const destructorCandidate of destructorCandidates) {
+              if (up.util.isFunction(destructorCandidate)) {
+                destructorCandidate()
+              }
+            }
+          }
+        })
+      }
+      ```    
+    
 
 - Make a doc page for custom elements (unpoly/unpoly#688)
   - Explain that you can just use defineElement
