@@ -5,9 +5,6 @@ Priority
 Emergency Maintenance
 ---------------------
 
-- why does safari show blue outlines
-- tel selectors
-
 
 
 Perspective
@@ -22,9 +19,12 @@ Preview release
 
 - Test with Cards
 - Test with SF (?)
-- Ensure that we no longer have an up-focus-hidden on <body> because wasFocusLost() is implemented differently
+- Ensure that we no longer have an initial -up-focus-hidden on <body> because wasFocusLost() is implemented differently
 - We seem to have removed "we process { disable } around a JS watcher()"
   - This doesn't work conceptually with our fast-resolve callbacks
+- Ensure that we don't register duplicate undo-functions in a situation like
+  - (preview) => preview.run('link-spinner', { size })
+  - Does this even happen? Add a test.
 - Close https://github.com/unpoly/unpoly/issues/513 after `master` merge
   
 
@@ -90,15 +90,7 @@ Preview release
   - up.Preview#fragment must explain that this the first fragment of a multi-fragment update
   - up.Preview#showPlaceholder must talk about overlay case
 
-- Change with disabling
-  - We now support { disable: Element }
-  - We now support disabling multiple elemewnts { disable: Array<Element|string> }
-  - Disabling forms from links
-    - Document that [up-disable] is now also available for [up-follow]
-    - Document that options.disable is now supported for up.follow()
-    - Add a section to /disabling-forms
-
-- Consider an authentication modal in https://unpoly.com/up:fragment:loaded#changing-render-options
+- The site lists class method in a random order
 
 - Check if the unpoly.com homepage needs to mention status effects and optimistic rendering
   - Instantly respond with loading state, render optimistically, handle offline
@@ -176,6 +168,8 @@ Preview release
 
 Backlog
 =======
+
+- Add Rust install to https://github.com/unpoly/unpoly-site/tree/master/source/install
 
 - Consider moving .up-scrollbar-away to html instead of body (v4?)
 
