@@ -20,11 +20,11 @@ Preview release
 - Test with Cards
 - Test with SF (?)
 - Ensure that we no longer have an initial -up-focus-hidden on <body> because wasFocusLost() is implemented differently
-- We seem to have removed "we process { disable } around a JS watcher()"
-  - This doesn't work conceptually with our fast-resolve callbacks
 - Ensure that we don't register duplicate undo-functions in a situation like
   - (preview) => preview.run('link-spinner', { size })
   - Does this even happen? Add a test.
+- Test that disabled form fields still appear in the request params
+  - Should also be noted in docs
 - Close https://github.com/unpoly/unpoly/issues/513 after `master` merge
   
 
@@ -78,9 +78,12 @@ Preview release
   - Feedback classes are enabled by default
   - [up-content] accepts mixed Element/Text string
   - { content } accepts List<Node> or mixed Element/Text string
-  - up.watch() will no longer process a { disable } option. It is up to the callback. Any [up-watch-disable] option will be passed to the callback as a third `options` argument.
-  - [up-watch] gets an `options` argument.
-  ** COMPLETE THE REST OF THE CHANGELOG **
+  - up.watch() will no longer process a { disable } option. It is up to the callback. Any [up-watch-disable] option will be passed to the callback in a third `options` argument ({ disable }).
+  - [up-watch] gets an `options` argument in the code snippet.
+  - We seem to have removed "we process { disable } around a JS watcher()"
+    - This doesn't work conceptually with our fast-resolve callbacks
+    - add to CHANGELOG
+  - ** COMPLETE THE REST OF THE CHANGELOG **
   
 - Docs for up.Preview class and its methods
   - up.Preview#insert (and up.fragment.insertTemp()) must mention that:
@@ -169,9 +172,17 @@ Preview release
 Backlog
 =======
 
-- Add Rust install to https://github.com/unpoly/unpoly-site/tree/master/source/install
+- I somehow expected up.fragment.config.runScripts to be in up.script.config.runScripts
+  - We would need a new name like up.script.config.runFragmentScripts
+  
+- Open/close of modal breaks infinite scroll
+  - Opening an overlay aborts the background layer
+    - IntersectionObserver disconnects on abort
+    
+- Investigate why the background is scrollable
+  - https://github.com/unpoly/unpoly/discussions/694
 
-- Consider moving .up-scrollbar-away to html instead of body (v4?)
+- Add Rust install to https://github.com/unpoly/unpoly-site/tree/master/source/install
 
 - Callback to run before any render pass (see davidsums popup discussion)
   - up:render:prepare or up:render:setup or up:render:options
