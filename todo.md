@@ -19,12 +19,6 @@ Preview release
 
 - Test with Cards
 - Test with SF (?)
-- Ensure that we no longer have an initial -up-focus-hidden on <body> because wasFocusLost() is implemented differently
-- Ensure that we don't register duplicate undo-functions in a situation like
-  - (preview) => preview.run('link-spinner', { size })
-  - Does this even happen? Add a test.
-- Test that disabled form fields still appear in the request params
-  - Should also be noted in docs
 - Close https://github.com/unpoly/unpoly/issues/513 after `master` merge
   
 
@@ -85,6 +79,10 @@ Preview release
     - add to CHANGELOG
   - ** COMPLETE THE REST OF THE CHANGELOG **
   
+- Talk about "template variables", not "options" or "parameters"
+  - In the doc prose
+  - In the API reference
+  
 - Docs for up.Preview class and its methods
   - up.Preview#insert (and up.fragment.insertTemp()) must mention that:
     - The element is compiled and destroyed
@@ -94,6 +92,8 @@ Preview release
   - up.Preview#showPlaceholder must talk about overlay case
 
 - The site lists class method in a random order
+
+- New [up-use-data] attribute
 
 - Check if the unpoly.com homepage needs to mention status effects and optimistic rendering
   - Instantly respond with loading state, render optimistically, handle offline
@@ -179,9 +179,6 @@ Backlog
   - Opening an overlay aborts the background layer
     - IntersectionObserver disconnects on abort
     
-- Investigate why the background is scrollable
-  - https://github.com/unpoly/unpoly/discussions/694
-
 - Add Rust install to https://github.com/unpoly/unpoly-site/tree/master/source/install
 
 - Callback to run before any render pass (see davidsums popup discussion)
