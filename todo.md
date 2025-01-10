@@ -20,7 +20,6 @@ Preview release
 - Test with Cards
 - Test with SF (?)
 - Close https://github.com/unpoly/unpoly/issues/513 after `master` merge
-  
 
 
 ### Cards
@@ -79,20 +78,6 @@ Preview release
     - add to CHANGELOG
   - ** COMPLETE THE REST OF THE CHANGELOG **
   
-- Talk about "template variables", not "options" or "parameters"
-  - In the doc prose
-  - In the API reference
-  
-- Docs for up.Preview class and its methods
-  - up.Preview#insert (and up.fragment.insertTemp()) must mention that:
-    - The element is compiled and destroyed
-    - An attached element is moved back to its original position (and not compiled or destroyed)
-    - You can refer to a template
-  - up.Preview#fragment must explain that this the first fragment of a multi-fragment update
-  - up.Preview#showPlaceholder must talk about overlay case
-
-- The site lists class method in a random order
-
 - New [up-use-data] attribute
 
 - Check if the unpoly.com homepage needs to mention status effects and optimistic rendering
@@ -100,6 +85,12 @@ Preview release
 
 - Checken dass @see auf den Module-Pages die wichtigsten Sachen enthält
   - Nicht nur die Guide Pages sondern auch die neuen Selektoren
+
+- Fix broken links for unpoly-site
+
+
+
+### Nice-to-have    
 
 - Rework compiler docs (unpoly/unpoly#688)
   - Extract docs from up.compiler() into its own guide page /compilers "Initializing JavaScript"
@@ -157,8 +148,7 @@ Preview release
   - Extract from [up-poll]
   - Own section for "Reloading when re-focusing a tab"?
 
-- Fix broken links for unpoly-site
-    
+
 
 ### Release
 
