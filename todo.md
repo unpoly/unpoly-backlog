@@ -17,6 +17,9 @@ Perspective
 Preview release
 ---------------
 
+- Think whether we want to support JSON => HTML preprocessing
+  - I think HTMX has this? How?
+- Consider not disconnecting the IntersectionObserver when a new layer is opened
 - Test with Cards
 - Test with SF (?)
 - Close https://github.com/unpoly/unpoly/issues/513 after `master` merge
@@ -35,50 +38,9 @@ Preview release
 ### Docs & CHANGELOG
 
 - CHANGELOG
-  - up.Request#ended
-  - Native :has() is required and the app will not boot without
-  - Explain that the demo shows new optimistic rendering, check "Extra latency"
-  - badResponseTime => lateDelay
-    - config.lateDelay
-    - { lateDelay }
-    - [up-late-time]
-  - Go through entire Git log
-  - Explain that we are now smarter at splitting complex selectors
-  - Explain that tokens now default to comma-separation
-    - Comma is canonical
-    - Space-separation still possible in most cases
-    - or-separation is deprecated
-    - Also make sure to update doc pages!
-    - This affects
-      - [docs updated] [up-show-for]
-      - [docs updated] [up-hide-for]
-      - [docs updated] [up-scroll]
-      - [docs updated] [up-focus]
-      - [docs updated] [up-layer] or { layer }
-      - [docs updated] up.on()
-      - [docs updated] URLPatterns
-        - [up-alias]
-        - [up-dismissable], { dismissable }
-        - [up-accept-location]
-        - [up-dismiss-location]
-        - up.cache.expire()
-        - X-Up-Expire-Cache
-        - [up-expire-cache] { expireCache } 
-        - up.cache.evict()
-        - X-Up-Evict-Cache
-        - [up-evict-cache] { evictCache }
-  - Progress bar timing during chains of requests
-  - Feedback classes are enabled by default
-  - [up-content] accepts mixed Element/Text string
-  - { content } accepts List<Node> or mixed Element/Text string
-  - up.watch() will no longer process a { disable } option. It is up to the callback. Any [up-watch-disable] option will be passed to the callback in a third `options` argument ({ disable }).
-  - [up-watch] gets an `options` argument in the code snippet.
-  - We seem to have removed "we process { disable } around a JS watcher()"
-    - This doesn't work conceptually with our fast-resolve callbacks
-    - add to CHANGELOG
-  - ** COMPLETE THE REST OF THE CHANGELOG **
-  
-- New [up-use-data] attribute
+  - Go through entire Git log or the diff
+
+- Document and expose up.util.parseRelaxedJSON() as experimental
 
 - Check if the unpoly.com homepage needs to mention status effects and optimistic rendering
   - Instantly respond with loading state, render optimistically, handle offline
@@ -90,11 +52,25 @@ Preview release
 
 
 
-### Nice-to-have    
+
+
+### Release
+
+- npm package
+- Merge, push, deploy unpoly.com
+- unpoly-rails
+- Merge, push and deploy the new demo
+
+
+
+Backlog
+=======
+
 
 - Rework compiler docs (unpoly/unpoly#688)
-  - Extract docs from up.compiler() into its own guide page /compilers "Initializing JavaScript"
+  - Extract docs from up.compiler() into its own guide page /compilers "Initializing JavaScript" (with compilers)
   - Fix existing links to /up.compiler and /up.compiler#destructor
+  
   - Make examples for all three destructor forms:
     - Returning a function
     - Returning an array of functions
@@ -147,20 +123,6 @@ Preview release
 - Make a doc page for polling
   - Extract from [up-poll]
   - Own section for "Reloading when re-focusing a tab"?
-
-
-
-### Release
-
-- npm package
-- Merge, push, deploy unpoly.com
-- unpoly-rails
-- Merge, push and deploy the new demo
-
-
-
-Backlog
-=======
 
 - I somehow expected up.fragment.config.runScripts to be in up.script.config.runScripts
   - We would need a new name like up.script.config.runFragmentScripts
