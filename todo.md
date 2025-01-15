@@ -17,8 +17,6 @@ Perspective
 Preview release
 ---------------
 
-- Think whether we want to support JSON => HTML preprocessing
-  - I think HTMX has this? How?
 - Consider not disconnecting the IntersectionObserver when a new layer is opened
 - Test with Cards
 - Test with SF (?)
@@ -995,4 +993,7 @@ Icebox / Tar pits
   - E.g. we want to show the "Edit task" input instantly, but keep input as we revert with the real thing
     => Preview fns could manipulate event.renderOptions
     => If we already have a template, we could just render a template with [up-fragment] and not make a request
+- Think whether we want to support JSON => HTML preprocessing
+  - This would something like <a href="/foo.json" up-convert-with-template="#foo">
+  - This would need to disable history
 
