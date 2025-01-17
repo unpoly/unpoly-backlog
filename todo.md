@@ -38,8 +38,6 @@ Preview release
 - CHANGELOG
   - Go through entire Git log or the diff
 
-- Document and expose up.util.parseRelaxedJSON() as experimental
-
 - Check if the unpoly.com homepage needs to mention status effects and optimistic rendering
   - Instantly respond with loading state, render optimistically, handle offline
 
