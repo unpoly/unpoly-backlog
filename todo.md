@@ -37,6 +37,8 @@ Preview release
 
 - CHANGELOG
   - Go through entire Git log or the diff
+  
+- Add content options to up.layer.open()
 
 - Check if the unpoly.com homepage needs to mention status effects and optimistic rendering
   - Instantly respond with loading state, render optimistically, handle offline
@@ -62,6 +64,10 @@ Preview release
 Backlog
 =======
 
+- I'm not sure if opening a layer with local content honors { abort }
+  - E.g. start loading content on the base layer's main
+  - Open a layer from a string (which makes a request with bindFragments: [base-layer's main])
+  - Content on base layer is still loading
 
 - Rework compiler docs (unpoly/unpoly#688)
   - Extract docs from up.compiler() into its own guide page /compilers "Initializing JavaScript" (with compilers)
