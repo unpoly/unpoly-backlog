@@ -17,9 +17,38 @@ Perspective
 Preview release
 ---------------
 
-- Consider not disconnecting the IntersectionObserver when a new layer is opened
-- Test with Cards
 - Test with SF (?)
+  - Opening an overlay from an expired URL aborts its own revalidation request?
+    - up.render() Revalidating cached response for target "main"
+    - unpoly.js:8148 up:request:load Loading GET /users/salesman_callbacks/edit
+    - unpoly.js:8148 up:request:aborted Aborted request to GET /users/salesman_callbacks/edit
+    - unpoly.js:8148 up.render() Rendering was aborted: AbortError: Aborted request to GET /users/salesman_callbacks/edit  
+
+- Rendering expired content from a preloading link will abort the preloading request if the cached content replaces the link
+  - /form is cached, but expired
+  - We open a popup with a link to /form
+  - The popup contains a link <a href="/form" up-layer="swap" up-preload>
+    - Clicking the link opens a modal overlay with the cached content
+    - The modal overlay immediately revalidates /form, which makes a background request to /form
+  - The popup behind the overlay closes
+  - The preload logic in the popup link (up.LinkFollowIntent) sees a mouseout event
+  - It tries to cancel its own preload request, but accidentally sees the revalidation request:
+    _unscheduleCallback() {
+      clearTimeout(this._timer)
+
+      // Only abort if the request is still preloading.
+      // If the user has clicked on the link while the request was in flight,
+      // and then unhovered the link, we do not abort the navigation.
+      up.network.abort((request) => (request.origin === this._link) && request.background)
+    }
+  - Possibly remove the origin when revalidating?
+    - This might produce a different target resolution
+  - Remember the actual request being preloaded
+    - We had this implementation once
+
+
+
+- 
 - Close https://github.com/unpoly/unpoly/issues/513 after `master` merge
 
 
@@ -34,19 +63,6 @@ Preview release
 
 
 ### Docs & CHANGELOG
-
-- CHANGELOG
-  - Go through entire Git log or the diff
-  
-- Add content options to up.layer.open()
-
-- Check if the unpoly.com homepage needs to mention status effects and optimistic rendering
-  - Instantly respond with loading state, render optimistically, handle offline
-
-- Checken dass @see auf den Module-Pages die wichtigsten Sachen enthält
-  - Nicht nur die Guide Pages sondern auch die neuen Selektoren
-
-- Fix broken links for unpoly-site
 
 
 
@@ -63,6 +79,17 @@ Preview release
 
 Backlog
 =======
+
+- Remove commented-out code in up.util
+
+- affix() and createSelector() cannot create an attribute called [content] or [text]
+  - e.g. for meta[content]
+  - Maybe force all attrs into { attrs } ?
+
+- Test that we don't process { abort } when the RenderPass was aborted by { guardEvent } or { confirm }
+
+- Test if unpoly-rails always forwards empty objects or arrays
+  - Redirected to http://127.0.0.1:37565/?_up_context_changes=%7B%7D&_up_events=%5B%5D
 
 - I'm not sure if opening a layer with local content honors { abort }
   - E.g. start loading content on the base layer's main
