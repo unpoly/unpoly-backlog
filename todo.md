@@ -12,59 +12,20 @@ Perspective
 
 
 
-
-
 Preview release
 ---------------
 
-- Test with SF (?)
-  - Opening an overlay from an expired URL aborts its own revalidation request?
-    - up.render() Revalidating cached response for target "main"
-    - unpoly.js:8148 up:request:load Loading GET /users/salesman_callbacks/edit
-    - unpoly.js:8148 up:request:aborted Aborted request to GET /users/salesman_callbacks/edit
-    - unpoly.js:8148 up.render() Rendering was aborted: AbortError: Aborted request to GET /users/salesman_callbacks/edit  
+### Final tasks
 
-- Rendering expired content from a preloading link will abort the preloading request if the cached content replaces the link
-  - /form is cached, but expired
-  - We open a popup with a link to /form
-  - The popup contains a link <a href="/form" up-layer="swap" up-preload>
-    - Clicking the link opens a modal overlay with the cached content
-    - The modal overlay immediately revalidates /form, which makes a background request to /form
-  - The popup behind the overlay closes
-  - The preload logic in the popup link (up.LinkFollowIntent) sees a mouseout event
-  - It tries to cancel its own preload request, but accidentally sees the revalidation request:
-    _unscheduleCallback() {
-      clearTimeout(this._timer)
-
-      // Only abort if the request is still preloading.
-      // If the user has clicked on the link while the request was in flight,
-      // and then unhovered the link, we do not abort the navigation.
-      up.network.abort((request) => (request.origin === this._link) && request.background)
-    }
-  - Possibly remove the origin when revalidating?
-    - This might produce a different target resolution
-  - Remember the actual request being preloaded
-    - We had this implementation once
+- Why is focus-restoration on disable implemented twice?
+- Firefox focus restoration tests don't work
+  - maybe safe values after setting
+- up.render({ disable: 'selector' }) throws up.Error: Missing { origin } from originScope()
 
 
-
-- 
-- Close https://github.com/unpoly/unpoly/issues/513 after `master` merge
-
-
-### Cards
-
-- [later] Make a skeleton for cards
-  - It uses Bootstrap
-
-
-### Guide
-
-
-
-### Docs & CHANGELOG
-
-
+- Test on Firefox
+- Test on Safari
+- Test on Edge
 
 
 
@@ -72,13 +33,15 @@ Preview release
 
 - npm package
 - Merge, push, deploy unpoly.com
-- unpoly-rails
+- Release unpoly-rails
 - Merge, push and deploy the new demo
 
 
 
 Backlog
 =======
+
+- Get rid of CoffeeScript everywhere. Maybe ChatGPT can help with the formatting.
 
 - Remove commented-out code in up.util
 
