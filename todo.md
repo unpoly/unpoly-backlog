@@ -17,24 +17,14 @@ Preview release
 
 ### Final tasks
 
-- Why is focus-restoration on disable implemented twice?
-- Firefox focus restoration tests don't work
-  - maybe safe values after setting
-- up.render({ disable: 'selector' }) throws up.Error: Missing { origin } from originScope()
-
-
-- Test on Firefox
-- Test on Safari
-- Test on Edge
-
 
 
 ### Release
 
-- npm package
-- Merge, push, deploy unpoly.com
-- Release unpoly-rails
-- Merge, push and deploy the new demo
+- Tweets
+  - Post details in Slack
+- Internal event
+- Update MRs to latest master and release
 
 
 
