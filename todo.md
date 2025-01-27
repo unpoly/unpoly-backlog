@@ -1,35 +1,20 @@
 Priority
 ========
 
+- Never compile elements in <template>
+  - Not in initial render pass (may be hard to test)
+  - Not in fragment updates
 
-Emergency Maintenance
----------------------
-
-
-
-Perspective
------------
-
-
-
-Preview release
----------------
-
-### Final tasks
-
-
-
-### Release
-
-- Tweets
-  - Post details in Slack
-- Internal event
-- Update MRs to latest master and release
 
 
 
 Backlog
 =======
+
+- Offer a way to expand a template into an element
+  - Like <up-defer class=".container-from-template" up-fragment="#template">, but without the need to have a good selector
+  - Can we somehow say that we want to replace ourselves, even when the replacement has a different selector?
+    - HTML-Importe waren   <link rel="import" href="http://example.com/elements.html">
 
 - Get rid of CoffeeScript everywhere. Maybe ChatGPT can help with the formatting.
 
