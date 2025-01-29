@@ -1,15 +1,16 @@
 Priority
 ========
 
-- Never compile elements in <template>
-  - Not in initial render pass (may be hard to test)
-  - Not in fragment updates
-
-
-
 
 Backlog
 =======
+
+- Think about a way to optimistically render an action that dismisses an overlay and changes something in the background
+  - What about dismiss callbacks?
+
+- Remove "Option 3" in /csp
+
+- Layer options for [up-layer=new] talk about position only for popups, but it also affects drawer
 
 - Offer a way to expand a template into an element
   - Like <up-defer class=".container-from-template" up-fragment="#template">, but without the need to have a good selector
@@ -23,11 +24,9 @@ Backlog
 - affix() and createSelector() cannot create an attribute called [content] or [text]
   - e.g. for meta[content]
   - Maybe force all attrs into { attrs } ?
+    - Or allow { attrs }
 
 - Test that we don't process { abort } when the RenderPass was aborted by { guardEvent } or { confirm }
-
-- Test if unpoly-rails always forwards empty objects or arrays
-  - Redirected to http://127.0.0.1:37565/?_up_context_changes=%7B%7D&_up_events=%5B%5D
 
 - I'm not sure if opening a layer with local content honors { abort }
   - E.g. start loading content on the base layer's main
@@ -77,7 +76,10 @@ Backlog
         })
       }
       ```    
-    
+
+- Improve active classes, loading classes    
+  - Tailwind users would love [up-active-class] [up-loading-class]
+  - Maybe allow a function for activeClasses, feedbackClasses
 
 - Make a doc page for custom elements (unpoly/unpoly#688)
   - Explain that you can just use defineElement
@@ -965,4 +967,8 @@ Icebox / Tar pits
 - Think whether we want to support JSON => HTML preprocessing
   - This would something like <a href="/foo.json" up-convert-with-template="#foo">
   - This would need to disable history
+- Always run callbacks with `<script>` so users can use `strict-dynamic`
+  => This would work, but we would violate the spirit of a CSP, even with strict-dynamic
+  => This would execute an attacker's [up-on] callback
+  => Don't do this!
 
