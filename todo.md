@@ -77,6 +77,8 @@ Backlog
       }
       ```    
 
+- Allow to keep unpoly-migrate without logging, e.g. up.migrate.config.logLevel = 'none'
+
 - Improve active classes, loading classes    
   - Tailwind users would love [up-active-class] [up-loading-class]
   - Maybe allow a function for activeClasses, feedbackClasses
