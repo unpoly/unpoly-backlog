@@ -2,6 +2,17 @@ Priority
 ========
 
 
+Improve DX
+==========
+
+- Kill CoffeeScript
+- Kill asyncScript()
+- Move all helpers into a "specs" namespace
+  - Both globals and jasmine.something
+- Rewrite release process to not use Rake or Ruby
+  - Maybe LLM can convert this into an npm script
+
+
 Backlog
 =======
 
