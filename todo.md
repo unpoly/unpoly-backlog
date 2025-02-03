@@ -11,6 +11,8 @@ Improve DX
   - Both globals and jasmine.something
 - Rewrite release process to not use Rake or Ruby
   - Maybe LLM can convert this into an npm script
+- Check where we lost the nesting into "JavaScript functions" in fragment_spec
+- Check for leftover decaffeinate comments
 
 
 Backlog
