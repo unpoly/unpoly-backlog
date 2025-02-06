@@ -1,6 +1,31 @@
 Priority
 ========
 
+- Consider making the docs full-width
+  - Also replace the breadcrumb with a link that opens the drawer
+
+- Support [up-fail] for [up-poll]
+  - Add to docs
+  - Also document { fail } for up.reload() explicitly
+- Should we update [up-source] for failed requests?
+
+- Remove "Option 3" in /csp
+
+- Layer options for [up-layer=new] talk about position only for popups, but it also affects drawer
+
+- Test that we don't process { abort } when the RenderPass was aborted by { guardEvent } or { confirm }
+
+- I'm not sure if opening a layer with local content honors { abort }
+  - E.g. start loading content on the base layer's main
+  - Open a layer from a string (which makes a request with bindFragments: [base-layer's main])
+  - Content on base layer is still loading
+  
+- Support X-Up-Open-Layer: { type, ...VISUAL_OPTIONS }
+  - Works for both success and failed response. There is no X-Up-Fail-Layer option.
+  - Ensure that X-Up-Target also works for both success and failed response. There is no X-Up-Fail-Target header in the response.
+  - Support unpoly-rails (up.layer.open())
+  - Recommend to also set X-Up-Target
+
 
 
 Backlog
@@ -9,16 +34,11 @@ Backlog
 - Think about a way to optimistically render an action that dismisses an overlay and changes something in the background
   - What about dismiss callbacks?
 
-- Remove "Option 3" in /csp
-
-- Layer options for [up-layer=new] talk about position only for popups, but it also affects drawer
-
 - Offer a way to expand a template into an element
   - Like <up-defer class=".container-from-template" up-fragment="#template">, but without the need to have a good selector
   - Can we somehow say that we want to replace ourselves, even when the replacement has a different selector?
     - HTML-Importe waren   <link rel="import" href="http://example.com/elements.html">
-
-- Get rid of CoffeeScript everywhere. Maybe ChatGPT can help with the formatting.
+  - There is no unobtrusive way to do this
 
 - Remove commented-out code in up.util
 
@@ -26,13 +46,6 @@ Backlog
   - e.g. for meta[content]
   - Maybe force all attrs into { attrs } ?
     - Or allow { attrs }
-
-- Test that we don't process { abort } when the RenderPass was aborted by { guardEvent } or { confirm }
-
-- I'm not sure if opening a layer with local content honors { abort }
-  - E.g. start loading content on the base layer's main
-  - Open a layer from a string (which makes a request with bindFragments: [base-layer's main])
-  - Content on base layer is still loading
 
 - Rework compiler docs (unpoly/unpoly#688)
   - Extract docs from up.compiler() into its own guide page /compilers "Initializing JavaScript" (with compilers)
@@ -80,9 +93,9 @@ Backlog
 
 - Allow to keep unpoly-migrate without logging, e.g. up.migrate.config.logLevel = 'none'
 
-- Improve active classes, loading classes    
+- Improve active classes, loading classes
   - Tailwind users would love [up-active-class] [up-loading-class]
-  - Maybe allow a function for activeClasses, feedbackClasses
+  - Maybe allow a function for config.activeClasses, config.loadingClasses
 
 - Make a doc page for custom elements (unpoly/unpoly#688)
   - Explain that you can just use defineElement
@@ -99,43 +112,30 @@ Backlog
 - I somehow expected up.fragment.config.runScripts to be in up.script.config.runScripts
   - We would need a new name like up.script.config.runFragmentScripts
   
-- Open/close of modal breaks infinite scroll
-  - Opening an overlay aborts the background layer
-    - IntersectionObserver disconnects on abort
-    
 - Add Rust install to https://github.com/unpoly/unpoly-site/tree/master/source/install
 
-- Callback to run before any render pass (see davidsums popup discussion)
-  - up:render:prepare or up:render:setup or up:render:options
-  - Would we rename up:fragment events to get pressure off the up:fragment namespace?
-    - up:render:load
-    - up:render:loaded
-    - up:render:keep       :(
-    - up:render:offline
-    - up:render:inserted   :(
-    - up:render:hungry     :(
-    - This would leave up:fragment:poll
-
-- Consider a callback to manipulate render options before interactive element
+- Consider a callback to manipulate render options before interaction
   - Either element-specific ([up-on-follow], [up-on-submit], etc.)
   - Or generic ([up-on-use="..."], [up-setup="..."], [up-before], [up-guard], [up-on-run] [up-on-activate="..."], [up-on-start])
     - Use is short, but conflicts with [up-use-data] and does not work for polling
+  - Callback to run before any render pass (see davidsums popup discussion)
+    - up:render:prepare or up:render:setup or up:render:options
+    - Would we rename up:fragment events to get pressure off the up:fragment namespace?
+      - up:render:load
+      - up:render:loaded
+      - up:render:keep       :(
+      - up:render:offline
+      - up:render:inserted   :(
+      - up:render:hungry     :(
+      - This would leave up:fragment:poll
 
-- Open overlays from template selectors
-
-- Support X-Up-Open-Layer: { type, ...VISUAL_OPTIONS }
-  - Works for both success and failed response. There is no X-Up-Fail-Layer option.
-  - Ensure that X-Up-Target also works for both success and failed response. There is no X-Up-Fail-Target header in the response.
-  - Support unpoly-rails (up.layer.open())
-  - Recommend to also set X-Up-Target
-  
 - FM required overriding of history from the server
   - They really wanted { navigate }, no?
     - But can we really change navigation options at that point?
 
 - Remove params parsing for up.watch(), support formdata, ElementInternals
   - We can just parse the entire form with new FormData(), then filter on contained elements
-    - We will still need to know form fields for that
+    - We will still need to know form fields for that, or filter on [name]
   - Replace up.Params.fromForm() with `new this(new FormData(form))`
 
 - Consider [up-zone] as an origin-aware lookup without further logic
