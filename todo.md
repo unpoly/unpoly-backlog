@@ -1,12 +1,13 @@
 Priority
 ========
 
-- Consider making the docs full-width
-  - Also replace the breadcrumb with a link that opens the drawer
-
 - Support [up-fail] for [up-poll]
   - Add to docs
   - Also document { fail } for up.reload() explicitly
+  
+- [up-disable-for] [up-enable-for]
+  - https://github.com/unpoly/unpoly/discussions/682
+ 
 - Should we update [up-source] for failed requests?
 
 - Remove "Option 3" in /csp
@@ -25,6 +26,14 @@ Priority
   - Ensure that X-Up-Target also works for both success and failed response. There is no X-Up-Fail-Target header in the response.
   - Support unpoly-rails (up.layer.open())
   - Recommend to also set X-Up-Target
+
+
+Docs rework
+===========
+
+- Consider making the docs full-width
+  - Also replace the breadcrumb with a link that opens the drawer
+  - Move the entire search to Algolia
 
 
 
