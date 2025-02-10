@@ -1,14 +1,18 @@
 Priority
 ========
 
-- Support [up-fail] for [up-poll]
-  - Add to docs
-  - Also document { fail } for up.reload() explicitly
-  
 - [up-disable-for] [up-enable-for]
   - https://github.com/unpoly/unpoly/discussions/682
- 
-- Should we update [up-source] for failed requests?
+  
+- Consider marking "destroying" elements as [inert] so they cannot receive focus
+  - But make sure we still process { focus: 'keep' }
+  - We no longer need [aria-hidden=false]
+
+- Support X-Up-Open-Layer: { type, ...VISUAL_OPTIONS }
+  - Works for both success and failed response. There is no X-Up-Fail-Layer option.
+  - Ensure that X-Up-Target also works for both success and failed response. There is no X-Up-Fail-Target header in the response.
+  - Support unpoly-rails (up.layer.open())
+  - Recommend to also set X-Up-Target
 
 - Remove "Option 3" in /csp
 
@@ -21,11 +25,7 @@ Priority
   - Open a layer from a string (which makes a request with bindFragments: [base-layer's main])
   - Content on base layer is still loading
   
-- Support X-Up-Open-Layer: { type, ...VISUAL_OPTIONS }
-  - Works for both success and failed response. There is no X-Up-Fail-Layer option.
-  - Ensure that X-Up-Target also works for both success and failed response. There is no X-Up-Fail-Target header in the response.
-  - Support unpoly-rails (up.layer.open())
-  - Recommend to also set X-Up-Target
+
 
 
 Docs rework
