@@ -3,14 +3,12 @@ Priority
 
 - [up-disable-for] [up-enable-for]
   - https://github.com/unpoly/unpoly/discussions/682
-  
-- Consider marking "destroying" elements as [inert] so they cannot receive focus
-  - But make sure we still process { focus: 'keep' }
-  - We no longer need [aria-hidden=false]
 
 - Support X-Up-Open-Layer: { type, ...VISUAL_OPTIONS }
   - Works for both success and failed response. There is no X-Up-Fail-Layer option.
   - Ensure that X-Up-Target also works for both success and failed response. There is no X-Up-Fail-Target header in the response.
+    - Test this
+    - Add this to docs
   - Support unpoly-rails (up.layer.open())
   - Recommend to also set X-Up-Target
 
@@ -18,13 +16,7 @@ Priority
 
 - Layer options for [up-layer=new] talk about position only for popups, but it also affects drawer
 
-- Test that we don't process { abort } when the RenderPass was aborted by { guardEvent } or { confirm }
 
-- I'm not sure if opening a layer with local content honors { abort }
-  - E.g. start loading content on the base layer's main
-  - Open a layer from a string (which makes a request with bindFragments: [base-layer's main])
-  - Content on base layer is still loading
-  
 
 
 
@@ -39,6 +31,13 @@ Docs rework
 
 Backlog
 =======
+
+- Test that we don't process { abort } when the RenderPass was aborted by { guardEvent } or { confirm }
+
+- I'm not sure if opening a layer with local content honors { abort }
+  - E.g. start loading content on the base layer's main
+  - Open a layer from a string (which makes a request with bindFragments: [base-layer's main])
+  - Content on base layer is still loading
 
 - Think about a way to optimistically render an action that dismisses an overlay and changes something in the background
   - What about dismiss callbacks?
@@ -983,4 +982,11 @@ Icebox / Tar pits
   => This would work, but we would violate the spirit of a CSP, even with strict-dynamic
   => This would execute an attacker's [up-on] callback
   => Don't do this!
+
+- Also have a up:field:switch (up:form:switch?) event
+  - preventable? maybe
+  - example: [readonly]
+  - Expose the dependent container as { target }
+  - expose { values } array, or just { field }
+  => No, we need to selector to detect new fields
 
