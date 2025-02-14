@@ -4,7 +4,7 @@ Priority
 - [up-disable-for] [up-enable-for]
   - https://github.com/unpoly/unpoly/discussions/682
 
-- Support X-Up-Open-Layer: { type, ...VISUAL_OPTIONS }
+[ok] - Support X-Up-Open-Layer: { type, ...VISUAL_OPTIONS }
   - Works for both success and failed response. There is no X-Up-Fail-Layer option.
   - Ensure that X-Up-Target also works for both success and failed response. There is no X-Up-Fail-Target header in the response.
     - Test this
@@ -12,11 +12,11 @@ Priority
   - Support unpoly-rails (up.layer.open())
   - Recommend to also set X-Up-Target
 
-- Remove "Option 3" in /csp
+[ok] - Layer options for [up-layer=new] talk about position only for popups, but it also affects drawer
 
-- Layer options for [up-layer=new] talk about position only for popups, but it also affects drawer
+[ok] - Support up.migrate.config.logLevel = 'none'
 
-
+- Support more options for up.validate(), up.submit(), up.follow()
 
 
 
