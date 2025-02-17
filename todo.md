@@ -5,18 +5,15 @@ Priority
   - https://github.com/unpoly/unpoly/discussions/682
 
 [ok] - Support X-Up-Open-Layer: { type, ...VISUAL_OPTIONS }
-  - Works for both success and failed response. There is no X-Up-Fail-Layer option.
-  - Ensure that X-Up-Target also works for both success and failed response. There is no X-Up-Fail-Target header in the response.
-    - Test this
-    - Add this to docs
-  - Support unpoly-rails (up.layer.open())
-  - Recommend to also set X-Up-Target
+  [ok] - Support unpoly-rails (up.layer.open())
+  - Document that the target resets to :main
 
 [ok] - Layer options for [up-layer=new] talk about position only for popups, but it also affects drawer
 
 [ok] - Support up.migrate.config.logLevel = 'none'
 
-- Support more options for up.validate(), up.submit(), up.follow()
+- Copy important options from up.render() into up.validate(), up.submit(), up.follow()
+- Copy important attributes from [up-follow] into [up-submit]
 
 
 
