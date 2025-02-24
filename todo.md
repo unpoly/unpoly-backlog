@@ -15,7 +15,13 @@ Priority
 - Copy important options from up.render() into up.validate(), up.submit(), up.follow()
 - Copy important attributes from [up-follow] into [up-submit]
 
+- Revert the autoFail change
+  - We don't do this for other global defaults, like expireCache, evictCache
+  
+- X-Up-Origin-Mode ?
 
+- In up:request:load, explain that request headers may still be changed
+  
 
 Docs rework
 ===========
@@ -28,6 +34,10 @@ Docs rework
 
 Backlog
 =======
+
+- Consider hiding the focus ring for main elements by default
+
+- Consider validations to not expire the cache (do they even?)
 
 - Test that we don't process { abort } when the RenderPass was aborted by { guardEvent } or { confirm }
 
