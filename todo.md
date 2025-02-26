@@ -21,6 +21,21 @@ Priority
 - X-Up-Origin-Mode ?
 
 - In up:request:load, explain that request headers may still be changed
+
+- Default "[options.layer='origin current']" should use commas, no?
+
+- Go through all feature visibilities... up.fragment.* functions in particular
+
+- Implement up:form:switch event by refactoring the way switcher/switchee lookup works
+
+- Consider a way to "panic" out with a developer error
+  - Replace entire <html>
+  - Accept that JS stays loaded
+  - Reset Unpoly so links aren't followed
+  
+- Do we support a { focusVisible } option that is not documented?
+
+- Can we document options.fail* ?
   
 
 Docs rework
