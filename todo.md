@@ -36,6 +36,9 @@ Priority
 - Do we support a { focusVisible } option that is not documented?
 
 - Can we document options.fail* ?
+
+- [up-scroll="end"]
+- [up-scroll="123"]
   
 
 Docs rework
