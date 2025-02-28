@@ -12,8 +12,14 @@ Priority
 
 [ok] - Support up.migrate.config.logLevel = 'none'
 
-- Copy important options from up.render() into up.validate(), up.submit(), up.follow()
-- Copy important attributes from [up-follow] into [up-submit]
+- Docs rework
+  - Copy important options from up.render() into up.validate(), up.submit(), up.follow()
+  - Copy important attributes from [up-follow] into [up-submit]
+  - Remove redundant @params-note
+  - Consider merging pages/attrs and pages/options into just params/
+  - Also go through all config options and group those (didn#t find because @property)
+  - up.layer.config should refer to @like up.layer.open in many cases
+  - In up.layer.open, does { context } go into "request" or into "customization"?
 
 - Revert the autoFail change
   - We don't do this for other global defaults, like expireCache, evictCache
