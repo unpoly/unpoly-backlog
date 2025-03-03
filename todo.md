@@ -19,7 +19,10 @@ Priority
   - Consider merging pages/attrs and pages/options into just params/
   - Also go through all config options and group those (didn#t find because @property)
   - up.layer.config should refer to @like up.layer.open in many cases
-  - In up.layer.open, does { context } go into "request" or into "customization"?
+  - follow needs "up-context" in "client state"
+    - But check who includes up-follow/client-state and does not want [up-context]
+    - And check who includes up-follow/layer and would lose [up-context]
+      - [up-layer=new]?
 
 - Revert the autoFail change
   - We don't do this for other global defaults, like expireCache, evictCache
@@ -45,6 +48,19 @@ Priority
 
 - [up-scroll="end"]
 - [up-scroll="123"]
+
+- Cannot find layer to render in
+  - https://github.com/unpoly/unpoly/discussions/719
+  
+- Don't react on mousedown if we observed `touchstart` before
+  - https://github.com/unpoly/unpoly/issues/721
+  - Note that this doesn't work on touch devices
+  
+- Provide an .up-hash-target or similiar to target the current #hash better than :target does
+
+- [up-poll] should support more ways to control client-state
+  - [up-hungry=true]
+  - [up-keep=true]
   
 
 Docs rework
@@ -58,6 +74,8 @@ Docs rework
 
 Backlog
 =======
+
+- Docs for deferreds (/lazy-loading, up.deferred.load, [up-defer]) should not talk about "placeholder"
 
 - Consider hiding the focus ring for main elements by default
 
