@@ -24,12 +24,15 @@ Priority
     - And check who includes up-follow/layer and would lose [up-context]
       - [up-layer=new]?
 
-- Revert the autoFail change
+[ok] - Revert the autoFail change
   - We don't do this for other global defaults, like expireCache, evictCache
+  - Also revert parsing [up-fail] as a booleanOrString
   
 - X-Up-Origin-Mode ?
 
 - In up:request:load, explain that request headers may still be changed
+  => Make sure this is tested
+  => We actually cover a lot more edge cases, and allow { url, params } to be changed. But make sure we test this before we commit to it in the docs
 
 - Default "[options.layer='origin current']" should use commas, no?
 
@@ -49,19 +52,24 @@ Priority
 - [up-scroll="end"]
 - [up-scroll="123"]
 
-- Cannot find layer to render in
+- [ok] Fix many edge cases with watching forms, [up-keep], external form fields
   - https://github.com/unpoly/unpoly/discussions/719
   
-- Don't react on mousedown if we observed `touchstart` before
+[ok] - On iOS, [up-instant] links are followed when a long-press opens the context menu
   - https://github.com/unpoly/unpoly/issues/721
   - Note that this doesn't work on touch devices
   
 - Provide an .up-hash-target or similiar to target the current #hash better than :target does
+  => Which cases are not covered by :targe?
 
 - [up-poll] should support more ways to control client-state
   - [up-hungry=true]
   - [up-keep=true]
-  
+
+- Support [up-validate-url] and [up-validate-method]
+
+- Site: Chilled links
+ 
 
 Docs rework
 ===========
@@ -75,11 +83,11 @@ Docs rework
 Backlog
 =======
 
+- Install instructions should also cover editor integrations
+
 - Docs for deferreds (/lazy-loading, up.deferred.load, [up-defer]) should not talk about "placeholder"
 
 - Consider hiding the focus ring for main elements by default
-
-- Consider validations to not expire the cache (do they even?)
 
 - Test that we don't process { abort } when the RenderPass was aborted by { guardEvent } or { confirm }
 
@@ -1038,4 +1046,6 @@ Icebox / Tar pits
   - Expose the dependent container as { target }
   - expose { values } array, or just { field }
   => No, we need to selector to detect new fields
+- Make validations not expire the cache
+  - This may be hard to do when we batch multiple POST requests and one of them validates
 
