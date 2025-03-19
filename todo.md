@@ -69,6 +69,14 @@ Priority
 - Support [up-validate-url] and [up-validate-method]
 
 - Site: Chilled links
+
+- Docs should clarify that up:fragment:inserted is emitted after compilation
+
+- Rename up:fragment:destroying to up:fragment:destroy and publish as @experimental
+  - It is more useful than :destroyed
+
+- up.hello() should not re-emit inserted on the exact same element
+  - We can't do this perfectly, but for the exact same args we can
  
 
 Docs rework
