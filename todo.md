@@ -3,6 +3,8 @@ Priority
 
 - [up-disable-for] [up-enable-for]
   - https://github.com/unpoly/unpoly/discussions/682
+  
+- Rework FieldTracker to a more generic up.fragment.trackAll(selector)
 
 [ok] - Support X-Up-Open-Layer: { type, ...VISUAL_OPTIONS }
   [ok] - Support unpoly-rails (up.layer.open())
@@ -11,6 +13,12 @@ Priority
 [ok] - Layer options for [up-layer=new] talk about position only for popups, but it also affects drawer
 
 [ok] - Support up.migrate.config.logLevel = 'none'
+
+- fixParserImage doesn't see [nonce]
+
+- Rewrite script[nonce] in new content
+  - In the head
+  - In the body
 
 - Docs rework
   - Copy important options from up.render() into up.validate(), up.submit(), up.follow()
@@ -77,6 +85,8 @@ Priority
 
 - up.hello() should not re-emit inserted on the exact same element
   - We can't do this perfectly, but for the exact same args we can
+  
+
  
 
 Docs rework
