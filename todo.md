@@ -86,7 +86,7 @@ Priority
 - up.hello() should not re-emit inserted on the exact same element
   - We can't do this perfectly, but for the exact same args we can
   
-
+- up.fragment.get() could delete :maybe
  
 
 Docs rework
