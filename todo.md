@@ -1,10 +1,10 @@
 Priority
 ========
 
-- [up-disable-for] [up-enable-for]
+[ok] - [up-disable-for] [up-enable-for]
   - https://github.com/unpoly/unpoly/discussions/682
   
-- Rework FieldTracker to a more generic up.fragment.trackAll(selector)
+[ok] - Rework FieldTracker to a more generic up.fragment.trackAll(selector)
 
 [ok] - Support X-Up-Open-Layer: { type, ...VISUAL_OPTIONS }
   [ok] - Support unpoly-rails (up.layer.open())
@@ -13,12 +13,6 @@ Priority
 [ok] - Layer options for [up-layer=new] talk about position only for popups, but it also affects drawer
 
 [ok] - Support up.migrate.config.logLevel = 'none'
-
-- fixParserImage doesn't see [nonce]
-
-- Rewrite script[nonce] in new content
-  - In the head
-  - In the body
 
 - Docs rework
   - Copy important options from up.render() into up.validate(), up.submit(), up.follow()
@@ -31,6 +25,9 @@ Priority
     - But check who includes up-follow/client-state and does not want [up-context]
     - And check who includes up-follow/layer and would lose [up-context]
       - [up-layer=new]?
+  - Can we document options.fail* ?
+  - Go through all feature visibilities... up.fragment.* functions in particular
+  - Default "[options.layer='origin current']" should use commas, no?
 
 [ok] - Revert the autoFail change
   - We don't do this for other global defaults, like expireCache, evictCache
@@ -42,23 +39,24 @@ Priority
   => Make sure this is tested
   => We actually cover a lot more edge cases, and allow { url, params } to be changed. But make sure we test this before we commit to it in the docs
 
-- Default "[options.layer='origin current']" should use commas, no?
+- Test and document that up:fragment:inserted is emitted after compilation
 
-- Go through all feature visibilities... up.fragment.* functions in particular
-
-- Implement up:form:switch event by refactoring the way switcher/switchee lookup works
+- [ok] Implement up:form:switch event by refactoring the way switcher/switchee lookup works
 
 - Consider a way to "panic" out with a developer error
   - Replace entire <html>
   - Accept that JS stays loaded
   - Reset Unpoly so links aren't followed
+  - Ask ED if this would help his case
   
 - Do we support a { focusVisible } option that is not documented?
+  - It is supported and documented by up.focus()
+  - Unknown if it is passed on by up.render()
+  - No attribute is parsed on forms or links
 
-- Can we document options.fail* ?
-
-- [up-scroll="end"]
-- [up-scroll="123"]
+- New scroll options
+  - [up-scroll="end"]
+  - [up-scroll="123"]
 
 - [ok] Fix many edge cases with watching forms, [up-keep], external form fields
   - https://github.com/unpoly/unpoly/discussions/719
@@ -66,9 +64,6 @@ Priority
 [ok] - On iOS, [up-instant] links are followed when a long-press opens the context menu
   - https://github.com/unpoly/unpoly/issues/721
   - Note that this doesn't work on touch devices
-  
-- Provide an .up-hash-target or similiar to target the current #hash better than :target does
-  => Which cases are not covered by :targe?
 
 - [up-poll] should support more ways to control client-state
   - [up-hungry=true]
@@ -78,16 +73,24 @@ Priority
 
 - Site: Chilled links
 
-- Docs should clarify that up:fragment:inserted is emitted after compilation
-
-- Rename up:fragment:destroying to up:fragment:destroy and publish as @experimental
-  - It is more useful than :destroyed
-
 - up.hello() should not re-emit inserted on the exact same element
   - We can't do this perfectly, but for the exact same args we can
+
+[ok] - Support form[up-accept], form[up-dismiss]
+  - Form params are the close value
   
-- up.fragment.get() could delete :maybe
+- Do we want to support up.fragment.sync() ?
+  - Maybe we want an up:fragment:changed event so swaps won't cause SelectorTracker to sync twice
+
+- Rename [up-switch-scope] to [up-switch-region]
+  - The concept of "region" already appears in the docs, but scope does not
  
+- fixParserImage doesn't see [nonce]
+
+- Rewrite script[nonce] in new content
+  - In the head
+  - In the body
+
 
 Docs rework
 ===========
@@ -100,6 +103,12 @@ Docs rework
 
 Backlog
 =======
+
+ 
+- Provide an .up-hash-target or similiar to target the current #hash better than :target does
+  => Which cases are not covered by :target?
+
+- up.fragment.get() could delete :maybe
 
 - Install instructions should also cover editor integrations
 
