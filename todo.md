@@ -91,6 +91,19 @@ Priority
   - In the head
   - In the body
 
+- Back/forward navigation should print a purple bubble in the log
+
+- Back/forward navigation restores focus should it be visible?
+
+- Check if [up-switch] works on a radio container
+  - Check tests
+  - Update docs
+
+- Support up.form.config.batchValidate = true
+
+- Docs
+  - Validation batching is documented under up.validate() only
+
 
 Docs rework
 ===========
