@@ -39,7 +39,7 @@ Priority
   => Make sure this is tested
   => We actually cover a lot more edge cases, and allow { url, params } to be changed. But make sure we test this before we commit to it in the docs
 
-- Test and document that up:fragment:inserted is emitted after compilation
+[ok] - Test and document that up:fragment:inserted is emitted *after* compilation
 
 - [ok] Implement up:form:switch event by refactoring the way switcher/switchee lookup works
 
@@ -73,14 +73,11 @@ Priority
 
 - Site: Chilled links
 
-- up.hello() should not re-emit inserted on the exact same element
+[ok] - up.hello() should not re-emit inserted on the exact same element
   - We can't do this perfectly, but for the exact same args we can
 
 [ok] - Support form[up-accept], form[up-dismiss]
   - Form params are the close value
-  
-- Do we want to support up.fragment.sync() ?
-  - Maybe we want an up:fragment:changed event so swaps won't cause SelectorTracker to sync twice
 
 - Rename [up-switch-scope] to [up-switch-region]
   - The concept of "region" already appears in the docs, but scope does not
@@ -98,8 +95,10 @@ Priority
 - Check if [up-switch] works on a radio container
   - Check tests
   - Update docs
+  - Maybe remove workaround
+  - Maybe warn if [up-switch], [up-watch], [up-validate], [up-autosubmit] (=> watch) is called on a radio button
 
-- Support up.form.config.batchValidate = true
+[ok] - Support up.form.config.batchValidate = true
 
 - Docs
   - Validation batching is documented under up.validate() only
@@ -117,7 +116,10 @@ Docs rework
 Backlog
 =======
 
- 
+   
+- Do we want to support up.fragment.sync() ?
+  - Maybe we want an up:fragment:changed event so swaps won't cause SelectorTracker to sync twice
+
 - Provide an .up-hash-target or similiar to target the current #hash better than :target does
   => Which cases are not covered by :target?
 
