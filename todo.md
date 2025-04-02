@@ -33,7 +33,9 @@ Priority
   - We don't do this for other global defaults, like expireCache, evictCache
   - Also revert parsing [up-fail] as a booleanOrString
   
-- X-Up-Origin-Mode ?
+- [ok] X-Up-Origin-Mode ?
+
+- (unpoly-rails): Add support for up.origin_layer.mode, .overlay?, .root?
 
 - In up:request:load, explain that request headers may still be changed
   => Make sure this is tested
@@ -48,15 +50,19 @@ Priority
   - Accept that JS stays loaded
   - Reset Unpoly so links aren't followed
   - Ask ED if this would help his case
+  => Maybe improve card by setting document.documentElement.innerHTML = response.text
+    => The DOM parser would discard the duplicate <html>
+  - Could this be `X-Up-Target: html` from the server?
+    - Maybe also close layers?
+    - Maybe X-Up-Panic: true
   
 - Do we support a { focusVisible } option that is not documented?
   - It is supported and documented by up.focus()
   - Unknown if it is passed on by up.render()
   - No attribute is parsed on forms or links
 
-- New scroll options
-  - [up-scroll="end"]
-  - [up-scroll="123"]
+- [ok] New scroll options
+  - [up-scroll="bottom"]
 
 - [ok] Fix many edge cases with watching forms, [up-keep], external form fields
   - https://github.com/unpoly/unpoly/discussions/719
@@ -69,7 +75,7 @@ Priority
   - [up-hungry=true]
   - [up-keep=true]
 
-- Support [up-validate-url] and [up-validate-method]
+[ok] - Support [up-validate-url] and [up-validate-method]
 
 - Site: Chilled links
 
@@ -79,7 +85,7 @@ Priority
 [ok] - Support form[up-accept], form[up-dismiss]
   - Form params are the close value
 
-- Rename [up-switch-scope] to [up-switch-region]
+[ok] - Rename [up-switch-scope] to [up-switch-region]
   - The concept of "region" already appears in the docs, but scope does not
  
 - fixParserImage doesn't see [nonce]
@@ -102,6 +108,9 @@ Priority
 
 - Docs
   - Validation batching is documented under up.validate() only
+  
+- up:fragment:loaded docs
+  - Make sure the difference between preventDefault() and skip() are clearly explained
 
 
 Docs rework
