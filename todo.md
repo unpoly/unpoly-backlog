@@ -45,21 +45,7 @@ Priority
 
 - [ok] Implement up:form:switch event by refactoring the way switcher/switchee lookup works
 
-- Consider a way to "panic" out with a developer error
-  - Replace entire <html>
-  - Accept that JS stays loaded
-  - Reset Unpoly so links aren't followed
-  - Ask ED if this would help his case
-  => Maybe improve card by setting document.documentElement.innerHTML = response.text
-    => The DOM parser would discard the duplicate <html>
-  - Could this be `X-Up-Target: html` from the server?
-    - Maybe also close layers?
-    - Maybe X-Up-Panic: true
-  
-- Do we support a { focusVisible } option that is not documented?
-  - It is supported and documented by up.focus()
-  - Unknown if it is passed on by up.render()
-  - No attribute is parsed on forms or links
+[ok] - Support { focusVisible } option, [up-focus-visible] attribute
 
 - [ok] New scroll options
   - [up-scroll="bottom"]
@@ -93,10 +79,9 @@ Priority
 - Rewrite script[nonce] in new content
   - In the head
   - In the body
+  - Check that up:assets:changed either compares the changed nonce, or disregards the nonce
 
-- Back/forward navigation should print a purple bubble in the log
-
-- Back/forward navigation restores focus should it be visible?
+[ok] - Back/forward navigation should print a purple bubble in the log
 
 - Check if [up-switch] works on a radio container
   - Check tests
@@ -125,6 +110,10 @@ Docs rework
 Backlog
 =======
 
+- Back/forward navigation restores focus should it be visible?
+  => As always it is redundant for mouse users
+  => This is not easily detectable, as keydown is fired *after* popstate
+  => We would need to delay popstate handling by a task
    
 - Do we want to support up.fragment.sync() ?
   - Maybe we want an up:fragment:changed event so swaps won't cause SelectorTracker to sync twice
@@ -1099,4 +1088,16 @@ Icebox / Tar pits
   => No, we need to selector to detect new fields
 - Make validations not expire the cache
   - This may be hard to do when we batch multiple POST requests and one of them validates
+- Consider a way to "panic" out with a developer error
+  - Replace entire <html>
+  - Accept that JS stays loaded
+  - Reset Unpoly so links aren't followed
+  - Ask ED if this would help his case
+    => No, he wanted to show a user-facing error that keeps that layout intact
+  => Maybe improve card by setting document.documentElement.innerHTML = response.text
+    => The DOM parser would discard the duplicate <html>
+  - Could this be `X-Up-Target: html` from the server?
+    - Maybe also close layers?
+    - Maybe X-Up-Panic: true
+  => This does not work with nonce-based CSP, since BetterErrors does not use nonces
 
