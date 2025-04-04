@@ -1,6 +1,18 @@
 Priority
 ========
 
+- strict-dynamic vs. runScripts
+  - Add warning under runScripts = true
+  - Offer a way to only allow runScripts for nonces, or external pages
+    - Should this stay a setting separate from scriptSelectors ?
+      - We need something to disable, repair or re-nonce scripts
+  - default to runScripts = false
+  - Warn when we see a strict-dynamic response header and runScripts is true
+  
+- Users cannot use { evictCache: '*', cache: true } to clear the cache and re-populate it
+  - I think we want to process evictCache und expireCache both before and after the request
+  - Possibly set server-provided evictCache / expireCache on the response instead
+
 [ok] - [up-disable-for] [up-enable-for]
   - https://github.com/unpoly/unpoly/discussions/682
   
@@ -79,7 +91,16 @@ Priority
 - Rewrite script[nonce] in new content
   - In the head
   - In the body
-  - Check that up:assets:changed either compares the changed nonce, or disregards the nonce
+  - Check that up:assets:changed either compares the changed nonce
+    - or disregards the nonce for the comparison?
+      - but then the user would need to rewrite it when they decide to insert the asset
+    - The comparison uses outerHTML, so the nonce is masked anyway
+    - We do need to set { nonce } in case the user decides to insert
+  
+- Response#cspNonces should be scriptCSPNonces
+- Response#cspNonces should include default-src nonces if no script-src is given
+
+- Docs: Document that no style nonces are rewritten
 
 [ok] - Back/forward navigation should print a purple bubble in the log
 
@@ -96,6 +117,10 @@ Priority
   
 - up:fragment:loaded docs
   - Make sure the difference between preventDefault() and skip() are clearly explained
+
+- Should a { cache: false } setting propagate to deferred pages?
+  - Deferreds can already say whether they want to use the cache
+  - What about polling a fragment with 3 deferreds?
 
 
 Docs rework
