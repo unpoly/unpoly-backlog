@@ -8,6 +8,7 @@ Priority
       - We need something to disable, repair or re-nonce scripts
   - default to runScripts = false
   - Warn when we see a strict-dynamic response header and runScripts is true
+    - "Using script-src: 'strict-dynamic' with up.fragment.config.runScripts = true will run untrusted scripts in fragments"
   
 - Users cannot use { evictCache: '*', cache: true } to clear the cache and re-populate it
   - I think we want to process evictCache und expireCache both before and after the request
@@ -101,6 +102,7 @@ Priority
 - Response#cspNonces should include default-src nonces if no script-src is given
 
 - Docs: Document that no style nonces are rewritten
+- Docs: Document that no script-src-elem and script-src-attr nonces are supported
 
 [ok] - Back/forward navigation should print a purple bubble in the log
 
@@ -121,6 +123,8 @@ Priority
 - Should a { cache: false } setting propagate to deferred pages?
   - Deferreds can already say whether they want to use the cache
   - What about polling a fragment with 3 deferreds?
+  
+- Think about predicting events for preload (pointer event getPredictedEvents())
 
 
 Docs rework
@@ -134,6 +138,8 @@ Docs rework
 
 Backlog
 =======
+
+- Try to not set any [style] attribute ever to support strict CSS CSPs
 
 - Back/forward navigation restores focus should it be visible?
   => As always it is redundant for mouse users
