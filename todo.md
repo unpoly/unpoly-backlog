@@ -2,14 +2,16 @@ Priority
 ========
 
 - strict-dynamic vs. runScripts
-  - Add warning under runScripts = true
-  - Offer a way to only allow runScripts for nonces, or external pages
-    - Should this stay a setting separate from scriptSelectors ?
-      - We need something to disable, repair or re-nonce scripts
-  - default to runScripts = false
-  - Warn when we see a strict-dynamic response header and runScripts is true
-    - "Using script-src: 'strict-dynamic' with up.fragment.config.runScripts = true will run untrusted scripts in fragments"
+  [ok] - default to runScripts = false
+  [ok] - When I see a strict-dynamic header with runScripts=true
+    [ok] - Check nonces in scripts that we execute
+    [ok] - Don't run scripts without nonces or with incorrect nonces or when no page nonce is known
+    [ok] - Allow to to override everything with runScripts: fn(ScriptElement): boolean
   
+- Print a warning "Not running %o with a 'strict-dynamic' CSP. Add a nonce."
+
+- Decide whether we want to keep { runScripts: true } or require something like { runScripts: 'auto' }
+
 - Users cannot use { evictCache: '*', cache: true } to clear the cache and re-populate it
   - I think we want to process evictCache und expireCache both before and after the request
   - Possibly set server-provided evictCache / expireCache on the response instead
@@ -26,6 +28,8 @@ Priority
 [ok] - Layer options for [up-layer=new] talk about position only for popups, but it also affects drawer
 
 [ok] - Support up.migrate.config.logLevel = 'none'
+
+- Test and document that up.fragment.config.runScripts does not affect event.newAssets in up:assets:changed
 
 - Docs rework
   - Copy important options from up.render() into up.validate(), up.submit(), up.follow()
