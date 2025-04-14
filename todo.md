@@ -1,20 +1,34 @@
 Priority
 ========
 
-- strict-dynamic vs. runScripts
+Implemented (needs docs and CHANGELOG)
+--------------------------------------
+
+[ok] - Revert the autoFail change
+  - We don't do this for other global defaults, like expireCache, evictCache
+  - Also revert parsing [up-fail] as a booleanOrString
+  
+- [ok] X-Up-Origin-Mode ?
+
+[ok] - strict-dynamic vs. runScripts
   [ok] - default to runScripts = false
   [ok] - When I see a strict-dynamic header with runScripts=true
     [ok] - Check nonces in scripts that we execute
     [ok] - Don't run scripts without nonces or with incorrect nonces or when no page nonce is known
     [ok] - Allow to to override everything with runScripts: fn(ScriptElement): boolean
-  
-- Print a warning "Not running %o with a 'strict-dynamic' CSP. Add a nonce."
+  - Fix unpoly-migrate message when runScripts is not set
 
-- Decide whether we want to keep { runScripts: true } or require something like { runScripts: 'auto' }
-
-- Users cannot use { evictCache: '*', cache: true } to clear the cache and re-populate it
+[ok] - Users cannot use { evictCache: '*', cache: true } to clear the cache and re-populate it
+  - It would read from cache and then evict * (except the new request)
   - I think we want to process evictCache und expireCache both before and after the request
   - Possibly set server-provided evictCache / expireCache on the response instead
+    - But when do we apply the configured default?
+      - I think with the request?
+        - It could even be a request default
+  - We would need to remove { X-Up-Expire-Cache: false } and up.cache.expire(false)
+    - Make a migrate hook for up:request:loaded that prints a warning and deletes the header
+  - config.expireCache and config.evictCache could no longer take a response
+    - Make a migrate hook that checks if a function takes 2 arguments
 
 [ok] - [up-disable-for] [up-enable-for]
   - https://github.com/unpoly/unpoly/discussions/682
@@ -28,35 +42,6 @@ Priority
 [ok] - Layer options for [up-layer=new] talk about position only for popups, but it also affects drawer
 
 [ok] - Support up.migrate.config.logLevel = 'none'
-
-- Test and document that up.fragment.config.runScripts does not affect event.newAssets in up:assets:changed
-
-- Docs rework
-  - Copy important options from up.render() into up.validate(), up.submit(), up.follow()
-  - Copy important attributes from [up-follow] into [up-submit]
-  - Remove redundant @params-note
-  - Consider merging pages/attrs and pages/options into just params/
-  - Also go through all config options and group those (didn#t find because @property)
-  - up.layer.config should refer to @like up.layer.open in many cases
-  - follow needs "up-context" in "client state"
-    - But check who includes up-follow/client-state and does not want [up-context]
-    - And check who includes up-follow/layer and would lose [up-context]
-      - [up-layer=new]?
-  - Can we document options.fail* ?
-  - Go through all feature visibilities... up.fragment.* functions in particular
-  - Default "[options.layer='origin current']" should use commas, no?
-
-[ok] - Revert the autoFail change
-  - We don't do this for other global defaults, like expireCache, evictCache
-  - Also revert parsing [up-fail] as a booleanOrString
-  
-- [ok] X-Up-Origin-Mode ?
-
-- (unpoly-rails): Add support for up.origin_layer.mode, .overlay?, .root?
-
-- In up:request:load, explain that request headers may still be changed
-  => Make sure this is tested
-  => We actually cover a lot more edge cases, and allow { url, params } to be changed. But make sure we test this before we commit to it in the docs
 
 [ok] - Test and document that up:fragment:inserted is emitted *after* compilation
 
@@ -80,8 +65,6 @@ Priority
 
 [ok] - Support [up-validate-url] and [up-validate-method]
 
-- Site: Chilled links
-
 [ok] - up.hello() should not re-emit inserted on the exact same element
   - We can't do this perfectly, but for the exact same args we can
 
@@ -91,9 +74,9 @@ Priority
 [ok] - Rename [up-switch-scope] to [up-switch-region]
   - The concept of "region" already appears in the docs, but scope does not
  
-- fixParserImage doesn't see [nonce]
+[ok] - fixParserImage doesn't see [nonce]
 
-- Rewrite script[nonce] in new content
+[ok] - Rewrite script[nonce] in new content
   - In the head
   - In the body
   - Check that up:assets:changed either compares the changed nonce
@@ -101,14 +84,54 @@ Priority
       - but then the user would need to rewrite it when they decide to insert the asset
     - The comparison uses outerHTML, so the nonce is masked anyway
     - We do need to set { nonce } in case the user decides to insert
-  
-- Response#cspNonces should be scriptCSPNonces
-- Response#cspNonces should include default-src nonces if no script-src is given
 
-- Docs: Document that no style nonces are rewritten
-- Docs: Document that no script-src-elem and script-src-attr nonces are supported
+[ok] - Response#cspNonces should include default-src nonces if no script-src is given
 
 [ok] - Back/forward navigation should print a purple bubble in the log
+
+[ok] - Support up.form.config.batchValidate = true
+
+[ok] - Better DX
+  - Headless test runner
+  - CI
+  - Contribute without setting up build
+
+[ok] - (unpoly-rails): Deprecate up.cache.expire(false) and fix README
+
+[ok] - (unpoly-rails): Add support for up.origin_layer.mode, .overlay?, .root?
+
+
+Needs implementation
+--------------------
+
+- Hungry elements are not aborted
+  - Test that they are at least aborted once the response is received
+  - Debounce users that rely on onAborted() to detect concurrency should also check isConnected or isAlive
+    - FollowIntent
+    - FormValidator
+    - FieldWatcher
+    - FragmentPolling
+  - FollowIntent can receive a new mouseenter after the initial abort (?)
+    - WB case
+      - Preload element is in a nav, but targets main
+      - I move over the element => mouseenter, delay starts
+      - User clicks, starts loading main
+      - main loads (from cache), up-hungry aborts
+      - for some reason I get another mouseenter
+        - is this for the old or new nav?
+    - Reproducible case
+      - Preload element is in an [up-hungry] nav item, but targets main
+      - I move over the element => mouseenter, delay starts
+      - While the delay is running, I click the nav item.
+      - This aborts main, but not the (hungry) nav item
+      - Because the response is cached, it is loaded faster than the mouseover delay
+      - Main is updated. This also updates the hungry nav.
+      - The preload timer elapses, tries to follow a detached link
+      => Error
+      ==> No, the hungry update would abort the link
+      ==> Ist must be related to revalidation
+      
+- up:request:load should log something else if the request is from cache
 
 - Check if [up-switch] works on a radio container
   - Check tests
@@ -116,13 +139,52 @@ Priority
   - Maybe remove workaround
   - Maybe warn if [up-switch], [up-watch], [up-validate], [up-autosubmit] (=> watch) is called on a radio button
 
-[ok] - Support up.form.config.batchValidate = true
 
-- Docs
-  - Validation batching is documented under up.validate() only
-  
+Smaller doc changes
+--------------------
+
+- Test and document that up.fragment.config.runScripts does not affect event.newAssets in up:assets:changed
+- Default "[options.layer='origin current']" should use commas, no?
+- In up:request:load, explain that request headers may still be changed
+  => Make sure this is tested
+  => We actually cover a lot more edge cases, and allow { url, params } to be changed. But make sure we test this before we commit to it in the docs
+- Site: Chilled links
+- Docs: Validation batching is documented under up.validate() only
 - up:fragment:loaded docs
   - Make sure the difference between preventDefault() and skip() are clearly explained
+- Docs: Document that no style nonces are rewritten
+- Docs: Document that no script-src-elem and script-src-attr nonces are supported
+
+
+Big docs @params rework
+-----------------------
+
+- Copy important options from up.render() into up.validate(), up.submit(), up.follow()
+- Copy important attributes from [up-follow] into [up-submit]
+- Remove redundant @params-note
+- Consider merging pages/attrs and pages/options into just params/
+- Also go through all config options and group those (didn#t find because @property)
+- up.layer.config should refer to @like up.layer.open in many cases
+- follow needs "up-context" in "client state"
+  - But check who includes up-follow/client-state and does not want [up-context]
+  - And check who includes up-follow/layer and would lose [up-context]
+    - [up-layer=new]?
+- Can we document options.fail* ?
+- Go through all feature visibilities... up.fragment.* functions in particular
+
+
+
+
+Docs redesign
+=============
+
+- Consider making the docs full-width
+  - Also replace the breadcrumb with a link that opens the drawer
+  - Move the entire search to Algolia
+
+
+Backlog
+=======
 
 - Should a { cache: false } setting propagate to deferred pages?
   - Deferreds can already say whether they want to use the cache
@@ -130,20 +192,10 @@ Priority
   
 - Think about predicting events for preload (pointer event getPredictedEvents())
 
-
-Docs rework
-===========
-
-- Consider making the docs full-width
-  - Also replace the breadcrumb with a link that opens the drawer
-  - Move the entire search to Algolia
-
-
-
-Backlog
-=======
-
 - Try to not set any [style] attribute ever to support strict CSS CSPs
+  - We can still manipulate element.style.foo
+  - Test if we really need to set the [style] attribute (and remove style-src-attr 'unsafe-inline')
+    - I think a lot of specs use this to style fixture elements
 
 - Back/forward navigation restores focus should it be visible?
   => As always it is redundant for mouse users
