@@ -107,29 +107,16 @@ Needs implementation
 - Hungry elements are not aborted
   - Test that they are at least aborted once the response is received
   - Debounce users that rely on onAborted() to detect concurrency should also check isConnected or isAlive
-    - FollowIntent
-    - FormValidator
+    - It can only happen if after the abort something new triggers the update
+    - [ok] FollowIntent
+    - FormValidator (we just removed this in this update!)
+      => Restore and test
     - FieldWatcher
+      => 
     - FragmentPolling
-  - FollowIntent can receive a new mouseenter after the initial abort (?)
-    - WB case
-      - Preload element is in a nav, but targets main
-      - I move over the element => mouseenter, delay starts
-      - User clicks, starts loading main
-      - main loads (from cache), up-hungry aborts
-      - for some reason I get another mouseenter
-        - is this for the old or new nav?
-    - Reproducible case
-      - Preload element is in an [up-hungry] nav item, but targets main
-      - I move over the element => mouseenter, delay starts
-      - While the delay is running, I click the nav item.
-      - This aborts main, but not the (hungry) nav item
-      - Because the response is cached, it is loaded faster than the mouseover delay
-      - Main is updated. This also updates the hungry nav.
-      - The preload timer elapses, tries to follow a detached link
-      => Error
-      ==> No, the hungry update would abort the link
-      ==> Ist must be related to revalidation
+      - We're waiting for poll
+      - A non-aborting fragment swaps the fragment
+        => No we always abort on swap
       
 - up:request:load should log something else if the request is from cache
 
@@ -138,6 +125,7 @@ Needs implementation
   - Update docs
   - Maybe remove workaround
   - Maybe warn if [up-switch], [up-watch], [up-validate], [up-autosubmit] (=> watch) is called on a radio button
+
 
 
 Smaller doc changes
@@ -181,6 +169,34 @@ Docs redesign
 - Consider making the docs full-width
   - Also replace the breadcrumb with a link that opens the drawer
   - Move the entire search to Algolia
+
+
+Better hash support
+===================
+
+- Repro:
+  https://www.volkswagen-group.com/de/menschenrechte-16108#grundsatzerklaerung-volkswagen-ag
+  Kachel "Berichte" anklicken
+  Browser-"Back" drücken
+  :arrow_right: Man sollte wieder auf der Menschenrechte-Seite sein. Adresszeile passt auch, aber man sieht weiterhin   die "Berichte"-Seite.
+  => menuSpy replaces the state set by Unpoly
+  => Maybe Unpoly needs to track which URL it has navigated to?
+  => But, on going back, how do we realize if we just changed a URL that we are responsible for?
+
+  Ich denke, hier liegt ein wirklicher Fehler in Unpoly vor. Habe MenuSpy jetzt aus. Das Verhalten ist dasselbe:
+  Anker-Link klicken (#hash wird gesetzt)
+  Unpoly-Link woandershin folgen
+  location.back()
+  :arrow_right: Ergebnis:
+  Adresszeile wird korrekt reverted
+  Unpoly scrollt ursprüngliche Position an
+  :warning: Unpoly rendert aber nicht den vorigen Inhalt
+  Das kann man auch in Cards reproduzieren:
+  https://makandracards.com/makandra-besprechungen/625053-besprechung-14-04-2025
+  Überschriften-Anker-Link klicken
+  Beliebigem anderen Link folgen
+  Browser-Back
+
 
 
 Backlog
