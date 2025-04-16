@@ -104,23 +104,13 @@ Implemented (needs docs and CHANGELOG)
 Needs implementation
 --------------------
 
-- Hungry elements are not aborted
-  - Test that they are at least aborted once the response is received
-  - Debounce users that rely on onAborted() to detect concurrency should also check isConnected or isAlive
-    - It can only happen if after the abort something new triggers the update
-    - [ok] FollowIntent
-    - FormValidator (we just removed this in this update!)
-      => Restore and test
-    - FieldWatcher
-      => 
-    - FragmentPolling
-      - We're waiting for poll
-      - A non-aborting fragment swaps the fragment
-        => No we always abort on swap
-      
-- up:request:load should log something else if the request is from cache
+- [ok] Hungry, preloading links no longer throw an error after rendering cached, but expired content
 
-- Check if [up-switch] works on a radio container
+[ok] - FieldWatcher: Test that we stop the watch for manually detached elements
+
+[ok] - FragmentPolling: Stop polling for manually detached element
+
+[ok] - Check if [up-switch] works on a radio container
   - Check tests
   - Update docs
   - Maybe remove workaround
@@ -1203,4 +1193,8 @@ Icebox / Tar pits
     - Maybe also close layers?
     - Maybe X-Up-Panic: true
   => This does not work with nonce-based CSP, since BetterErrors does not use nonces
+
+- FormValidator: Test that we remove manually detached elements
+  => Comment says: We do *not* remove solutions for which the origin no longer exists, as a delayed solution's { target } may still require an update.
+  => Keep it that way
 
