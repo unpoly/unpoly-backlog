@@ -116,6 +116,8 @@ Needs implementation
   - Maybe remove workaround
   - Maybe warn if [up-switch], [up-watch], [up-validate], [up-autosubmit] (=> watch) is called on a radio button
 
+- Click handler for a[href^="#"] should not reveal when the default was prevented
+
 
 
 Smaller doc changes
