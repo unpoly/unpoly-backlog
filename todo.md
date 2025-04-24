@@ -194,6 +194,12 @@ Better hash support
 Backlog
 =======
 
+- Allow some up-attributes on submit button
+  - [up-submit=false] => Make a vanilla page load
+  
+- up.network.loadPage() could remove the form after submission
+  - e.g. when starting a download
+
 - Should a { cache: false } setting propagate to deferred pages?
   - Deferreds can already say whether they want to use the cache
   - What about polling a fragment with 3 deferreds?
