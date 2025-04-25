@@ -118,6 +118,13 @@ Needs implementation
 
 - Click handler for a[href^="#"] should not reveal when the default was prevented
 
+- Check if we want to replace up.task() implementation
+
+- Consider [up-validate-scroll] and [up-validate-focus] options
+
+- Test that the cache ignores the #hash when matching entries
+
+- Chrome warns:  Added non-passive event listener to a scroll-blocking 'touchstart' event. Consider marking event handler as 'passive' to make the page more responsive
 
 
 Smaller doc changes
@@ -134,6 +141,9 @@ Smaller doc changes
   - Make sure the difference between preventDefault() and skip() are clearly explained
 - Docs: Document that no style nonces are rewritten
 - Docs: Document that no script-src-elem and script-src-attr nonces are supported
+- up.fragment.config.renderOptions
+  - Check if we announced up.fragment.config.renderOptions in 3.10
+  - Note that renderOptions should be minimal, defaults for navigation go into navigateOptions
 
 
 Big docs @params rework
@@ -165,6 +175,8 @@ Docs redesign
 
 Better hash support
 ===================
+
+- Consider publishing up.history.push, up.history.replace
 
 - Repro:
   https://www.volkswagen-group.com/de/menschenrechte-16108#grundsatzerklaerung-volkswagen-ag
