@@ -116,6 +116,12 @@ Needs implementation
   - Maybe remove workaround
   - Maybe warn if [up-switch], [up-watch], [up-validate], [up-autosubmit] (=> watch) is called on a radio button
 
+- Consider changing the up:location:changed { reason: 'hashchange' } to just { reason: 'hash' }
+
+- Consider making an up:hash:reveal event
+  - We would need to de-dup this event when hash links are clicked, as this reveals multiple times
+    - 
+
 - Click handler for a[href^="#"] should not reveal when the default was prevented
 
 - Check if we want to replace up.task() implementation
@@ -125,6 +131,8 @@ Needs implementation
 - Test that the cache ignores the #hash when matching entries
 
 - Chrome warns:  Added non-passive event listener to a scroll-blocking 'touchstart' event. Consider marking event handler as 'passive' to make the page more responsive
+
+- Consider implementing CloseWatcher for "key" dialog closing
 
 
 Smaller doc changes
