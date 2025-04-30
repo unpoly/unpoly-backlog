@@ -134,6 +134,9 @@ Needs implementation
 
 - Consider implementing CloseWatcher for "key" dialog closing
 
+- Implement [up-keep] preservation with moveBefore
+  - https://developer.mozilla.org/en-US/docs/Web/API/Element/moveBefore
+
 
 Smaller doc changes
 --------------------
