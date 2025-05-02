@@ -116,25 +116,21 @@ Needs implementation
   - Maybe remove workaround
   - Maybe warn if [up-switch], [up-watch], [up-validate], [up-autosubmit] (=> watch) is called on a radio button
 
-- Consider changing the up:location:changed { reason: 'hashchange' } to just { reason: 'hash' }
+[ok] - Consider changing the up:location:changed { reason: 'hashchange' } to just { reason: 'hash' }
 
-- Consider making an up:hash:reveal event
-  - We would need to de-dup this event when hash links are clicked, as this reveals multiple times
-    - 
+[ok] - Click handler for a[href^="#"] should not reveal when the default was prevented
 
-- Click handler for a[href^="#"] should not reveal when the default was prevented
-
-- Check if we want to replace up.task() implementation
+[ok] - Check if we want to replace up.task() implementation with up.fastTask()
 
 - Consider [up-validate-scroll] and [up-validate-focus] options
 
 - Test that the cache ignores the #hash when matching entries
 
-- Chrome warns:  Added non-passive event listener to a scroll-blocking 'touchstart' event. Consider marking event handler as 'passive' to make the page more responsive
+[ok] - Chrome warns:  Added non-passive event listener to a scroll-blocking 'touchstart' event. Consider marking event handler as 'passive' to make the page more responsive
 
-- Consider implementing CloseWatcher for "key" dialog closing
+- Think about: When we remember how a history state came to be (or was left?), we could undo it on back maybe?
 
-- Implement [up-keep] preservation with moveBefore
+[ok] - Implement [up-keep] preservation with moveBefore
   - https://developer.mozilla.org/en-US/docs/Web/API/Element/moveBefore
 
 
@@ -155,6 +151,8 @@ Smaller doc changes
 - up.fragment.config.renderOptions
   - Check if we announced up.fragment.config.renderOptions in 3.10
   - Note that renderOptions should be minimal, defaults for navigation go into navigateOptions
+- Make a doc page for #hash links
+- Consider publishing up.history.push, up.history.replace
 
 
 Big docs @params rework
@@ -184,38 +182,14 @@ Docs redesign
   - Move the entire search to Algolia
 
 
-Better hash support
-===================
-
-- Consider publishing up.history.push, up.history.replace
-
-- Repro:
-  https://www.volkswagen-group.com/de/menschenrechte-16108#grundsatzerklaerung-volkswagen-ag
-  Kachel "Berichte" anklicken
-  Browser-"Back" drücken
-  :arrow_right: Man sollte wieder auf der Menschenrechte-Seite sein. Adresszeile passt auch, aber man sieht weiterhin   die "Berichte"-Seite.
-  => menuSpy replaces the state set by Unpoly
-  => Maybe Unpoly needs to track which URL it has navigated to?
-  => But, on going back, how do we realize if we just changed a URL that we are responsible for?
-
-  Ich denke, hier liegt ein wirklicher Fehler in Unpoly vor. Habe MenuSpy jetzt aus. Das Verhalten ist dasselbe:
-  Anker-Link klicken (#hash wird gesetzt)
-  Unpoly-Link woandershin folgen
-  location.back()
-  :arrow_right: Ergebnis:
-  Adresszeile wird korrekt reverted
-  Unpoly scrollt ursprüngliche Position an
-  :warning: Unpoly rendert aber nicht den vorigen Inhalt
-  Das kann man auch in Cards reproduzieren:
-  https://makandracards.com/makandra-besprechungen/625053-besprechung-14-04-2025
-  Überschriften-Anker-Link klicken
-  Beliebigem anderen Link folgen
-  Browser-Back
-
 
 
 Backlog
 =======
+
+
+- Consider implementing CloseWatcher for "key" dialog closing
+  => Yes, but CloseWatchers would need to be carefully managed with nested overlays
 
 - Allow some up-attributes on submit button
   - [up-submit=false] => Make a vanilla page load
