@@ -128,10 +128,30 @@ Needs implementation
 
 [ok] - Chrome warns:  Added non-passive event listener to a scroll-blocking 'touchstart' event. Consider marking event handler as 'passive' to make the page more responsive
 
+- Ensure and test that peeling does not restore history entries
+
 - Think about: When we remember how a history state came to be (or was left?), we could undo it on back maybe?
+  - I think we could do the easy case of dismissing an overlay first
+    - Remember the layer stack before state is changed
+      - e.g. on every render / close
+        - but also on up:location:change, after e.g. hashchange has created a new stack
+      - remember identifying information like [{ location, mode, size, align, position, layerUID }]
+        - It could just be layerUIDs[]
+    - When popping a state, check if the current stack is the previous stack, but missing some at the end
+      - in this case just pop off last stack elements (no interruption)
+    - Should we also allow navigation within an open layer?
+    - For overlays without history, we could also push an "empty" state with the base URL
+      - This way we would have something to compare against
+      - This way we wouldn't need to mess with CloseWatcher
+  - Re-think what this means for up:location:restore
+    - Would it only be for render-restore?
+    - Or would it also contain { layerStack, previousLayerStack }?
+    - But then would it also contain the #reveal logic?
 
 [ok] - Implement [up-keep] preservation with moveBefore
   - https://developer.mozilla.org/en-US/docs/Web/API/Element/moveBefore
+
+- Do we have a test that [up-keep] preserves scroll positions?
 
 
 Smaller doc changes
@@ -187,6 +207,7 @@ Docs redesign
 Backlog
 =======
 
+- Think whether saveScroll and saveFocus should work on bases instead of full locations
 
 - Consider implementing CloseWatcher for "key" dialog closing
   => Yes, but CloseWatchers would need to be carefully managed with nested overlays
