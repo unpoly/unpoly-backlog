@@ -59,10 +59,6 @@ Implemented (needs docs and CHANGELOG)
   - https://github.com/unpoly/unpoly/issues/721
   - Note that this doesn't work on touch devices
 
-- [up-poll] should support more ways to control client-state
-  - [up-hungry=true]
-  - [up-keep=true]
-
 [ok] - Support [up-validate-url] and [up-validate-method]
 
 [ok] - up.hello() should not re-emit inserted on the exact same element
@@ -74,7 +70,7 @@ Implemented (needs docs and CHANGELOG)
 [ok] - Rename [up-switch-scope] to [up-switch-region]
   - The concept of "region" already appears in the docs, but scope does not
  
-[ok] - fixParserImage doesn't see [nonce]
+[ok] - fixParserDamage doesn't see [nonce]
 
 [ok] - Rewrite script[nonce] in new content
   - In the head
@@ -100,10 +96,6 @@ Implemented (needs docs and CHANGELOG)
 
 [ok] - (unpoly-rails): Add support for up.origin_layer.mode, .overlay?, .root?
 
-
-Needs implementation
---------------------
-
 - [ok] Hungry, preloading links no longer throw an error after rendering cached, but expired content
 
 [ok] - FieldWatcher: Test that we stop the watch for manually detached elements
@@ -122,34 +114,20 @@ Needs implementation
 
 [ok] - Check if we want to replace up.task() implementation with up.fastTask()
 
-- Consider [up-validate-scroll] and [up-validate-focus] options
-
-- Test that the cache ignores the #hash when matching entries
-
 [ok] - Chrome warns:  Added non-passive event listener to a scroll-blocking 'touchstart' event. Consider marking event handler as 'passive' to make the page more responsive
-
-- Ensure and test that peeling does not restore history entries
-
-- Think about: When we remember how a history state came to be (or was left?), we could undo it on back maybe?
-  - I think we could do the easy case of dismissing an overlay first
-    - Remember the layer stack before state is changed
-      - e.g. on every render / close
-        - but also on up:location:change, after e.g. hashchange has created a new stack
-      - remember identifying information like [{ location, mode, size, align, position, layerUID }]
-        - It could just be layerUIDs[]
-    - When popping a state, check if the current stack is the previous stack, but missing some at the end
-      - in this case just pop off last stack elements (no interruption)
-    - Should we also allow navigation within an open layer?
-    - For overlays without history, we could also push an "empty" state with the base URL
-      - This way we would have something to compare against
-      - This way we wouldn't need to mess with CloseWatcher
-  - Re-think what this means for up:location:restore
-    - Would it only be for render-restore?
-    - Or would it also contain { layerStack, previousLayerStack }?
-    - But then would it also contain the #reveal logic?
 
 [ok] - Implement [up-keep] preservation with moveBefore
   - https://developer.mozilla.org/en-US/docs/Web/API/Element/moveBefore
+
+[done] - Is `{ willHandle }` really `{ willRestore }`?
+  - => No, we also reveal a #hash
+
+
+
+Needs implementation
+--------------------
+
+- Test that the cache ignores the #hash when matching entries
 
 - Do we have a test that [up-keep] preserves scroll positions?
 
@@ -173,6 +151,7 @@ Smaller doc changes
   - Note that renderOptions should be minimal, defaults for navigation go into navigateOptions
 - Make a doc page for #hash links
 - Consider publishing up.history.push, up.history.replace
+- Show how [up-switch] is used on a container of radio buttons
 
 
 Big docs @params rework
@@ -193,24 +172,53 @@ Big docs @params rework
 
 
 
+Push to 3.12
+------------
 
-Docs redesign
-=============
+- Consider [up-validate-scroll] and [up-validate-focus] options
 
-- Consider making the docs full-width
-  - Also replace the breadcrumb with a link that opens the drawer
-  - Move the entire search to Algolia
+- [up-poll] should support more ways to control client-state
+  - [up-hungry=true]
+  - [up-keep=true]
 
+- Ensure and test that peeling does not restore history entries
 
+- Think about: When we remember how a history state came to be (or was left?), we could undo it on back maybe?
+  - I think we could do the easy case of dismissing an overlay first
+    - Remember the layer stack before state is changed
+      - e.g. on every render / close
+        - but also on up:location:change, after e.g. hashchange has created a new stack
+      - remember identifying information like [{ location, mode, size, align, position, layerUID }]
+        - It could just be layerUIDs[]
+    - When popping a state, check if the current stack is the previous stack, but missing some at the end
+      - in this case just pop off last stack elements (no interruption)
+    - Should we also allow navigation within an open layer?
+    - For overlays without history, we could also push an "empty" state with the base URL
+      - This way we would have something to compare against
+      - This way we wouldn't need to mess with CloseWatcher
+  - Re-think what this means for up:location:restore
+    - Would it only be for render-restore?
+    - Or would it also contain { layerStack, previousLayerStack }?
+    - But then would it also contain the #reveal logic?
 
 
 Backlog
 =======
 
+- Consider making the docs full-width
+  - Also replace the breadcrumb with a link that opens the drawer
+  - Move the entire search to Algolia
+
+- Add a short cut [up-keep-while-same] oder [up-keep][up-keep-if="same"] or [up-keep="same"] (vs. `[up-keep="match"]`) or similiar to keep a fragment while the *initial* outer HTML is unchanged
+  - But store the outerHTML *before* compilation
+  - Maybe do some normalization of the HTML?
+  - Should this be the default?
+
 - Think whether saveScroll and saveFocus should work on bases instead of full locations
 
 - Consider implementing CloseWatcher for "key" dialog closing
   => Yes, but CloseWatchers would need to be carefully managed with nested overlays
+  => Maybe solve this with custom push states
 
 - Allow some up-attributes on submit button
   - [up-submit=false] => Make a vanilla page load
