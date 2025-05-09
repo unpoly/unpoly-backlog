@@ -205,6 +205,8 @@ Push to 3.12
 Backlog
 =======
 
+- Consider [up-announce=":title"] or ["up-announce="next-headline"]
+
 - Consider making the docs full-width
   - Also replace the breadcrumb with a link that opens the drawer
   - Move the entire search to Algolia
