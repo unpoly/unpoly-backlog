@@ -120,38 +120,57 @@ Implemented (needs docs and CHANGELOG)
   - https://developer.mozilla.org/en-US/docs/Web/API/Element/moveBefore
 
 [done] - Is `{ willHandle }` really `{ willRestore }`?
-  - => No, we also reveal a #hash
+  - => No, we also reveal a new #hash that we haven't seen before
 
 
 
 Needs implementation
 --------------------
 
-- Test that the cache ignores the #hash when matching entries
+[ok] - Test that the cache ignores the #hash when matching entries
 
 - Do we have a test that [up-keep] preserves scroll positions?
+
+- FieldWatcher#_ensureWatchable should fail if used on an input without a [name]
+  - (or on a container that has no inputs with a [name])
+    - => Not great when we want to watch an initially empty container that may receive fields later
+
+- Peel macht nach history-less overlay einen neuen History State, weil wir nicht mehr de-dupen
+  - https://glitch.com/edit/#!/humane-abyssinian-earthworm?path=second.html%3A10%3A9
+  
+- When no previous location is known, up-back could do history.back()
+
+- I think up-switch cannot switch form-external fields
+
+- Test and document that [up-switch] supports [up-watch-delay] and [up-watch-event]
 
 
 Smaller doc changes
 --------------------
 
-- Test and document that up.fragment.config.runScripts does not affect event.newAssets in up:assets:changed
-- Default "[options.layer='origin current']" should use commas, no?
-- In up:request:load, explain that request headers may still be changed
-  => Make sure this is tested
-  => We actually cover a lot more edge cases, and allow { url, params } to be changed. But make sure we test this before we commit to it in the docs
+[ok] - Test and document that up.fragment.config.runScripts does not affect event.newAssets in up:assets:changed
+[ok] - Default "[options.layer='origin current']" should use commas, no?
+[ok] - In up:request:load, explain that request options may still be changed
 - Site: Chilled links
 - Docs: Validation batching is documented under up.validate() only
-- up:fragment:loaded docs
+[ok] - up:fragment:loaded docs
   - Make sure the difference between preventDefault() and skip() are clearly explained
-- Docs: Document that no style nonces are rewritten
-- Docs: Document that no script-src-elem and script-src-attr nonces are supported
+[ok] - Docs: Document that no style nonces are rewritten
+[ok] - Docs: Document that no script-src-elem and script-src-attr nonces are supported
 - up.fragment.config.renderOptions
   - Check if we announced up.fragment.config.renderOptions in 3.10
   - Note that renderOptions should be minimal, defaults for navigation go into navigateOptions
 - Make a doc page for #hash links
 - Consider publishing up.history.push, up.history.replace
-- Show how [up-switch] is used on a container of radio buttons
+[ok] - Show how [up-switch] is used on a container of radio buttons
+- Show how [up-switch] changes region
+- [up-switch] must talk about [up-enable-for], [up-disable-for] and custom switch effects
+- Document that watching fields require names
+  - up.watch
+  - up-watch
+  - up-validate
+  - up-autosubmit
+  - up-switch
 
 
 Big docs @params rework
@@ -172,8 +191,9 @@ Big docs @params rework
 
 
 
-Push to 3.12
-------------
+
+Backlog
+=======
 
 - Consider [up-validate-scroll] and [up-validate-focus] options
 
@@ -202,8 +222,8 @@ Push to 3.12
     - But then would it also contain the #reveal logic?
 
 
-Backlog
-=======
+- Should up-switch be able to control multiple array checkboxes with the same name?
+  - What would be the value?
 
 - Consider [up-announce=":title"] or ["up-announce="next-headline"]
 
