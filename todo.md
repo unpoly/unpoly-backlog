@@ -122,6 +122,11 @@ Implemented (needs docs and CHANGELOG)
 [done] - Is `{ willHandle }` really `{ willRestore }`?
   - => No, we also reveal a new #hash that we haven't seen before
 
+[ok] - FieldWatcher#_ensureWatchable should fail if used on an input without a [name]
+  - (or on a container that has no inputs with a [name])
+    => Not great when we want to watch an initially empty container that may receive fields later
+
+
 
 
 Needs implementation
@@ -129,20 +134,19 @@ Needs implementation
 
 [ok] - Test that the cache ignores the #hash when matching entries
 
-- Do we have a test that [up-keep] preserves scroll positions?
-
-- FieldWatcher#_ensureWatchable should fail if used on an input without a [name]
-  - (or on a container that has no inputs with a [name])
-    - => Not great when we want to watch an initially empty container that may receive fields later
-
 - Peel macht nach history-less overlay einen neuen History State, weil wir nicht mehr de-dupen
   - https://glitch.com/edit/#!/humane-abyssinian-earthworm?path=second.html%3A10%3A9
-  
-- When no previous location is known, up-back could do history.back()
-
-- I think up-switch cannot switch form-external fields
+  - Maybe dedup again?
 
 - Test and document that [up-switch] supports [up-watch-delay] and [up-watch-event]
+  - We documented the event, but there are no tests or mentions of debounce delay
+
+[ok] - One more pass over [up-switch]
+  - Get rid of event.fieldTokens
+  - Switcher: Just use the value from up.watch() instead of looking up values ourselves
+    => We also need to get a value when not watching
+  - Get rid of :checked and :unchecked maybe? Or only offer for checkboxes?
+    - Doesn't make sense for radios anymore, right?
 
 
 Smaller doc changes
@@ -151,8 +155,9 @@ Smaller doc changes
 [ok] - Test and document that up.fragment.config.runScripts does not affect event.newAssets in up:assets:changed
 [ok] - Default "[options.layer='origin current']" should use commas, no?
 [ok] - In up:request:load, explain that request options may still be changed
-- Site: Chilled links
 - Docs: Validation batching is documented under up.validate() only
+  - OK, but explain how to disable (effect is serial requests, but 1 at a time)
+  - OK, but explain that different URLs cluster batching
 [ok] - up:fragment:loaded docs
   - Make sure the difference between preventDefault() and skip() are clearly explained
 [ok] - Docs: Document that no style nonces are rewritten
@@ -163,14 +168,18 @@ Smaller doc changes
 - Make a doc page for #hash links
 - Consider publishing up.history.push, up.history.replace
 [ok] - Show how [up-switch] is used on a container of radio buttons
-- Show how [up-switch] changes region
-- [up-switch] must talk about [up-enable-for], [up-disable-for] and custom switch effects
+[ok] - Show how [up-switch] changes region
+[ok] - [up-switch] must talk about [up-enable-for], [up-disable-for] and custom switch effects
 - Document that watching fields require names
   - up.watch
   - up-watch
   - up-validate
   - up-autosubmit
   - up-switch
+- Maybe doc page for "preserving elements"
+- Check if we show to to render loading state while watching
+  - I think we documented the params, but there is no guide with an example?
+- New properties for up:location:changed and up:location:restore
 
 
 Big docs @params rework
@@ -194,6 +203,11 @@ Big docs @params rework
 
 Backlog
 =======
+
+- Do we have a test that [up-keep] preserves scroll positions?
+  - For a non-focused element?
+
+- Site: Chilled links
 
 - Consider [up-validate-scroll] and [up-validate-focus] options
 
@@ -1253,4 +1267,7 @@ Icebox / Tar pits
 - FormValidator: Test that we remove manually detached elements
   => Comment says: We do *not* remove solutions for which the origin no longer exists, as a delayed solution's { target } may still require an update.
   => Keep it that way
+  
+- When no previous location is known, up-back could do history.back()
+  => No, this might navigate away to another site
 
