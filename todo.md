@@ -134,7 +134,7 @@ Needs implementation
 
 [ok] - Test that the cache ignores the #hash when matching entries
 
-- Peel macht nach history-less overlay einen neuen History State, weil wir nicht mehr de-dupen
+[ok] - Peel macht nach history-less overlay einen neuen History State, weil wir nicht mehr de-dupen
   - https://glitch.com/edit/#!/humane-abyssinian-earthworm?path=second.html%3A10%3A9
   - Maybe dedup again?
 
@@ -162,11 +162,10 @@ Smaller doc changes
   - Make sure the difference between preventDefault() and skip() are clearly explained
 [ok] - Docs: Document that no style nonces are rewritten
 [ok] - Docs: Document that no script-src-elem and script-src-attr nonces are supported
-- up.fragment.config.renderOptions
+[ok] - up.fragment.config.renderOptions
   - Check if we announced up.fragment.config.renderOptions in 3.10
   - Note that renderOptions should be minimal, defaults for navigation go into navigateOptions
-- Make a doc page for #hash links
-- Consider publishing up.history.push, up.history.replace
+[ok] - Consider publishing up.history.push, up.history.replace
 [ok] - Show how [up-switch] is used on a container of radio buttons
 [ok] - Show how [up-switch] changes region
 [ok] - [up-switch] must talk about [up-enable-for], [up-disable-for] and custom switch effects
@@ -179,7 +178,7 @@ Smaller doc changes
 - Maybe doc page for "preserving elements"
 - Check if we show to to render loading state while watching
   - I think we documented the params, but there is no guide with an example?
-- New properties for up:location:changed and up:location:restore
+[ok] - New properties for up:location:changed and up:location:restore
 
 
 Big docs @params rework
@@ -203,6 +202,8 @@ Big docs @params rework
 
 Backlog
 =======
+
+- up-nav: Location von anderem Layer nutzen
 
 - Do we have a test that [up-keep] preserves scroll positions?
   - For a non-focused element?
