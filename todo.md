@@ -140,6 +140,8 @@ Needs implementation
 
 - Test and document that [up-switch] supports [up-watch-delay] and [up-watch-event]
   - We documented the event, but there are no tests or mentions of debounce delay
+  
+- Test and (explicitly) document that up.reload() takes a { cache } option and that it defaults to `false`
 
 [ok] - One more pass over [up-switch]
   - Get rid of event.fieldTokens
@@ -202,6 +204,8 @@ Big docs @params rework
 
 Backlog
 =======
+
+- Support custom :field, :form-group selectors
 
 - up-nav: Location von anderem Layer nutzen
 
