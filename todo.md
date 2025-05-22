@@ -143,6 +143,12 @@ Needs implementation
   
 - Test and (explicitly) document that up.reload() takes a { cache } option and that it defaults to `false`
 
+- Layers with live history should get up:layer:location:changed when someone does pushState()
+
+- Make private this.unbind* methods in up.Layer*
+
+- Make private this.saved* methods in up.Layer*
+
 [ok] - One more pass over [up-switch]
   - Get rid of event.fieldTokens
   - Switcher: Just use the value from up.watch() instead of looking up values ourselves
@@ -205,7 +211,10 @@ Big docs @params rework
 Backlog
 =======
 
+- Consider moving [up-nav], .up-current, [up-alias] to up.history
+
 - Support custom :field, :form-group selectors
+  - Will we still use field-with-errors wrappers in a world with :has() ?
 
 - up-nav: Location von anderem Layer nutzen
 
