@@ -143,11 +143,11 @@ Needs implementation
   
 - Test and (explicitly) document that up.reload() takes a { cache } option and that it defaults to `false`
 
-- Layers with live history should get up:layer:location:changed when someone does pushState()
+[ok] - Layers with live history should get up:layer:location:changed when someone does pushState()
 
-- Make private this.unbind* methods in up.Layer*
+[ok] - Make private this.unbind* methods in up.Layer*
 
-- Make private this.saved* methods in up.Layer*
+[ok] - Make private this.saved* methods in up.Layer*
 
 [ok] - One more pass over [up-switch]
   - Get rid of event.fieldTokens
