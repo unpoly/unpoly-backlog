@@ -143,6 +143,12 @@ Needs implementation
   
 - Test and (explicitly) document that up.reload() takes a { cache } option and that it defaults to `false`
 
+- up:fragment:rendered event
+
+[ok] - Rename up.RenderResult#options => #renderOptions
+  
+- Go through PRs
+
 [ok] - Layers with live history should get up:layer:location:changed when someone does pushState()
 
 [ok] - Make private this.unbind* methods in up.Layer*
@@ -210,6 +216,12 @@ Big docs @params rework
 
 Backlog
 =======
+
+- Test that render({ response }) throws for a failed response
+
+- revealPadding etc. should have function forms for the revealed element
+
+- document.currentScript (for manual boot) does not work with <script type="module">
 
 - Consider moving [up-nav], .up-current, [up-alias] to up.history
 
