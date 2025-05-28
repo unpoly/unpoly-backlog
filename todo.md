@@ -126,28 +126,13 @@ Implemented (needs docs and CHANGELOG)
   - (or on a container that has no inputs with a [name])
     => Not great when we want to watch an initially empty container that may receive fields later
 
-
-
-
-Needs implementation
---------------------
-
 [ok] - Test that the cache ignores the #hash when matching entries
 
 [ok] - Peel macht nach history-less overlay einen neuen History State, weil wir nicht mehr de-dupen
   - https://glitch.com/edit/#!/humane-abyssinian-earthworm?path=second.html%3A10%3A9
   - Maybe dedup again?
 
-- Test and document that [up-switch] supports [up-watch-delay] and [up-watch-event]
-  - We documented the event, but there are no tests or mentions of debounce delay
-  
-- Test and (explicitly) document that up.reload() takes a { cache } option and that it defaults to `false`
-
-- up:fragment:rendered event
-
 [ok] - Rename up.RenderResult#options => #renderOptions
-  
-- Go through PRs
 
 [ok] - Layers with live history should get up:layer:location:changed when someone does pushState()
 
@@ -161,6 +146,20 @@ Needs implementation
     => We also need to get a value when not watching
   - Get rid of :checked and :unchecked maybe? Or only offer for checkboxes?
     - Doesn't make sense for radios anymore, right?
+
+[ok] - Test and document that [up-switch] supports [up-watch-delay] and [up-watch-event]
+  - We documented the event, but there are no tests or mentions of debounce delay
+  
+[ok] - Test and (explicitly) document that up.reload() takes a { cache } option and that it defaults to `false`
+ 
+
+
+
+Needs implementation
+--------------------
+
+- Go through PRs
+
 
 
 Smaller doc changes
@@ -1296,4 +1295,6 @@ Icebox / Tar pits
   
 - When no previous location is known, up-back could do history.back()
   => No, this might navigate away to another site
-
+- up:fragment:rendered event
+  => This is a lot like up:fragment:inserted
+  => Wait until we have more use cases
