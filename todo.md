@@ -158,13 +158,14 @@ Implemented (needs docs and CHANGELOG)
 Needs implementation
 --------------------
 
-- Go through PRs
+- loadPage should ignore file inputs
 
 
 
 Smaller doc changes
 --------------------
 
+- Test and document that validation works on a field container that is not the form
 [ok] - Test and document that up.fragment.config.runScripts does not affect event.newAssets in up:assets:changed
 [ok] - Default "[options.layer='origin current']" should use commas, no?
 [ok] - In up:request:load, explain that request options may still be changed
