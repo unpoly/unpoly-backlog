@@ -160,6 +160,9 @@ Needs implementation
 
 - loadPage should ignore file inputs
 
+- Test that watching array fields actually compares the array
+
+- { params } should delete same-named entries before adding
 
 
 Smaller doc changes
@@ -193,6 +196,9 @@ Smaller doc changes
 - Check if we show to to render loading state while watching
   - I think we documented the params, but there is no guide with an example?
 [ok] - New properties for up:location:changed and up:location:restore
+- Link https://unpoly.com/closing-overlays#using-the-discarded-response from up:fragment:accepted/event.response and also :dismissed
+- Section https://unpoly.com/subinteractions#common-acceptance-callbacks should mention render({ response: event.response })
+
 
 
 Big docs @params rework
@@ -216,6 +222,15 @@ Big docs @params rework
 
 Backlog
 =======
+
+- Think what's the desired behavior for `new up.Params({ 'ids[]': [] })`
+  - Wenn Unpoly die Rails-Konvention kennt, wäre es IMO nicht falsch, wenn 'ids[]': [] zu ids%5D%5B= würde. (edited) 
+  - ja vielleicht. da er nicht direkt schicken kann sondern entries bauen muss wäre das ein eintrag mit leerem string als value? nil als value?
+  - leerer string macht ids%5D%5B=. nil macht ids%5D%5B. weiß nicht was rails aus letzterem macht.
+
+- Find an alternative for glitch.com
+
+- up-scroll="+20"
 
 - Test that render({ response }) throws for a failed response
 
