@@ -198,7 +198,8 @@ Smaller doc changes
 [ok] - New properties for up:location:changed and up:location:restore
 - Link https://unpoly.com/closing-overlays#using-the-discarded-response from up:fragment:accepted/event.response and also :dismissed
 - Section https://unpoly.com/subinteractions#common-acceptance-callbacks should mention render({ response: event.response })
-
+- Check if we can stabilize @experimental features (add to CHANGELOG)
+- Document form[up-accept], form[up-dismiss]
 
 
 Big docs @params rework
@@ -222,6 +223,9 @@ Big docs @params rework
 
 Backlog
 =======
+
+- Make doc pages for "Linking to fragments" and "Fragment forms" so we have main articles for related features
+  - At least for links we have up.link. We don't have this for forms.
 
 - Think what's the desired behavior for `new up.Params({ 'ids[]': [] })`
   - Wenn Unpoly die Rails-Konvention kennt, wäre es IMO nicht falsch, wenn 'ids[]': [] zu ids%5D%5B= würde. (edited) 
