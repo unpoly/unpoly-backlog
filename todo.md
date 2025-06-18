@@ -151,28 +151,30 @@ Implemented (needs docs and CHANGELOG)
   - We documented the event, but there are no tests or mentions of debounce delay
   
 [ok] - Test and (explicitly) document that up.reload() takes a { cache } option and that it defaults to `false`
+
+[ok] - { params } should delete same-named entries before adding
  
+[ok] - loadPage should ignore file inputs
+
+[ok] - Test that watching array fields actually compares the array
 
 
 
 Needs implementation
 --------------------
 
-- loadPage should ignore file inputs
+[ok] - Params override für up.validate()
 
-- Test that watching array fields actually compares the array
-
-- { params } should delete same-named entries before adding
 
 
 Smaller doc changes
 --------------------
 
-- Test and document that validation works on a field container that is not the form
+[ok] - Test and document that validation works on a field container that is not the form
 [ok] - Test and document that up.fragment.config.runScripts does not affect event.newAssets in up:assets:changed
 [ok] - Default "[options.layer='origin current']" should use commas, no?
 [ok] - In up:request:load, explain that request options may still be changed
-- Docs: Validation batching is documented under up.validate() only
+[ok] - Docs: Validation batching is documented under up.validate() only
   - OK, but explain how to disable (effect is serial requests, but 1 at a time)
   - OK, but explain that different URLs cluster batching
 [ok] - up:fragment:loaded docs
@@ -186,18 +188,18 @@ Smaller doc changes
 [ok] - Show how [up-switch] is used on a container of radio buttons
 [ok] - Show how [up-switch] changes region
 [ok] - [up-switch] must talk about [up-enable-for], [up-disable-for] and custom switch effects
-- Document that watching fields require names
+[no] - Document that watching fields require names
   - up.watch
   - up-watch
   - up-validate
   - up-autosubmit
   - up-switch
-- Maybe doc page for "preserving elements"
+[ok] - Maybe doc page for "preserving elements"
 - Check if we show to to render loading state while watching
   - I think we documented the params, but there is no guide with an example?
 [ok] - New properties for up:location:changed and up:location:restore
-- Link https://unpoly.com/closing-overlays#using-the-discarded-response from up:fragment:accepted/event.response and also :dismissed
-- Section https://unpoly.com/subinteractions#common-acceptance-callbacks should mention render({ response: event.response })
+[ok] - Link https://unpoly.com/closing-overlays#using-the-discarded-response from up:fragment:accepted/event.response and also :dismissed
+[ok] - Section https://unpoly.com/subinteractions#common-acceptance-callbacks should mention render({ response: event.response })
 - Check if we can stabilize @experimental features (add to CHANGELOG)
 - Document form[up-accept], form[up-dismiss]
 
@@ -205,24 +207,33 @@ Smaller doc changes
 Big docs @params rework
 -----------------------
 
-- Copy important options from up.render() into up.validate(), up.submit(), up.follow()
-- Copy important attributes from [up-follow] into [up-submit]
-- Remove redundant @params-note
-- Consider merging pages/attrs and pages/options into just params/
-- Also go through all config options and group those (didn#t find because @property)
-- up.layer.config should refer to @like up.layer.open in many cases
-- follow needs "up-context" in "client state"
+[ok] - Copy important options from up.render() into up.validate(), up.submit(), up.follow()
+[ok] - Copy important attributes from [up-follow] into [up-submit]
+[ok] - Remove redundant @params-note
+[ok] - Consider merging pages/attrs and pages/options into just params/
+[ok] - Also go through all config options and group those (didn#t find because @property)
+[ok] - follow needs "up-context" in "client state"
   - But check who includes up-follow/client-state and does not want [up-context]
   - And check who includes up-follow/layer and would lose [up-context]
     - [up-layer=new]?
 - Can we document options.fail* ?
-- Go through all feature visibilities... up.fragment.* functions in particular
+  - It's mostly target, scroll, focus, layer, history
+  - Decide whether we want to expand "failed responses" or whether we want to put { fail } into "Navigation" (renamed to "Defaults") and document failOptions under their respective sections
+   - *or* we could document { fail } under "Request" and then document some fail options under their respective sections
 
 
 
 
 Backlog
 =======
+
+- Think whether we want to offer a way to "stagger" non-blocking compilers.
+  - At least for initial page view
+  - Measure time and force-stagger?
+  - Support { priority: 'idle' }
+
+- Instead of having a long list of PREFLIGHT_KEYS and SHARED_KEYS, we could just list the very few render options that have a failVariant
+  - failLayer, failFocus, failScroll, failHistory
 
 - Make doc pages for "Linking to fragments" and "Fragment forms" so we have main articles for related features
   - At least for links we have up.link. We don't have this for forms.
