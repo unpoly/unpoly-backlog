@@ -200,8 +200,65 @@ Smaller doc changes
 [ok] - New properties for up:location:changed and up:location:restore
 [ok] - Link https://unpoly.com/closing-overlays#using-the-discarded-response from up:fragment:accepted/event.response and also :dismissed
 [ok] - Section https://unpoly.com/subinteractions#common-acceptance-callbacks should mention render({ response: event.response })
+[ok] - Document form[up-accept], form[up-dismiss]
+  - We also need to support button[up-accept]
+[ok] - Rename "mark-phrase:" to just "mark:"
 - Check if we can stabilize @experimental features (add to CHANGELOG)
-- Document form[up-accept], form[up-dismiss]
+  - up.event.build()
+  - up.form.fields()
+  - up.fragment.config.skipResponse
+  - [up-etag]
+  - up.fragment.etag()
+  - [up-time]
+  - up.fragment.time()
+  - event.skip() for up:fragment:loaded
+  - up:fragment:offline
+  - up.fragment.subtree
+  - up.fragment.isTargetable
+  - :layer
+  - up.fragment.matches()
+  - up.fragment.abort()
+  - up:fragment:aborted
+  - up.template.clone()
+  - up:template:clone
+  - up.history.location
+  - up.history.previousLocation
+  - up.history.isLocation
+  - up:layer:location:changed
+  - event.response for up:layer:accept, up:layer:dismiss, up:layer:accepted, up:layer:dismissed
+  - up-defer
+  - up.network.config.lateDelay
+  - { lateDelay } option for up.request()
+  - up.network.loadPage()
+  - up:request:aborted
+  - up:fragment:hungry event
+  - { ifLayer } option for up.radio.startPolling()
+  - [up-if-layer] modifier for [up-poll]
+  - up:fragment:poll
+  - up.script.config.scriptSelectors and .noScriptSelectors
+  - event.preventDefault() for up:assets:changed
+  - up.util.noop
+  - up.util.normalizeURL
+  - up.util.isBlank.key
+  - up.util.wrapList
+  - up.util.copy.key
+  - up.util.findResult
+  - up.util.every
+  - up.util.evalOption
+  - up.util.pluckKey
+  
+- Rename up.deferred.load => .fill and up:deferred:load to up:deferred:fill and stabilize
+  
+  
+- Fix broken links
+[ok] - Document X-Up-Origin-Mode
+[ok] - Document up.Request#originMode (experimental)
+[ok] - Document X-Up-Open-Layer
+  - Also under /opening-overlays
+[ok] - Document up.validate options { url } and { method }
+[ok] - Document [up-validate] attrs [up-validate-url] and [up-validate-methode]
+[ok] - Document up.layer.ask somewhere
+  - Subinteractions
 
 
 Big docs @params rework
@@ -216,7 +273,7 @@ Big docs @params rework
   - But check who includes up-follow/client-state and does not want [up-context]
   - And check who includes up-follow/layer and would lose [up-context]
     - [up-layer=new]?
-- Can we document options.fail* ?
+[ok] - Can we document options.fail* ?
   - It's mostly target, scroll, focus, layer, history
   - Decide whether we want to expand "failed responses" or whether we want to put { fail } into "Navigation" (renamed to "Defaults") and document failOptions under their respective sections
    - *or* we could document { fail } under "Request" and then document some fail options under their respective sections
