@@ -164,6 +164,7 @@ Needs implementation
 --------------------
 
 [ok] - Params override für up.validate()
+- Remove moveBefore implementation
 
 
 
@@ -203,49 +204,7 @@ Smaller doc changes
 [ok] - Document form[up-accept], form[up-dismiss]
   - We also need to support button[up-accept]
 [ok] - Rename "mark-phrase:" to just "mark:"
-- Check if we can stabilize @experimental features (add to CHANGELOG)
-  - up.event.build()
-  - up.form.fields()
-  - up.fragment.config.skipResponse
-  - [up-etag]
-  - up.fragment.etag()
-  - [up-time]
-  - up.fragment.time()
-  - event.skip() for up:fragment:loaded
-  - up:fragment:offline
-  - up.fragment.subtree
-  - up.fragment.isTargetable
-  - :layer
-  - up.fragment.matches()
-  - up.fragment.abort()
-  - up:fragment:aborted
-  - up.template.clone()
-  - up:template:clone
-  - up.history.location
-  - up.history.previousLocation
-  - up.history.isLocation
-  - up:layer:location:changed
-  - event.response for up:layer:accept, up:layer:dismiss, up:layer:accepted, up:layer:dismissed
-  - up-defer
-  - up.network.config.lateDelay
-  - { lateDelay } option for up.request()
-  - up.network.loadPage()
-  - up:request:aborted
-  - up:fragment:hungry event
-  - { ifLayer } option for up.radio.startPolling()
-  - [up-if-layer] modifier for [up-poll]
-  - up:fragment:poll
-  - up.script.config.scriptSelectors and .noScriptSelectors
-  - event.preventDefault() for up:assets:changed
-  - up.util.noop
-  - up.util.normalizeURL
-  - up.util.isBlank.key
-  - up.util.wrapList
-  - up.util.copy.key
-  - up.util.findResult
-  - up.util.every
-  - up.util.evalOption
-  - up.util.pluckKey
+[ok] - Check if we can stabilize @experimental features (add to CHANGELOG)
   
 - Rename up.deferred.load => .fill and up:deferred:load to up:deferred:fill and stabilize
   
@@ -283,6 +242,9 @@ Big docs @params rework
 
 Backlog
 =======
+
+- Allow to trigger the progress bar with arbitrary promises
+  - E.g. for DirectUpload integration
 
 - Think whether we want to offer a way to "stagger" non-blocking compilers.
   - At least for initial page view
