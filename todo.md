@@ -166,6 +166,10 @@ Needs implementation
 [ok] - Params override für up.validate()
 - Remove moveBefore implementation
 
+- Something broken with overlays and forms
+  - Öffnet ein Link ein Modal, ändert das (wie erwartet) die URL.
+  - Wenn ich im Formular dann submitte und sich der Layer schließt, ändert sich die URL aber nicht mehr auf das Ziel. Es bleibt die aus dem Formular stehen.
+- unpoly-site no longer highlights links
 
 
 Smaller doc changes
