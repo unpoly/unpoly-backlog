@@ -2,17 +2,19 @@ Priority
 ========
 
 - Finish the CHANGELOG
+  - Link to new support page
 - Schedule a presentation event
 - Fix broken links
 - Experiment with support page
   - Talk to A
   - Als configure a contact_link
-- Experiment with logo page
 
 
 
 Backlog
 =======
+
+- Experiment with logo page
 
 - Doc page for array params?
   - It's only relevant for watching?
