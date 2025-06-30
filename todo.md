@@ -1,14 +1,17 @@
-Priority
-========
+3.11 Death March
+================
 
 - Finish the CHANGELOG
-  - Link to new support page
+- Test on Safari
+- Upgrade an app
 - Schedule a presentation event
-- Fix broken links
-- Experiment with support page
-  - Talk to A
-  - Als configure a contact_link
+- [with release] Configure a contact_link to new support page for new issues
 
+
+Next
+====
+
+- Let's keep space-separated tokens
 
 
 Backlog
