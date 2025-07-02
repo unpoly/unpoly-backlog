@@ -2,10 +2,16 @@
 ================
 
 - Finish the CHANGELOG
-- Test on Safari
+[ok] Test on Safari
 - Upgrade an app
 - Schedule a presentation event
 - [with release] Configure a contact_link to new support page for new issues
+
+Results from JP Test
+--------------------
+
+[ok] - Do we want to support watching checkboxes without a form?
+- http://127.0.0.1:39651/assets-test/chunk-FJL5CTOH.js 8:40032 "%cunpoly-migrate%c CSS property names must be in kebab-case, but got camelCase \"--color: #D3ADFF\"" "color: #666666; padding: 1px 3px; border: 1px solid #bbbbbb; border-radius: 2px; font-size: 90%; display: inline-block;" ""
 
 
 Next
@@ -40,8 +46,6 @@ Backlog
   - Wenn Unpoly die Rails-Konvention kennt, wäre es IMO nicht falsch, wenn 'ids[]': [] zu ids%5D%5B= würde. (edited) 
   - ja vielleicht. da er nicht direkt schicken kann sondern entries bauen muss wäre das ein eintrag mit leerem string als value? nil als value?
   - leerer string macht ids%5D%5B=. nil macht ids%5D%5B. weiß nicht was rails aus letzterem macht.
-
-- Find an alternative for glitch.com
 
 - up-scroll="+20"
 
