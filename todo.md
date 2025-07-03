@@ -3,9 +3,19 @@
 
 - Finish the CHANGELOG
 [ok] Test on Safari
-- Upgrade an app
+[ok] - Upgrade an app
+- Publish on Github / Cards with fixed images and mark: comments
 - Schedule a presentation event
 - [with release] Configure a contact_link to new support page for new issues
+- Tweet with Windows 3.11 joke
+- Tell people in Slack
+  - up-disable-for
+  - dominic
+  - origin-layer
+  - scroll: 'bottom'
+  - open-layer
+  - doku: https://makandra.slack.com/archives/C02KGPZDE/p1739465242280719
+  - geht jetzt mit [up-keep=same-html] https://makandra.slack.com/archives/C02KGPZDE/p1728048680245119?thread_ts=1728029835.619829&cid=C02KGPZDE
 
 Results from JP Test
 --------------------
@@ -22,6 +32,11 @@ Next
 
 Backlog
 =======
+
+- external_post
+  - Migrate Adminition Style for GitHub?
+  - Remove mark: and result: comments
+  - Remove custom headline IDs ({#...})
 
 - Experiment with logo page
 
