@@ -1,29 +1,3 @@
-3.11 Death March
-================
-
-- Finish the CHANGELOG
-[ok] Test on Safari
-[ok] - Upgrade an app
-- Publish on Github / Cards with fixed images and mark: comments
-- Schedule a presentation event
-- [with release] Configure a contact_link to new support page for new issues
-- Tweet with Windows 3.11 joke
-- Tell people in Slack
-  - up-disable-for
-  - dominic
-  - origin-layer
-  - scroll: 'bottom'
-  - open-layer
-  - doku: https://makandra.slack.com/archives/C02KGPZDE/p1739465242280719
-  - geht jetzt mit [up-keep=same-html] https://makandra.slack.com/archives/C02KGPZDE/p1728048680245119?thread_ts=1728029835.619829&cid=C02KGPZDE
-
-Results from JP Test
---------------------
-
-[ok] - Do we want to support watching checkboxes without a form?
-- http://127.0.0.1:39651/assets-test/chunk-FJL5CTOH.js 8:40032 "%cunpoly-migrate%c CSS property names must be in kebab-case, but got camelCase \"--color: #D3ADFF\"" "color: #666666; padding: 1px 3px; border: 1px solid #bbbbbb; border-radius: 2px; font-size: 90%; display: inline-block;" ""
-
-
 Next
 ====
 
@@ -33,10 +7,13 @@ Next
 Backlog
 =======
 
+- 
+
 - external_post
   - Migrate Adminition Style for GitHub?
   - Remove mark: and result: comments
   - Remove custom headline IDs ({#...})
+  - Don't prepend unpoly.com to local #fragment links
 
 - Experiment with logo page
 
