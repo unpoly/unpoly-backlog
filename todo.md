@@ -1,6 +1,12 @@
 Next
 ====
 
+- abort with up-keep up-poll
+- up.compiler docs should explain that multiple destructors can be returned
+  - compiler CB return type
+  - compiler CB should say "one or more"
+  - prose above
+  - also have tests for destructors
 - Let's keep space-separated tokens
 
 
