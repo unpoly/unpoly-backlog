@@ -1,12 +1,6 @@
 Next
 ====
 
-- abort with up-keep up-poll
-- up.compiler docs should explain that multiple destructors can be returned
-  - compiler CB return type
-  - compiler CB should say "one or more"
-  - prose above
-  - also have tests for destructors
 - Let's keep space-separated tokens
 
 
@@ -29,10 +23,12 @@ Backlog
 
 - Allow to trigger the progress bar with arbitrary promises
   - E.g. for DirectUpload integration
+  - Is this related to our big job queue rework?
 
 - Think whether we want to offer a way to "stagger" non-blocking compilers.
   - At least for initial page view
   - Measure time and force-stagger?
+  - Is this related to async compilation? So we can wait for staggered compilers with finished?
   - Support { priority: 'idle' }
 
 - Instead of having a long list of PREFLIGHT_KEYS and SHARED_KEYS, we could just list the very few render options that have a failVariant
@@ -58,8 +54,6 @@ Backlog
 
 - Support custom :field, :form-group selectors
   - Will we still use field-with-errors wrappers in a world with :has() ?
-
-- up-nav: Location von anderem Layer nutzen
 
 - Do we have a test that [up-keep] preserves scroll positions?
   - For a non-focused element?
@@ -91,10 +85,6 @@ Backlog
     - Would it only be for render-restore?
     - Or would it also contain { layerStack, previousLayerStack }?
     - But then would it also contain the #reveal logic?
-
-
-- Should up-switch be able to control multiple array checkboxes with the same name?
-  - What would be the value?
 
 - Consider [up-announce=":title"] or ["up-announce="next-headline"]
 
