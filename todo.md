@@ -1,6 +1,11 @@
 Next
 ====
 
+- [up-target], { target } for polling
+  - Default is :origin
+    - Docs should mention that you can set a target instead of relying on
+  - It's may not be trivial to keep it going when forceStarted
+
 - Let's keep space-separated tokens
 
 
