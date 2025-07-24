@@ -1,19 +1,35 @@
 Next
 ====
 
-- [up-target], { target } for polling
-  - Default is :origin
-    - Docs should mention that you can set a target instead of relying on
-  - It's may not be trivial to keep it going when forceStarted
-
+- https://unpoly.com/up-href macht 404
+  - Redirected auf /clicking-non-interactive-elements
+  
 - Let's keep space-separated tokens
 
+- Support more options per submit buttons
+  - we already have [formaction], [formmethod]
+  - [up-submit=false] on a submit button would be great
+  - other options
+    - [up-target]
+    - [up-confirm]
+    - [up-layer] would be good
+      - but that has a lot of other, related options
+      - maybe just load in linkOptions?
+        - then have a test that this does not add any defaults that we don't want to see!
+        - maybe have an option to parse without ANY defaults { skipDefaults }
+          - but that will go past normalizations (like normalizeMethod)
+          - we also need to exclude { method, url }
+        - test submitButtonOptions
+  - Close existing issues
+  - Doc page for form submission, which also shows how to override with submit buttons
 
 Backlog
 =======
 
-- https://unpoly.com/up-href macht 404
-  - Redirected auf /clicking-non-interactive-elements
+- [up-target], { target } for polling
+  - Default is :origin
+    - Docs should mention that you can set a target instead of relying on
+  - It's may not be trivial to keep it going when forceStarted
 
 - external_post
   - Migrate Adminition Style for GitHub?
