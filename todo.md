@@ -5,6 +5,12 @@ Next
   - Redirected auf /clicking-non-interactive-elements
   
 - Let's keep space-separated tokens
+  - Restore some examples
+  
+- Update the demo (it's still on 3.10.2)
+
+- Only render HTML responses
+  - Throw up.CannotParse
 
 - Support more options per submit buttons
   - we already have [formaction], [formmethod]
@@ -22,6 +28,8 @@ Next
         - test submitButtonOptions
   - Close existing issues
   - Doc page for form submission, which also shows how to override with submit buttons
+  
+  
 
 Backlog
 =======
