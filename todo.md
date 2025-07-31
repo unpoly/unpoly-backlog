@@ -28,7 +28,10 @@ Next
         - test submitButtonOptions
   - Close existing issues
   - Doc page for form submission, which also shows how to override with submit buttons
-  
+
+- Should [up-autosubmit] work like [up-validate], in that all autosubmitters work together?
+  - Use case: Different targets for different inputs
+  - But get rid of form group seeking
   
 
 Backlog
