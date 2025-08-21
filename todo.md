@@ -34,6 +34,14 @@ Next
   - But get rid of form group seeking
   
 - Think about support for scroll-margin-top, scroll-padding-top
+
+- Update npm keywords, GitHub keywords
+
+- Performance of large HTML
+  - We cannot pre-emptively create a FormValidator for every <form>
+  - When a compiler instantiates a FormValidator, its SelectorTracker re-syncs again after up:fragment:inserted
+    - Even listening to both :destroyed and :finished will both trigger a sync
+    - Maybe delay the sync to next Microtask?
   
 
 Backlog
