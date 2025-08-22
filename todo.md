@@ -37,12 +37,12 @@ Next
 
 - Update npm keywords, GitHub keywords
 
-- Performance of large HTML
-  - We cannot pre-emptively create a FormValidator for every <form>
-  - When a compiler instantiates a FormValidator, its SelectorTracker re-syncs again after up:fragment:inserted
-    - Even listening to both :destroyed and :finished will both trigger a sync
-    - Maybe delay the sync to next Microtask?
-  
+- Try implementing compiler { timing } option
+  - { timing: 'sync' }
+  - { timing: 'budget' }
+  - { timing: 'idle' }
+
+
 
 Backlog
 =======
