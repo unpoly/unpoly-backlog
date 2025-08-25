@@ -43,6 +43,11 @@ Next
   - { timing: 'idle' }
 
 
+- 3.11. change: When a POST request redirects to a GET route, that final GET request is now cached.
+  => This now causes flashes to be cached
+  => Document a mechanism to delete flashes?
+  => Maybe offer meta.willRevalidate ?
+
 
 Backlog
 =======
