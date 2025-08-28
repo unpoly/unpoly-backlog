@@ -52,6 +52,14 @@ Next
 Backlog
 =======
 
+- Support { timing } compiler option
+  - Macros must be sync
+  - up.fragment.config.renderBudget
+  - The budget is impossible to measure with async compilers
+    - We can measure the initial frame though
+  - There is Schedules#postTask() which uses { priority: 'user-blocking' | 'user-visible' | 'background' }
+  - Should we just ask users to use requestIdleCallback() or await scheduler.yield() in their compilers?
+
 - [up-target], { target } for polling
   - Default is :origin
     - Docs should mention that you can set a target instead of relying on
