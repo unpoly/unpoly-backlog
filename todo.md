@@ -11,46 +11,18 @@ Next
 
 - Only render HTML responses
   - Throw up.CannotParse
-
-- Support more options per submit buttons
-  - we already have [formaction], [formmethod]
-  - [up-submit=false] on a submit button would be great
-  - other options
-    - [up-target]
-    - [up-confirm]
-    - [up-layer] would be good
-      - but that has a lot of other, related options
-      - maybe just load in linkOptions?
-        - then have a test that this does not add any defaults that we don't want to see!
-        - maybe have an option to parse without ANY defaults { skipDefaults }
-          - but that will go past normalizations (like normalizeMethod)
-          - we also need to exclude { method, url }
-        - test submitButtonOptions
-  - Close existing issues
-  - Doc page for form submission, which also shows how to override with submit buttons
-
-- Should [up-autosubmit] work like [up-validate], in that all autosubmitters work together?
-  - Use case: Different targets for different inputs
-  - But get rid of form group seeking
-  
+ 
 - Think about support for scroll-margin-top, scroll-padding-top
 
 - Update npm keywords, GitHub keywords
 
-- Try implementing compiler { timing } option
-  - { timing: 'sync' }
-  - { timing: 'budget' }
-  - { timing: 'idle' }
-
-
-- 3.11. change: When a POST request redirects to a GET route, that final GET request is now cached.
-  => This now causes flashes to be cached
-  => Document a mechanism to delete flashes?
-  => Maybe offer meta.willRevalidate ?
-
 
 Backlog
 =======
+
+- Should [up-autosubmit] work like [up-validate], in that all autosubmitters work together?
+  - Use case: Different targets for different inputs
+  - But get rid of form group seeking
 
 - Support { timing } compiler option
   - Macros must be sync
@@ -1175,3 +1147,11 @@ Icebox / Tar pits
 - up:fragment:rendered event
   => This is a lot like up:fragment:inserted
   => Wait until we have more use cases
+  
+  
+- 3.11. change: When a POST request redirects to a GET route, that final GET request is now cached.
+  => This now causes flashes to be cached
+  => Document a mechanism to delete flashes?
+  => Maybe offer meta.willRevalidate ?
+  => We documented a workaround
+
