@@ -7,6 +7,12 @@ Next
 - Field tracking crashes when a modal contains a select without a form
   - Fehler fliegt so um https://github.com/unpoly/unpoly/blob/295b902cd79f097434ba2a3b8f940ce16c10cbfd/src/unpoly/form.js#L1360 rum. Es läuft irgendwie trackFields zu einem Zeitpunkt wo das Layer des Modals schon weg ist, und dann ist sowohl getForm(origin) als auch up.layer.get(origin) undefined, und dann bekommt man ein unknown property "element".
   - Destructors run after the stack was reduced
+
+- State machine for Overlays?
+  - state = 'new' | 'opening' | 'opened' | 'closing' | 'closed'
+  - replace isOpen() und isClosed() with isAlive() and !isAlive()
+  
+- publish up.fragment.isAlive() as experimental
   
 - up.watch() needs not track fields if the given root is already a field?
   - There's a commented-out `const live = true // !isField(root)`
