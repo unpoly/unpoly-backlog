@@ -1,42 +1,18 @@
 Next
 ====
 
-- Only render HTML responses
-  - Throw up.CannotParse
-  
-- Field tracking crashes when a modal contains a select without a form
-  - Fehler fliegt so um https://github.com/unpoly/unpoly/blob/295b902cd79f097434ba2a3b8f940ce16c10cbfd/src/unpoly/form.js#L1360 rum. Es läuft irgendwie trackFields zu einem Zeitpunkt wo das Layer des Modals schon weg ist, und dann ist sowohl getForm(origin) als auch up.layer.get(origin) undefined, und dann bekommt man ein unknown property "element".
-  - Destructors run after the stack was reduced
-
-- State machine for Overlays?
-  - state = 'new' | 'opening' | 'opened' | 'closing' | 'closed'
-  - replace isOpen() und isClosed() with isAlive() and !isAlive()
-  
-- publish up.fragment.isAlive() as experimental
-  
-- up.watch() needs not track fields if the given root is already a field?
-  - There's a commented-out `const live = true // !isField(root)`
-
-- https://unpoly.com/up-href macht 404
-  - Redirected auf /clicking-non-interactive-elements
-  
-- Let's keep space-separated tokens
+- Let's keep space-separated tokens indefinitely
   - Restore some examples
+
+- document.currentScript (for manual boot) does not work with <script type="module">
   
 - Update the demo (it's still on 3.10.2)
- 
-- Think about support for scroll-margin-top, scroll-padding-top
-
-- Update npm keywords, GitHub keywords
-
-- One last time reconsider replaceState
-  - We want to support "back as close" and this needs it
-  - It makes CI slow
 
 
 Backlog
 =======
 
+- Think about support for scroll-margin-top, scroll-padding-top
 - Should [up-autosubmit] work like [up-validate], in that all autosubmitters work together?
   - Use case: Different targets for different inputs
   - But get rid of form group seeking
@@ -91,8 +67,6 @@ Backlog
 - Test that render({ response }) throws for a failed response
 
 - revealPadding etc. should have function forms for the revealed element
-
-- document.currentScript (for manual boot) does not work with <script type="module">
 
 - Consider moving [up-nav], .up-current, [up-alias] to up.history
 
