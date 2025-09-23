@@ -1,20 +1,9 @@
 Next
 ====
 
-- Let's keep space-separated tokens indefinitely
-  - Restore some examples
-  - Mention in CHANGELOG that spaces are going to stay supported
-  
-- Can we support updating a <tr>?
-  - We can wrap the HTML
-  - But then we must sure that rootSelector still works
-  - Or we unwrap after?
-  
 - Use onAccepted with JS string?
   - At least support X-Up-Open-Layer with callbacks
   - Or support actions, effects
-
-- document.currentScript (for manual boot) does not work with <script type="module">
   
 - Update the demo (it's still on 3.10.2)
 
