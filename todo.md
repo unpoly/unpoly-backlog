@@ -1,6 +1,11 @@
 Next
 ====
 
+- AH Bug
+  - Support form-external submit buttons when no { submitButton } is given?
+
+- Use AI to make a typo and wording pass over the docs
+
 - Use onAccepted with JS string?
   - At least support X-Up-Open-Layer with callbacks
   - Or support actions, effects
