@@ -10,6 +10,8 @@ Next
   - At least support X-Up-Open-Layer with callbacks
   - Or support actions, effects
   
+- [up-peel-intent] ?
+  
 - Update the demo (it's still on 3.10.2)
 
 
