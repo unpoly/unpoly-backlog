@@ -1,17 +1,21 @@
 Next
 ====
 
-- AH Bug
-  - Support form-external submit buttons when no { submitButton } is given?
-
-- Use AI to make a typo and wording pass over the docs
-
 - Use onAccepted with JS string?
   - At least support X-Up-Open-Layer with callbacks
   - Or support actions, effects
   
 - [up-peel-intent] ?
+  - [up-peel-value] ?
   
+- [up-accept-selector]
+  - [up-accept-element]
+  - data becomes acceptance value
+
+- [up-accept-on] => [up-accept-event] ?
+
+- Use AI to make a typo and wording pass over the docs
+
 - Update the demo (it's still on 3.10.2)
 
 
