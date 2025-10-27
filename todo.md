@@ -1,6 +1,12 @@
 Next
 ====
 
+- Offer { scroll: 'keep' } (similiar to { focus: 'keep' })
+
+- Test that an untargetable [up-keep] prints a warning, but does not crash the render pass
+
+- Should up.reload() default to { scroll: 'keep', focus: 'keep' }
+
 - Use onAccepted with JS string?
   - At least support X-Up-Open-Layer with callbacks
   - Or support actions, effects
