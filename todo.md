@@ -22,6 +22,12 @@ Next
 
 - Use AI to make a typo and wording pass over the docs
 
+- meta.ok
+
+- meta props for up:fragment:inserted
+
+- fade-out should take current opacity into account
+
 - Update the demo (it's still on 3.10.2)
 
 
