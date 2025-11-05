@@ -1,6 +1,22 @@
 Next
 ====
 
+- rails.js does not convert on forms and submit buttons
+
+- Consider bringing the offline polling into the library
+  - Also a prop up.network.offline or something?
+  
+- Test and document that up:fragment:offline does not run when preloading
+
+- Test and document that up:request:loaded does NOT run when loading from cache
+
+- Test and document that up:fragment:loaded DOES run when loading from cache
+  - Vs. preloading?
+
+- Consider bringing the flash nonce pattern into the library
+
+- undefined log message: up:fragment:offline Cannot load fragment from GET /notes/229: undefined
+
 - Offer { scroll: 'keep' } (similiar to { focus: 'keep' })
 
 - Test that an untargetable [up-keep] prints a warning, but does not crash the render pass
