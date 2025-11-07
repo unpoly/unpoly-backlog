@@ -1,50 +1,86 @@
 Next
 ====
 
-- rails.js does not convert on forms and submit buttons
+- Scrolling in multi-pane layout
+  - Offer [up-scroll-map=...] and { scrollMap }
+    - Check if we want to expose some of the other maps
+  - Offer { scroll: 'target-attrs' } to read scroll settings from fragment
+    - This should be part of { scroll: 'auto' }
+    - This cannot set 'auto'
+  - Offer { history: 'target-attrs' } to read scroll settings from fragment
+    - This should be part of { history: 'auto' }
+  - Think about introducing a light way of [up-zone] or [up-frame]
+    - I just want the auto-targeting
+    - We might still need :frame, :zone, -if-frame etc.
+    - up.fragment.config.frameSelectors
+
+- Should up-switch run for disabled elements?
+  - What about up.watch()?
+  - What about up-validate?
+  - upWatchIncludeDisabled?
+  - Or have [up-faux-disabled] on the element, so it is parsed by up.Params?
+    - Maybe even offer up.form.disable(element, { faux: true })
 
 - Consider bringing the offline polling into the library
   - Also a prop up.network.offline or something?
+  - But we need to make it opt-in?
+    - Would up.network.offline need to raise or return "unknown"?
   
-- Test and document that up:fragment:offline does not run when preloading
-
-- Test and document that up:request:loaded does NOT run when loading from cache
-
-- Test and document that up:fragment:loaded DOES run when loading from cache
-  - Vs. preloading?
+- Improve docs and tests of offline/loaded events
+  - Test and document that up:fragment:offline does not run when preloading
+  - Test and document that up:request:loaded does NOT run when loading from cache
+  - Test and document that up:fragment:loaded DOES run when loading from cache
+    - Vs. preloading?
+  - undefined log message: up:fragment:offline Cannot load fragment from GET /notes/229: undefined
 
 - Consider bringing the flash nonce pattern into the library
 
-- undefined log message: up:fragment:offline Cannot load fragment from GET /notes/229: undefined
+- Meta props
+  - meta.ok
+  - meta props for up:fragment:inserted
 
-- Offer { scroll: 'keep' } (similiar to { focus: 'keep' })
+- Keeping scroll positions
+  - Offer { scroll: 'keep' } (similiar to { focus: 'keep' })
+  - Should up.reload() default to { scroll: 'keep', focus: 'keep' }
+    - focus: 'keep' might already be a default
 
 - Test that an untargetable [up-keep] prints a warning, but does not crash the render pass
-
-- Should up.reload() default to { scroll: 'keep', focus: 'keep' }
 
 - Use onAccepted with JS string?
   - At least support X-Up-Open-Layer with callbacks
   - Or support actions, effects
-  
-- [up-peel-intent] ?
-  - [up-peel-value] ?
-  
+
+- Merge [up-peel="accept|dismiss"]
+  - Worry about setting the value another time
+
 - [up-accept-selector]
   - [up-accept-element]
   - data becomes acceptance value
 
 - [up-accept-on] => [up-accept-event] ?
 
-- Use AI to make a typo and wording pass over the docs
-
-- meta.ok
-
-- meta props for up:fragment:inserted
-
 - fade-out should take current opacity into account
 
-- Update the demo (it's still on 3.10.2)
+- Use AI to make a typo and wording pass over the docs
+
+- rails.js does not convert on forms and submit buttons
+
+    function convertDataAttr(dataAttr, upAttr) {
+      up.macro('[' + dataAttr + ']:is(form, input[type=submit], button[type=submit], button:not([type])', function(confirmable) {
+        let form = up.form.get(confirmable)
+        if (up.form.isSubmittable(form)) {
+          up.element.setMissingAttr(form, upAttr, confirmable.getAttribute(dataAttr))
+          confirmable.removeAttribute(dataAttr)
+        }
+      })
+    }
+
+    convertDataAttr('data-confirm', 'up-confirm')
+    convertDataAttr('data-method', 'up-method')
+
+- It would be nice to have a macro? for live validation
+
+- Merge the talk demo
 
 
 Backlog
