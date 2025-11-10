@@ -1,6 +1,8 @@
 Next
 ====
 
+- Possibly offter up.destroy(detach: false) for morphdom integration
+
 - Scrolling in multi-pane layout
   - Offer [up-scroll-map=...] and { scrollMap }
     - Check if we want to expose some of the other maps
