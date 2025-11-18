@@ -1,6 +1,8 @@
 Next
 ====
 
+- up:fragment:kept log: Should be silent or have more details
+
 - Possibly offter up.destroy(detach: false) for morphdom integration
 
 - Scrolling in multi-pane layout
