@@ -5,18 +5,51 @@ Next
 
 - Possibly offter up.destroy(detach: false) for morphdom integration
 
+- Alternative to maps: Scroll settings are applied to all fragments, but we only scroll once per viewport
+  - For this, all scrolling functions would need to return the scrolled viewport
+  - This would keep us from ever delegating to the browser scrollIntoView()
+
 - Scrolling in multi-pane layout
   - Offer [up-scroll-map=...] and { scrollMap }
     - Check if we want to expose some of the other maps
+      - dataMap, previewMap, placeholderMap
+      - I'm not sure they even have attribute parsers
+        - <a href="/foo" up-target=".foo, .bar" up-preview-map="{ '.foo': 'edit-post', .bar: 'flutter' }">
+    - How would FragmentScrolling process map vs. pure scroll option?
+      - We could keep map processing out of FragmentProcessor
+        - There is already matchSelectorMap
+    - How would we resolve conflicts if both { scrollMap } and {scroll } are given?
+      (1) matchSelectorMap(scrollMap, step.fragment)[0] || (i == 0 && scroll)
+      (2) isPresent(scrollMap) ? matchSelectorMap(scrollMap, step.fragment)[0] || (i == 0 && scroll)
+        => But previews, data are additive
+      (3) use a single attribute
+        => This would be nicer syntax-wise, except that there's a mismatch with dataMap etc.
+          => But we can change it later
+        => With map we could think if shorthand map syntax, e.g. up-scroll-map=".bar => target, .foo => reset"
+          => Naaaa
+        => dataMap cannot just be { data }
+        => [data-map] would be [use-data-map]?
+        => placeholderMap and previewMap is weird as an attribute: up-preview-map="{ '.foo': 'preview { attr: 'value' }' 
+          => I think we would need to allow nested objects here, e.g.
+            { '.foo': { 'edit-task': { attr: 'value' } } }
+    - We could also make an exception for { scroll: 'keep' }
+            
+      
   - Offer { scroll: 'target-attrs' } to read scroll settings from fragment
     - This should be part of { scroll: 'auto' }
     - This cannot set 'auto'
-  - Offer { history: 'target-attrs' } to read scroll settings from fragment
+
+  - Offer { history: 'target-attrs' } to read history settings from fragment
     - This should be part of { history: 'auto' }
-  - Think about introducing a light way of [up-zone] or [up-frame]
-    - I just want the auto-targeting
-    - We might still need :frame, :zone, -if-frame etc.
-    - up.fragment.config.frameSelectors
+
+- Focus in multi-pane layout
+  - We currently only focus for the first step
+  - But we should allow focusing a secondary fragment
+
+- Think about introducing a light way of [up-zone] or [up-frame]
+  - I just want the auto-targeting
+  - We might still need :frame, :zone, -if-frame etc.
+  - up.fragment.config.frameSelectors
 
 - Should up-switch run for disabled elements?
   - What about up.watch()?
