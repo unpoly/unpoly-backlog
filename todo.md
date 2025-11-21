@@ -5,9 +5,22 @@ Next
 
 - Possibly offter up.destroy(detach: false) for morphdom integration
 
-- Alternative to maps: Scroll settings are applied to all fragments, but we only scroll once per viewport
+- [naaa] Alternative to maps: Scroll settings are applied to all fragments, but we only scroll once per viewport
   - For this, all scrolling functions would need to return the scrolled viewport
   - This would keep us from ever delegating to the browser scrollIntoView()
+
+- I would like to the map to allow scrolling arbitrary fragments, but unfortunately the scrolling happens with each step
+  - I could scroll with every step
+  - I could weave the updates so I can handle all the scrolling centrally
+    => This is pretty hard.
+      - E.g. morph() needs to scroll somewhere in its process.
+      - Hungry steps are added only after the primary step is done
+    - Maybe like this:
+      Every step does
+        await options.syncAfterInsert()
+      syncAfterInsert:
+         
+  => placeholderMap and previewMap have the same issue
 
 - Scrolling in multi-pane layout
   - Offer [up-scroll-map=...] and { scrollMap }
@@ -45,6 +58,10 @@ Next
 - Focus in multi-pane layout
   - We currently only focus for the first step
   - But we should allow focusing a secondary fragment
+  
+- Expose up.util.mapObject()
+  - Tests
+  - Docs
 
 - Think about introducing a light way of [up-zone] or [up-frame]
   - I just want the auto-targeting
@@ -57,6 +74,7 @@ Next
   - upWatchIncludeDisabled?
   - Or have [up-faux-disabled] on the element, so it is parsed by up.Params?
     - Maybe even offer up.form.disable(element, { faux: true })
+    - Is there a better name like [up-force-params]
 
 - Consider bringing the offline polling into the library
   - Also a prop up.network.offline or something?
@@ -71,6 +89,8 @@ Next
   - undefined log message: up:fragment:offline Cannot load fragment from GET /notes/229: undefined
 
 - Consider bringing the flash nonce pattern into the library
+  - [up-flash=uid]
+  - But what I really want is to change the cached response text
 
 - Meta props
   - meta.ok
@@ -116,6 +136,8 @@ Next
     convertDataAttr('data-method', 'up-method')
 
 - It would be nice to have a macro? for live validation
+
+- Support { scroll: 5 } and { scroll: -5 }
 
 - Merge the talk demo
 
