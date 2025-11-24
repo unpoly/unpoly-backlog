@@ -1,52 +1,36 @@
 Next
 ====
 
+- New compiler logic
+  - Do all mutations before starting compilation, preprocessing, etc.
+  - Render macros before setting location, so we can set [up-href] and [up-alias]
+  - Update lifecycle chart
+
+- Docs: /layer-option is more like "Targeting layers"
+- Docs: Sizes in /customizing-overlays#overlay-sizes should be in fixed width
+
+- When we scroll to a hash (on load or in reaction to history changes), we should also focus() the new fragment
+
+- We can replace up.util.reverse() with Array#toReversed()
+
+- We have e.cleanJQuery() without an argument
+
 - up:fragment:kept log: Should be silent or have more details
 
-- Possibly offter up.destroy(detach: false) for morphdom integration
+- Possibly offer up.destroy(detach: false) for morphdom integration
 
-- [naaa] Alternative to maps: Scroll settings are applied to all fragments, but we only scroll once per viewport
-  - For this, all scrolling functions would need to return the scrolled viewport
-  - This would keep us from ever delegating to the browser scrollIntoView()
+- Why do we sometimes log uppercase %O?
 
-- I would like to the map to allow scrolling arbitrary fragments, but unfortunately the scrolling happens with each step
-  - I could scroll with every step
-  - I could weave the updates so I can handle all the scrolling centrally
-    => This is pretty hard.
-      - E.g. morph() needs to scroll somewhere in its process.
-      - Hungry steps are added only after the primary step is done
-    - Maybe like this:
-      Every step does
-        await options.syncAfterInsert()
-      syncAfterInsert:
-         
-  => placeholderMap and previewMap have the same issue
+[ok] - Offer [up-scroll-map=...] and { scrollMap }
 
-- Scrolling in multi-pane layout
-  - Offer [up-scroll-map=...] and { scrollMap }
-    - Check if we want to expose some of the other maps
-      - dataMap, previewMap, placeholderMap
-      - I'm not sure they even have attribute parsers
-        - <a href="/foo" up-target=".foo, .bar" up-preview-map="{ '.foo': 'edit-post', .bar: 'flutter' }">
-    - How would FragmentScrolling process map vs. pure scroll option?
-      - We could keep map processing out of FragmentProcessor
-        - There is already matchSelectorMap
-    - How would we resolve conflicts if both { scrollMap } and {scroll } are given?
-      (1) matchSelectorMap(scrollMap, step.fragment)[0] || (i == 0 && scroll)
-      (2) isPresent(scrollMap) ? matchSelectorMap(scrollMap, step.fragment)[0] || (i == 0 && scroll)
-        => But previews, data are additive
-      (3) use a single attribute
-        => This would be nicer syntax-wise, except that there's a mismatch with dataMap etc.
-          => But we can change it later
-        => With map we could think if shorthand map syntax, e.g. up-scroll-map=".bar => target, .foo => reset"
-          => Naaaa
-        => dataMap cannot just be { data }
-        => [data-map] would be [use-data-map]?
-        => placeholderMap and previewMap is weird as an attribute: up-preview-map="{ '.foo': 'preview { attr: 'value' }' 
-          => I think we would need to allow nested objects here, e.g.
-            { '.foo': { 'edit-task': { attr: 'value' } } }
-    - We could also make an exception for { scroll: 'keep' }
-            
+- Think about exposing dataMap
+  - Would it be [data-map] or [use-data-map]?
+    - I think attr would be [use-data-map], but option would just be { dataMap }
+
+- Think about exposing placeHolderMap and previewMap
+  - previewMap is weird as an attribute: up-preview-map="{ '.foo': 'preview { attr: 'value' }' 
+    - I think we would need to allow nested objects here, e.g.
+      { '.foo': { 'edit-task': { attr: 'value' } } }
       
   - Offer { scroll: 'target-attrs' } to read scroll settings from fragment
     - This should be part of { scroll: 'auto' }
@@ -58,6 +42,17 @@ Next
 - Focus in multi-pane layout
   - We currently only focus for the first step
   - But we should allow focusing a secondary fragment
+  
+- Rework execution order in multi-step upgrades
+  - Compilers, Scroll fns etc. should see DOM mutations from subsequent steps
+  - I want central control for this order:
+    1. doCommit()
+    3. doMutate()
+    4. doUpdateViewport()
+    5. compile()
+    5. scrollAndFocus()
+      This can now
+    6. startFinish()
   
 - Expose up.util.mapObject()
   - Tests
@@ -139,7 +134,12 @@ Next
 
 - Support { scroll: 5 } and { scroll: -5 }
 
-- Merge the talk demo
+- New demo
+  - Clean up
+  - Share on forum
+  - Say thanks to Philip
+
+
 
 
 Backlog
