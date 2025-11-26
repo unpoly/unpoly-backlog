@@ -1,6 +1,8 @@
 Next
 ====
 
+- I think the message "Aborting requests within fragment" now also appears if there is nothing to abort
+
 - New compiler logic
   - Do all mutations before starting compilation, preprocessing, etc.
   - Render macros before setting location, so we can set [up-href] and [up-alias]
