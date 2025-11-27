@@ -2,6 +2,7 @@ Next
 ====
 
 - I think the message "Aborting requests within fragment" now also appears if there is nothing to abort
+  - Let's test this
 
 - New compiler logic
   - Do all mutations before starting compilation, preprocessing, etc.
