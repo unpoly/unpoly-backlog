@@ -1,6 +1,8 @@
 Next
 ====
 
+- Background scorlling: https://github.com/unpoly/unpoly/discussions/790
+
 - I think the message "Aborting requests within fragment" now also appears if there is nothing to abort
   - Let's test this
 
