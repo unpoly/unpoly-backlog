@@ -1,24 +1,44 @@
 Next
 ====
 
-- Background scorlling: https://github.com/unpoly/unpoly/discussions/790
+- Background scrolling: https://github.com/unpoly/unpoly/discussions/790
 
 - I think the message "Aborting requests within fragment" now also appears if there is nothing to abort
   - Let's test this
 
-- New compiler logic
+- Phased rendering
   - Do all mutations before starting compilation, preprocessing, etc.
   - Render macros before setting location, so we can set [up-href] and [up-alias]
   - Update lifecycle chart
+  - Test that we can keep focus in all step variants (especially those that use wrappers)
+  - Test that we can call focus functions in all step variants
+  - Test that we can call scroll functions in all step variants
+  - Test that we can apply transitions when swapping children
+  - Test that { finished } delays by transition/animation in all step variants
+  - Test that we cann compilers in all step variants
+  - Test that the bounds variants don't keep an <up-wrapper> in the DOM
+  - Can we replace _executeSwapChildrenStep with a regular swapStep if both new and old element only have a single element child?
+  - How does { scroll: 'target' } or { focus: 'target' } work with wrappers?
+  
+- Emit up:fragment:destroyed on the destroying fragment?
+  
+- Leverage new phased rendering logic
+  - Scroll functions should be able to scroll secondary fragments
+  - Focus functions should be able to scroll secondary fragments
+  - Compiler functions should see all updated fragments
+  - Run macros immediately after mutation
+    - So we can set [up-href] and [up-alias]
 
 - Docs: /layer-option is more like "Targeting layers"
 - Docs: Sizes in /customizing-overlays#overlay-sizes should be in fixed width
 
 - When we scroll to a hash (on load or in reaction to history changes), we should also focus() the new fragment
+  - There is an issue for that
 
 - We can replace up.util.reverse() with Array#toReversed()
 
 - We have e.cleanJQuery() without an argument
+  - Check whether this is needed anyway
 
 - up:fragment:kept log: Should be silent or have more details
 
@@ -36,7 +56,10 @@ Next
   - previewMap is weird as an attribute: up-preview-map="{ '.foo': 'preview { attr: 'value' }' 
     - I think we would need to allow nested objects here, e.g.
       { '.foo': { 'edit-task': { attr: 'value' } } }
-      
+
+- Multi-pane layouts
+  - Do this now or wait until we do zone/frame?
+
   - Offer { scroll: 'target-attrs' } to read scroll settings from fragment
     - This should be part of { scroll: 'auto' }
     - This cannot set 'auto'
