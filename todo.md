@@ -1,13 +1,19 @@
 Next
 ====
 
+- [done] up.destroy() awaits exit animation before :destroyed
+
 - Background scrolling: https://github.com/unpoly/unpoly/discussions/790
 
 - I think the message "Aborting requests within fragment" now also appears if there is nothing to abort
   - Let's test this
 
+- Run up-switch before up-submit or up-validate
+  - It's weird because up-validate already schedules a timeout?
+    => No switch (via up.watch) also schedules macrotask
+
 - Phased rendering
-  - Do all mutations before starting compilation, preprocessing, etc.
+  [ok] - Do all mutations before starting compilation, preprocessing, etc.
   - Render macros before setting location, so we can set [up-href] and [up-alias]
   - Update lifecycle chart
   - Test that we can keep focus in all step variants (especially those that use wrappers)
@@ -15,22 +21,28 @@ Next
   - Test that we can call scroll functions in all step variants
   - Test that we can apply transitions when swapping children
   - Test that { finished } delays by transition/animation in all step variants
-  - Test that we cann compilers in all step variants
+  - Test that macros are called in all step variants
+  - Test that compilers are called in all step variants
+  - Test that destructors are called in all step variants
   - Test that the bounds variants don't keep an <up-wrapper> in the DOM
   - Can we replace _executeSwapChildrenStep with a regular swapStep if both new and old element only have a single element child?
   - How does { scroll: 'target' } or { focus: 'target' } work with wrappers?
   
-- Emit up:fragment:destroyed on the destroying fragment?
-  
 - Leverage new phased rendering logic
   - Scroll functions should be able to scroll secondary fragments
   - Focus functions should be able to scroll secondary fragments
-  - Compiler functions should see all updated fragments
+  - Compiler functions should see secondary fragments after update
+  - Compiler functions should see hungry fragments after update
   - Run macros immediately after mutation
     - So we can set [up-href] and [up-alias]
+  - Move scrollMap out of steps, into UpdateLayer / UpdateLayer
+  - Allow scrollMap to update arbitrary fragments?
+  - Stop reversing in steps
 
 - Docs: /layer-option is more like "Targeting layers"
 - Docs: Sizes in /customizing-overlays#overlay-sizes should be in fixed width
+
+- Test that morph() and animate() respect the default duration
 
 - When we scroll to a hash (on load or in reaction to history changes), we should also focus() the new fragment
   - There is an issue for that
@@ -39,6 +51,7 @@ Next
 
 - We have e.cleanJQuery() without an argument
   - Check whether this is needed anyway
+  - Then document change
 
 - up:fragment:kept log: Should be silent or have more details
 
