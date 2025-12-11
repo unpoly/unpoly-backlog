@@ -1,7 +1,16 @@
 Next
 ====
 
+- Consider publishing { previousLocation }
+  - https://unpoly.com/up:location:changed
+
 - [done] up.destroy() awaits exit animation before :destroyed
+
+- Test that we really cache the initial page load
+  - Open deskbot on index
+  - Follow link
+  - Go offline
+  - Can we go back to index from cache?
 
 - Background scrolling: https://github.com/unpoly/unpoly/discussions/790
 
