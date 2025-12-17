@@ -1,6 +1,10 @@
 Next
 ====
 
+- Wrong deprecation: https://unpoly.com/up.Request.prototype.loadPage
+  - points to itself
+  - up.network.loadPage() should not link back
+
 - Consider publishing { previousLocation }
   - https://unpoly.com/up:location:changed
 
@@ -183,6 +187,9 @@ Next
 - It would be nice to have a macro? for live validation
 
 - Support { scroll: 5 } and { scroll: -5 }
+  - Ambiguity: Could either be "current + 5" / "current -5" or it could be "scroll to 5" / "scroll to end minus 5"
+  
+- Do watchers fire when fields become disabled / not disabled?
 
 - New demo
   - Clean up
