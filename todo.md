@@ -1,14 +1,15 @@
 Next
 ====
 
-- Wrong deprecation: https://unpoly.com/up.Request.prototype.loadPage
-  - points to itself
-  - up.network.loadPage() should not link back
+- Fix flakey test: `up.Layer.Modal > styles > scrollbars while an overlay is open > consistently shifts and unshifts if multiple overlays are opened and closed concurrently`
 
-- Consider publishing { previousLocation }
+- [ok] Wrong deprecation: https://unpoly.com/up.Request.prototype.loadPage
+  - It was #navigate that was deprecated
+
+[ok] - Consider publishing { previousLocation }
   - https://unpoly.com/up:location:changed
 
-- [done] up.destroy() awaits exit animation before :destroyed
+- [ok] up.destroy() awaits exit animation before :destroyed
 
 - Test that we really cache the initial page load
   - Open deskbot on index
@@ -18,15 +19,17 @@ Next
 
 - Background scrolling: https://github.com/unpoly/unpoly/discussions/790
 
-- I think the message "Aborting requests within fragment" now also appears if there is nothing to abort
-  - Let's test this
+[ok] - I think the message "Aborting requests within fragment" now also appears if there is nothing to abort
+  => It is designed to always fire, in case a listener is interested
 
-- Run up-switch before up-submit or up-validate
+- [ok] Run up-switch before up-submit or up-validate
   - It's weird because up-validate already schedules a timeout?
     => No switch (via up.watch) also schedules macrotask
 
 - Phased rendering
   [ok] - Do all mutations before starting compilation, preprocessing, etc.
+  - Decide who calls postprocess
+    - Doesn't make sense in UpdateSteps
   - Render macros before setting location, so we can set [up-href] and [up-alias]
   - Update lifecycle chart
   - Test that we can keep focus in all step variants (especially those that use wrappers)
@@ -60,15 +63,15 @@ Next
 - When we scroll to a hash (on load or in reaction to history changes), we should also focus() the new fragment
   - There is an issue for that
 
-- We can replace up.util.reverse() with Array#toReversed()
+[ik] - We can replace up.util.reverse() with Array#toReversed()
 
-- We have e.cleanJQuery() without an argument
+[ok] - We have e.cleanJQuery() without an argument
   - Check whether this is needed anyway
   - Then document change
 
-- up:fragment:kept log: Should be silent or have more details
+[ok] - up:fragment:kept log: Should be silent or have more details
 
-- Possibly offer up.destroy(detach: false) for morphdom integration
+- Possibly offer up.destroy(remove: false) for morphdom integration
 
 - Why do we sometimes log uppercase %O?
 
