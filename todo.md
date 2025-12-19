@@ -1,6 +1,8 @@
 Next
 ====
 
+- Typo "dimissing" in UpdateLayer?
+
 - Fix flakey test: `up.Layer.Modal > styles > scrollbars while an overlay is open > consistently shifts and unshifts if multiple overlays are opened and closed concurrently`
 
 - [ok] Wrong deprecation: https://unpoly.com/up.Request.prototype.loadPage
@@ -1339,3 +1341,5 @@ Icebox / Tar pits
   => Maybe offer meta.willRevalidate ?
   => We documented a workaround
 
+- Can we make a mutated event now?
+  => We could emit a :mutated event after a change but then programmatic calls of up.hello() and up.destroy() would not emit that event
