@@ -1,7 +1,10 @@
 Next
 ====
 
-- Typo "dimissing" in UpdateLayer?
+- Updating a layer from an expired response will not revalidate hungries on other layers
+- Opening a layer from an expired response will not revalidate hungries on other layers
+
+- Typo "dimissing" in UpdateLayer *and* OpenLayer?
 
 - Fix flakey test: `up.Layer.Modal > styles > scrollbars while an overlay is open > consistently shifts and unshifts if multiple overlays are opened and closed concurrently`
 
