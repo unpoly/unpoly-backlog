@@ -1,10 +1,14 @@
 Next
 ====
 
-- Updating a layer from an expired response will not revalidate hungries on other layers
-- Opening a layer from an expired response will not revalidate hungries on other layers
+- I think [up-keep] identity is snapshotted *after* user macros. This makes it brittle against macros (user, system) that change the DOM.
+  - `up.macro('[up-keep]', (element) => keepIdentity(element))`
+
+- [ok] Updating a layer from an expired response will not revalidate hungries on other layers
+- [ok] Opening a layer from an expired response will not revalidate hungries on other layers
 
 - Typo "dimissing" in UpdateLayer *and* OpenLayer?
+  - Why wasn't there a test?
 
 - Fix flakey test: `up.Layer.Modal > styles > scrollbars while an overlay is open > consistently shifts and unshifts if multiple overlays are opened and closed concurrently`
 
@@ -49,16 +53,24 @@ Next
   - Can we replace _executeSwapChildrenStep with a regular swapStep if both new and old element only have a single element child?
   - How does { scroll: 'target' } or { focus: 'target' } work with wrappers?
   
+  
+- Document that macros should just do basic DOM manipulation and avoid calling high-level Unpoly functions
+  
 - Leverage new phased rendering logic
-  - Scroll functions should be able to scroll secondary fragments
-  - Focus functions should be able to scroll secondary fragments
-  - Compiler functions should see secondary fragments after update
+  - => We could most of this before, because we reversed steps. Only the "other layers" would not be in sync.
+  - Scroll functions should be able to scroll secondary fragments => Was possible before, because we reversed
+  - Focus functions should be able to scroll secondary fragments => Was possible before, because we reversed
+  - Compiler functions should see secondary fragments after update => Was possible before
   - Compiler functions should see hungry fragments after update
-  - Run macros immediately after mutation
+    => Can do this, but not from other layers. Probably OK. Compilers can do setTimeout()
+  - Run macros immediately after mutation => We can do this by just emitting the :compile event farther down
     - So we can set [up-href] and [up-alias]
-  - Move scrollMap out of steps, into UpdateLayer / UpdateLayer
+  - Move scrollMap out of steps, into UpdateLayer / OpenLayer
+    => Doesn't matter where
   - Allow scrollMap to update arbitrary fragments?
+    => We could have done this all along, because we reverse the steps and run the scroll function last!
   - Stop reversing in steps
+    => OK we will keep that
 
 - Docs: /layer-option is more like "Targeting layers"
 - Docs: Sizes in /customizing-overlays#overlay-sizes should be in fixed width
