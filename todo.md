@@ -1,13 +1,14 @@
 Next
 ====
 
-- I think [up-keep] identity is snapshotted *after* user macros. This makes it brittle against macros (user, system) that change the DOM.
+[ok] - I think [up-keep] identity is snapshotted *after* user macros. This makes it brittle against macros (user, system) that change the DOM.
   - `up.macro('[up-keep]', (element) => keepIdentity(element))`
+  => No, it has an insane priority to ensure it runs first
 
 - [ok] Updating a layer from an expired response will not revalidate hungries on other layers
 - [ok] Opening a layer from an expired response will not revalidate hungries on other layers
 
-- Typo "dimissing" in UpdateLayer *and* OpenLayer?
+[ok] - Typo "dimissing" in UpdateLayer *and* OpenLayer?
   - Why wasn't there a test?
 
 - Fix flakey test: `up.Layer.Modal > styles > scrollbars while an overlay is open > consistently shifts and unshifts if multiple overlays are opened and closed concurrently`
@@ -36,43 +37,41 @@ Next
     => No switch (via up.watch) also schedules macrotask
 
 - Phased rendering
-  [ok] - Do all mutations before starting compilation, preprocessing, etc.
-  - Decide who calls postprocess
+  - [no] Do all mutations before starting compilation, preprocessing, etc.
+  - [ok] Decide who calls postprocess
     - Doesn't make sense in UpdateSteps
-  - Render macros before setting location, so we can set [up-href] and [up-alias]
-  - Update lifecycle chart
-  - Test that we can keep focus in all step variants (especially those that use wrappers)
-  - Test that we can call focus functions in all step variants
-  - Test that we can call scroll functions in all step variants
+  - [ok] Macros can set [up-alias]
+  - Macros can set [up-href]
+  - [ok] Test that we can keep focus in all step variants (especially those that use wrappers)
+  - [ok] Test that we can call focus functions in all step variants
   - Test that we can apply transitions when swapping children
   - Test that { finished } delays by transition/animation in all step variants
   - Test that macros are called in all step variants
-  - Test that compilers are called in all step variants
+  - [ok] Test that compilers are called in all step variants
   - Test that destructors are called in all step variants
   - Test that the bounds variants don't keep an <up-wrapper> in the DOM
-  - Can we replace _executeSwapChildrenStep with a regular swapStep if both new and old element only have a single element child?
-  - How does { scroll: 'target' } or { focus: 'target' } work with wrappers?
-  
+  - [no] Can we replace _executeSwapChildrenStep with a regular swapStep if both new and old element only have a single element child?
+  - [ok] How does { scroll: 'target' } or { focus: 'target' } work with wrappers?
   
 - Document that macros should just do basic DOM manipulation and avoid calling high-level Unpoly functions
   
 - Leverage new phased rendering logic
   - => We could most of this before, because we reversed steps. Only the "other layers" would not be in sync.
-  - Scroll functions should be able to scroll secondary fragments => Was possible before, because we reversed
-  - Focus functions should be able to scroll secondary fragments => Was possible before, because we reversed
-  - Compiler functions should see secondary fragments after update => Was possible before
-  - Compiler functions should see hungry fragments after update
+  - [ok] Scroll functions should be able to scroll secondary fragments => Was possible before, because we reversed
+  - [ok] Focus functions should be able to focus secondary fragments => Was possible before, because we reversed
+  - [ok] Compiler functions should see secondary fragments after update => Was possible before
+  - [ok] Compiler functions should see hungry fragments after update
     => Can do this, but not from other layers. Probably OK. Compilers can do setTimeout()
-  - Run macros immediately after mutation => We can do this by just emitting the :compile event farther down
+  - [no] Run macros immediately after mutation => We can do this by just emitting the :compile event farther down
     - So we can set [up-href] and [up-alias]
-  - Move scrollMap out of steps, into UpdateLayer / OpenLayer
+  - [no] Move scrollMap out of steps, into UpdateLayer / OpenLayer
     => Doesn't matter where
-  - Allow scrollMap to update arbitrary fragments?
+  - [ok] Allow scrollMap to update arbitrary fragments?
     => We could have done this all along, because we reverse the steps and run the scroll function last!
-  - Stop reversing in steps
-    => OK we will keep that
+  - [no] Stop reversing in steps
 
 - Docs: /layer-option is more like "Targeting layers"
+
 - Docs: Sizes in /customizing-overlays#overlay-sizes should be in fixed width
 
 - Test that morph() and animate() respect the default duration
@@ -89,6 +88,7 @@ Next
 [ok] - up:fragment:kept log: Should be silent or have more details
 
 - Possibly offer up.destroy(remove: false) for morphdom integration
+  
 
 - Why do we sometimes log uppercase %O?
 
@@ -117,17 +117,6 @@ Next
   - We currently only focus for the first step
   - But we should allow focusing a secondary fragment
   
-- Rework execution order in multi-step upgrades
-  - Compilers, Scroll fns etc. should see DOM mutations from subsequent steps
-  - I want central control for this order:
-    1. doCommit()
-    3. doMutate()
-    4. doUpdateViewport()
-    5. compile()
-    5. scrollAndFocus()
-      This can now
-    6. startFinish()
-  
 - Expose up.util.mapObject()
   - Tests
   - Docs
@@ -145,10 +134,11 @@ Next
     - Maybe even offer up.form.disable(element, { faux: true })
     - Is there a better name like [up-force-params]
 
-- Consider bringing the offline polling into the library
+- [no] Consider bringing the offline polling into the library
   - Also a prop up.network.offline or something?
   - But we need to make it opt-in?
     - Would up.network.offline need to raise or return "unknown"?
+  => Mobile chrome also has a great offline indicator
   
 - Improve docs and tests of offline/loaded events
   - Test and document that up:fragment:offline does not run when preloading
@@ -162,13 +152,14 @@ Next
   - But what I really want is to change the cached response text
 
 - Meta props
-  - meta.ok
-  - meta props for up:fragment:inserted
+  - [ok] meta.ok
+  - [ok] meta props for up:fragment:inserted
 
 - Keeping scroll positions
   - Offer { scroll: 'keep' } (similiar to { focus: 'keep' })
   - Should up.reload() default to { scroll: 'keep', focus: 'keep' }
     - focus: 'keep' might already be a default
+    - Test that reloading keeps scroll positions
 
 - Test that an untargetable [up-keep] prints a warning, but does not crash the render pass
 
@@ -208,11 +199,13 @@ Next
 
 - Support { scroll: 5 } and { scroll: -5 }
   - Ambiguity: Could either be "current + 5" / "current -5" or it could be "scroll to 5" / "scroll to end minus 5"
+  - "current + 5" "top + 5" "bottom - 5"
+  - Programmers would probably expect "x from top" or "x from bottom"
+    - We can make a more complicated version later
   
-- Do watchers fire when fields become disabled / not disabled?
-
 - New demo
-  - Clean up
+  - Clean up code
+  - Clean up start page
   - Share on forum
   - Say thanks to Philip
 
@@ -221,6 +214,8 @@ Next
 
 Backlog
 =======
+
+- Do watchers fire when fields become disabled / not disabled?
 
 - Think about support for scroll-margin-top, scroll-padding-top
 - Should [up-autosubmit] work like [up-validate], in that all autosubmitters work together?
