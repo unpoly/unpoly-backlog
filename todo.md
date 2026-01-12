@@ -86,11 +86,13 @@ Next
   - Then document change
 
 [ok] - up:fragment:kept log: Should be silent or have more details
+  
+- Why do we sometimes log uppercase %O?
+
+- It is weird that DestructorPass emits no events, but CompilerPass does?
+  - There is also DestroyFragment that *does* emit
 
 - Possibly offer up.destroy(remove: false) for morphdom integration
-  
-
-- Why do we sometimes log uppercase %O?
 
 [ok] - Offer [up-scroll-map=...] and { scrollMap }
 
@@ -113,11 +115,11 @@ Next
   - Offer { history: 'target-attrs' } to read history settings from fragment
     - This should be part of { history: 'auto' }
 
-- Focus in multi-pane layout
+- [ok] Focus in multi-pane layout
   - We currently only focus for the first step
   - But we should allow focusing a secondary fragment
   
-- Expose up.util.mapObject()
+[ok] - Expose up.util.mapObject()
   - Tests
   - Docs
 
@@ -161,13 +163,13 @@ Next
     - focus: 'keep' might already be a default
     - Test that reloading keeps scroll positions
 
-- Test that an untargetable [up-keep] prints a warning, but does not crash the render pass
+- [ok] Test that an untargetable [up-keep] prints a warning, but does not crash the render pass
 
 - Use onAccepted with JS string?
   - At least support X-Up-Open-Layer with callbacks
   - Or support actions, effects
 
-- Merge [up-peel="accept|dismiss"]
+[ok] - Merge [up-peel="accept|dismiss"]
   - Worry about setting the value another time
 
 - [up-accept-selector]
@@ -176,7 +178,7 @@ Next
 
 - [up-accept-on] => [up-accept-event] ?
 
-- fade-out should take current opacity into account
+[ok] - fade-out should take current opacity into account
 
 - Use AI to make a typo and wording pass over the docs
 
