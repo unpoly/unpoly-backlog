@@ -1,6 +1,8 @@
 Next
 ====
 
+- Test that { scroll: 'keep' } will preserve positions of secondary viewports
+
 [ok] - I think [up-keep] identity is snapshotted *after* user macros. This makes it brittle against macros (user, system) that change the DOM.
   - `up.macro('[up-keep]', (element) => keepIdentity(element))`
   => No, it has an insane priority to ensure it runs first
@@ -127,6 +129,8 @@ Next
   - I just want the auto-targeting
   - We might still need :frame, :zone, -if-frame etc.
   - up.fragment.config.frameSelectors
+  => I am afraid of taking away names for the ambitious zone implementation
+  => A light way could not mount an existing screen's <main> like overlays can
 
 - Should up-switch run for disabled elements?
   - What about up.watch()?
@@ -162,6 +166,8 @@ Next
   - Should up.reload() default to { scroll: 'keep', focus: 'keep' }
     - focus: 'keep' might already be a default
     - Test that reloading keeps scroll positions
+  => Ensure that tests are complete
+  => Ensure that this is documented with [up-follow], up.render and /scrolling
 
 - [ok] Test that an untargetable [up-keep] prints a warning, but does not crash the render pass
 
@@ -182,22 +188,8 @@ Next
 
 - Use AI to make a typo and wording pass over the docs
 
-- rails.js does not convert on forms and submit buttons
+- [ok] rails.js does not convert on forms and submit buttons
 
-    function convertDataAttr(dataAttr, upAttr) {
-      up.macro('[' + dataAttr + ']:is(form, input[type=submit], button[type=submit], button:not([type])', function(confirmable) {
-        let form = up.form.get(confirmable)
-        if (up.form.isSubmittable(form)) {
-          up.element.setMissingAttr(form, upAttr, confirmable.getAttribute(dataAttr))
-          confirmable.removeAttribute(dataAttr)
-        }
-      })
-    }
-
-    convertDataAttr('data-confirm', 'up-confirm')
-    convertDataAttr('data-method', 'up-method')
-
-- It would be nice to have a macro? for live validation
 
 - Support { scroll: 5 } and { scroll: -5 }
   - Ambiguity: Could either be "current + 5" / "current -5" or it could be "scroll to 5" / "scroll to end minus 5"
@@ -216,6 +208,10 @@ Next
 
 Backlog
 =======
+
+- It would be nice to have a macro? for live validation
+  => I have no idea for a good name
+  => [up-validate-live-delay="100"]?
 
 - Do watchers fire when fields become disabled / not disabled?
 
