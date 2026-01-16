@@ -1,7 +1,7 @@
 Next
 ====
 
-- Test that { scroll: 'keep' } will preserve positions of secondary viewports
+[ok] - Test that { scroll: 'keep' } will preserve positions of secondary viewports
 
 [ok] - I think [up-keep] identity is snapshotted *after* user macros. This makes it brittle against macros (user, system) that change the DOM.
   - `up.macro('[up-keep]', (element) => keepIdentity(element))`
@@ -55,8 +55,6 @@ Next
   - [no] Can we replace _executeSwapChildrenStep with a regular swapStep if both new and old element only have a single element child?
   - [ok] How does { scroll: 'target' } or { focus: 'target' } work with wrappers?
   
-- Document that macros should just do basic DOM manipulation and avoid calling high-level Unpoly functions
-  
 - Leverage new phased rendering logic
   - => We could most of this before, because we reversed steps. Only the "other layers" would not be in sync.
   - [ok] Scroll functions should be able to scroll secondary fragments => Was possible before, because we reversed
@@ -74,12 +72,22 @@ Next
 
 - Docs: /layer-option is more like "Targeting layers"
 
-- Docs: Sizes in /customizing-overlays#overlay-sizes should be in fixed width
+[ok] - Docs: Sizes in /customizing-overlays#overlay-sizes should be in fixed width
 
 - Test that morph() and animate() respect the default duration
 
 - When we scroll to a hash (on load or in reaction to history changes), we should also focus() the new fragment
-  - There is an issue for that
+  - There is an issue for that: unpoly/unpoly#787
+  - Case 1: Initial load
+    - up:framework:boot => up.viewport.revealHash(location.hash, { strong: true })
+  - Case 2: Click on #hash link for current path
+    - up:click 'a[href*="#"]' => onJumpLinkClicked() => up.viewport.revealHashFn(linkHash, { layer, behavior })
+  - Case 3: Rendering content with a #hash
+    - Handled by
+      autoFocus: ['hash', 'autofocus', 'main-if-main', 'keep', 'target-if-lost'],
+      autoScroll: ['hash', 'layer-if-main'],
+    => Only check if ther eis a test
+
 
 [ik] - We can replace up.util.reverse() with Array#toReversed()
 
@@ -125,13 +133,6 @@ Next
   - Tests
   - Docs
 
-- Think about introducing a light way of [up-zone] or [up-frame]
-  - I just want the auto-targeting
-  - We might still need :frame, :zone, -if-frame etc.
-  - up.fragment.config.frameSelectors
-  => I am afraid of taking away names for the ambitious zone implementation
-  => A light way could not mount an existing screen's <main> like overlays can
-
 - Should up-switch run for disabled elements?
   - What about up.watch()?
   - What about up-validate?
@@ -153,27 +154,22 @@ Next
     - Vs. preloading?
   - undefined log message: up:fragment:offline Cannot load fragment from GET /notes/229: undefined
 
-- Consider bringing the flash nonce pattern into the library
-  - [up-flash=uid]
-  - But what I really want is to change the cached response text
-
-- Meta props
+- [ok] Meta props
   - [ok] meta.ok
   - [ok] meta props for up:fragment:inserted
 
-- Keeping scroll positions
+- Use AI to make a typo and wording pass over the docs
+
+[ok] - Keeping scroll positions
+  => Test that this keep scroll positions for a replaced viewport in a secondary target (user expectation)
   - Offer { scroll: 'keep' } (similiar to { focus: 'keep' })
-  - Should up.reload() default to { scroll: 'keep', focus: 'keep' }
+  => Should up.reload() default to { scroll: 'keep', focus: 'keep' }
     - focus: 'keep' might already be a default
     - Test that reloading keeps scroll positions
   => Ensure that tests are complete
   => Ensure that this is documented with [up-follow], up.render and /scrolling
 
 - [ok] Test that an untargetable [up-keep] prints a warning, but does not crash the render pass
-
-- Use onAccepted with JS string?
-  - At least support X-Up-Open-Layer with callbacks
-  - Or support actions, effects
 
 [ok] - Merge [up-peel="accept|dismiss"]
   - Worry about setting the value another time
@@ -186,28 +182,46 @@ Next
 
 [ok] - fade-out should take current opacity into account
 
-- Use AI to make a typo and wording pass over the docs
-
 - [ok] rails.js does not convert on forms and submit buttons
 
-
-- Support { scroll: 5 } and { scroll: -5 }
+- [ok] Support { scroll: 5 } and { scroll: -5 }
   - Ambiguity: Could either be "current + 5" / "current -5" or it could be "scroll to 5" / "scroll to end minus 5"
   - "current + 5" "top + 5" "bottom - 5"
   - Programmers would probably expect "x from top" or "x from bottom"
     - We can make a more complicated version later
   
+After 3.13
+==========
+
+- Consider bringing the flash nonce pattern into the library
+  - [up-flash=uid]
+  - But what I really want is to change the cached response text
+  - Or do I want a container type that only upserts?
+
 - New demo
   - Clean up code
   - Clean up start page
   - Share on forum
   - Say thanks to Philip
 
+- Use onAccepted with JS string?
+  - At least support X-Up-Open-Layer with callbacks
+  - Or support actions, effects
+    - What would be the difference between emitting an event with argument and invoking an action?
+      => This is about setting an action when opening a layer from the server, with X-Up-Open-Layer
+    - I feel we would duplicate several API methods with "actions" (reload, validate, emit, submit?)
 
 
 
-Backlog
-=======
+Backlog / Icebox
+================
+
+- Think about introducing a light way of [up-zone] or [up-frame]
+  - I just want the auto-targeting
+  - We might still need :frame, :zone, -if-frame etc.
+  - up.fragment.config.frameSelectors
+  => I am afraid of taking away names for the ambitious zone implementation
+  => A light way could not mount an existing screen's <main> like overlays can
 
 - It would be nice to have a macro? for live validation
   => I have no idea for a good name
