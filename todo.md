@@ -1,6 +1,8 @@
 Next
 ====
 
+- Fix flakey test: `up.Layer.Modal > styles > scrollbars while an overlay is open > consistently shifts and unshifts if multiple overlays are opened and closed concurrently`
+
 [ok] - Test that { scroll: 'keep' } will preserve positions of secondary viewports
 
 [ok] - I think [up-keep] identity is snapshotted *after* user macros. This makes it brittle against macros (user, system) that change the DOM.
@@ -12,9 +14,7 @@ Next
 
 [ok] - Typo "dimissing" in UpdateLayer *and* OpenLayer?
   - Why wasn't there a test?
-
-- Fix flakey test: `up.Layer.Modal > styles > scrollbars while an overlay is open > consistently shifts and unshifts if multiple overlays are opened and closed concurrently`
-
+  
 - [ok] Wrong deprecation: https://unpoly.com/up.Request.prototype.loadPage
   - It was #navigate that was deprecated
 
@@ -29,7 +29,10 @@ Next
   - Go offline
   - Can we go back to index from cache?
 
-- Background scrolling: https://github.com/unpoly/unpoly/discussions/790
+[ok] - Issues with background scrolling and .up-scrollbar-away
+  - https://github.com/unpoly/unpoly/discussions/790
+  - Not mentioned in issue, but: The class gets removed when the body is updated
+    - Move to HTML? We wanted to do that anyway for v4
 
 [ok] - I think the message "Aborting requests within fragment" now also appears if there is nothing to abort
   => It is designed to always fire, in case a listener is interested
@@ -41,21 +44,20 @@ Next
 - Phased rendering
   - [no] Do all mutations before starting compilation, preprocessing, etc.
   - [ok] Decide who calls postprocess
-    - Doesn't make sense in UpdateSteps
   - [ok] Macros can set [up-alias]
-  - Macros can set [up-href]
+  - [no] Macros can set [up-href]
   - [ok] Test that we can keep focus in all step variants (especially those that use wrappers)
   - [ok] Test that we can call focus functions in all step variants
   - Test that we can apply transitions when swapping children
   - Test that { finished } delays by transition/animation in all step variants
-  - Test that macros are called in all step variants
+  - [ok] Test that macros are called in all step variants
   - [ok] Test that compilers are called in all step variants
-  - Test that destructors are called in all step variants
-  - Test that the bounds variants don't keep an <up-wrapper> in the DOM
+  - [ok] Test that destructors are called in all step variants
+  - [ok] Test that the bounds variants don't keep an <up-wrapper> in the DOM
   - [no] Can we replace _executeSwapChildrenStep with a regular swapStep if both new and old element only have a single element child?
   - [ok] How does { scroll: 'target' } or { focus: 'target' } work with wrappers?
   
-- Leverage new phased rendering logic
+[ok] - Leverage new phased rendering logic
   - => We could most of this before, because we reversed steps. Only the "other layers" would not be in sync.
   - [ok] Scroll functions should be able to scroll secondary fragments => Was possible before, because we reversed
   - [ok] Focus functions should be able to focus secondary fragments => Was possible before, because we reversed
@@ -74,9 +76,9 @@ Next
 
 [ok] - Docs: Sizes in /customizing-overlays#overlay-sizes should be in fixed width
 
-- Test that morph() and animate() respect the default duration
+[ok] - Test that morph() and animate() respect the default duration and easing
 
-- When we scroll to a hash (on load or in reaction to history changes), we should also focus() the new fragment
+[ok] - When we scroll to a hash (on load or in reaction to history changes), we should also focus() the new fragment
   - There is an issue for that: unpoly/unpoly#787
   - Case 1: Initial load
     - up:framework:boot => up.viewport.revealHash(location.hash, { strong: true })
@@ -87,7 +89,6 @@ Next
       autoFocus: ['hash', 'autofocus', 'main-if-main', 'keep', 'target-if-lost'],
       autoScroll: ['hash', 'layer-if-main'],
     => Only check if ther eis a test
-
 
 [ik] - We can replace up.util.reverse() with Array#toReversed()
 
@@ -106,24 +107,11 @@ Next
 
 [ok] - Offer [up-scroll-map=...] and { scrollMap }
 
-- Think about exposing dataMap
+- [docs] Fix comments like // returns foo with // result: foo
+
+[ok] - Think about exposing dataMap
   - Would it be [data-map] or [use-data-map]?
     - I think attr would be [use-data-map], but option would just be { dataMap }
-
-- Think about exposing placeHolderMap and previewMap
-  - previewMap is weird as an attribute: up-preview-map="{ '.foo': 'preview { attr: 'value' }' 
-    - I think we would need to allow nested objects here, e.g.
-      { '.foo': { 'edit-task': { attr: 'value' } } }
-
-- Multi-pane layouts
-  - Do this now or wait until we do zone/frame?
-
-  - Offer { scroll: 'target-attrs' } to read scroll settings from fragment
-    - This should be part of { scroll: 'auto' }
-    - This cannot set 'auto'
-
-  - Offer { history: 'target-attrs' } to read history settings from fragment
-    - This should be part of { history: 'auto' }
 
 - [ok] Focus in multi-pane layout
   - We currently only focus for the first step
@@ -133,13 +121,25 @@ Next
   - Tests
   - Docs
 
-- Should up-switch run for disabled elements?
+[ok] - Should up-switch run for disabled elements?
   - What about up.watch()?
   - What about up-validate?
   - upWatchIncludeDisabled?
   - Or have [up-faux-disabled] on the element, so it is parsed by up.Params?
     - Maybe even offer up.form.disable(element, { faux: true })
     - Is there a better name like [up-force-params]
+  => Is this better than the inert hack?
+    - Since it's all about hiding?
+    - Should we offer [up-inert-for] ?
+      - Opposite is weird. [up-non-inert-for] ?
+  => If we don't want to implement [up-faux-disable-for], then it would be [up-force-params]
+  => People might expect [up-faux-disabled] to disable the element
+  => What about a watch parameter?
+    [up-watch-include-disabled]
+    [up-watch-disabled]
+    - There is already [up-watch-disable]!
+  => How about making switch just work on disabled elements?
+    
 
 - [no] Consider bringing the offline polling into the library
   - Also a prop up.network.offline or something?
@@ -160,14 +160,19 @@ Next
 
 - Use AI to make a typo and wording pass over the docs
 
+- Docs: Fix broken links
+
 [ok] - Keeping scroll positions
-  => Test that this keep scroll positions for a replaced viewport in a secondary target (user expectation)
+  [ok] => Test that this keep scroll positions for a replaced viewport in a secondary target (user expectation)
   - Offer { scroll: 'keep' } (similiar to { focus: 'keep' })
-  => Should up.reload() default to { scroll: 'keep', focus: 'keep' }
-    - focus: 'keep' might already be a default
-    - Test that reloading keeps scroll positions
-  => Ensure that tests are complete
-  => Ensure that this is documented with [up-follow], up.render and /scrolling
+  [ok] => Ensure that tests are complete
+  [ok] => Ensure that this is documented with [up-follow], up.render and /scrolling
+  
+- Should up.reload() default to { scroll: 'keep', focus: 'keep' }
+  - focus: 'keep' might already be a default
+  - Test that reloading keeps scroll positions
+  
+[ok] - { data } only applies to the first updated fragment. Use { dataMap } for multiple.
 
 - [ok] Test that an untargetable [up-keep] prints a warning, but does not crash the render pass
 
@@ -193,6 +198,24 @@ Next
 After 3.13
 ==========
 
+- Zones
+  - Support [up-zone]
+  - up.fragment.expandTargets() now defaults `true` to :zone, not to :main
+    - Support ":zone" and ":zone .child"
+      - This is the first pseudo that has suffix extensions
+    - The expandTargets logic might not work for nested zones, since this will just match the first variant
+      - Maybe a better place is FragmentLookup? Where we can look at ancestors and replace with a derived target?
+        - But how would we get the target string?
+  - Zones support [up-history] and [up-scroll] and possibly [up-focus]
+  - autoScroll, autoHistory, autoFocus need 'target-attr' or 'zone-attr' or 'attr-if-zone'
+
+- Think about exposing placeHolderMap and previewMap
+  - previewMap is weird as an attribute: up-preview-map="{ '.foo': 'preview { attr: 'value' }' 
+    - I think we would need to allow nested objects here, e.g.
+      { '.foo': { 'edit-task': { attr: 'value' } } }
+    - For previews this could be as easy as supporting objects in resolvePreviewFns() ?
+    - For placeholders this actually goes back to Preview#showPlaceholder() => up.element.provideNodes()
+
 - Consider bringing the flash nonce pattern into the library
   - [up-flash=uid]
   - But what I really want is to change the cached response text
@@ -211,6 +234,7 @@ After 3.13
       => This is about setting an action when opening a layer from the server, with X-Up-Open-Layer
     - I feel we would duplicate several API methods with "actions" (reload, validate, emit, submit?)
 
+- It would be nice if the log prefix is the outmost function/feature
 
 
 Backlog / Icebox
