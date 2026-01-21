@@ -98,12 +98,15 @@ Next
 
 [ok] - up:fragment:kept log: Should be silent or have more details
   
-- Why do we sometimes log uppercase %O?
+[ok] - Why do we sometimes log uppercase %O?
 
-- It is weird that DestructorPass emits no events, but CompilerPass does?
+[ok] - It is weird that DestructorPass emits no events, but CompilerPass does?
   - There is also DestroyFragment that *does* emit
+  - Should we rename CompilerPass to HelloFragment then?
 
 - Possibly offer up.destroy(remove: false) for morphdom integration
+  - I want to do this, but would this be up.script.clean()?
+    - But this does not emit events
 
 [ok] - Offer [up-scroll-map=...] and { scrollMap }
 
@@ -168,7 +171,7 @@ Next
   [ok] => Ensure that tests are complete
   [ok] => Ensure that this is documented with [up-follow], up.render and /scrolling
   
-- Should up.reload() default to { scroll: 'keep', focus: 'keep' }
+[ok] - Should up.reload() default to { scroll: 'keep', focus: 'keep' }
   - focus: 'keep' might already be a default
   - Test that reloading keeps scroll positions
   
