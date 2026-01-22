@@ -1,6 +1,8 @@
 Next
 ====
 
+- Warn about overusing up-hungry. Use explit targets instead. There is already a note somewhere else, look for "overusing"
+
 - Fix flakey test: `up.Layer.Modal > styles > scrollbars while an overlay is open > consistently shifts and unshifts if multiple overlays are opened and closed concurrently`
 
 [ok] - Test that { scroll: 'keep' } will preserve positions of secondary viewports
