@@ -163,9 +163,9 @@ Next
   - [ok] meta.ok
   - [ok] meta props for up:fragment:inserted
 
-- Use AI to make a typo and wording pass over the docs
+[ok] - Use AI to make a typo and wording pass over the docs
 
-- Docs: Fix broken links
+[ok] - Docs: Fix broken links
 
 [ok] - Keeping scroll positions
   [ok] => Test that this keep scroll positions for a replaced viewport in a secondary target (user expectation)
