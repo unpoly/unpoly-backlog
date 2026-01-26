@@ -1,7 +1,13 @@
 Next
 ====
 
+- Allow to look up layers by overlay modes, e.g. { layer: 'modal' }
+
 - Warn about overusing up-hungry. Use explit targets instead. There is already a note somewhere else, look for "overusing"
+
+- Can we accept a location change as close condition without emitting location:changed before?
+  - Yes
+  - Also don't push a history entry that we don't even render
 
 - Fix flakey test: `up.Layer.Modal > styles > scrollbars while an overlay is open > consistently shifts and unshifts if multiple overlays are opened and closed concurrently`
 
