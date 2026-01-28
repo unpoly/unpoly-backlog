@@ -1,6 +1,8 @@
 Next
 ====
 
+- Rename matcher toHaveOpacity() to toHaveOwnOpacity()
+
 - Allow to look up layers by overlay modes, e.g. { layer: 'modal' }
 
 - Warn about overusing up-hungry. Use explit targets instead. There is already a note somewhere else, look for "overusing"
