@@ -1,6 +1,10 @@
 Next
 ====
 
+- up.emit docs need an example with an element
+
+- Publish up.event.onAncestor() as experimental up.event.onClosest()
+
 - Rename matcher toHaveOpacity() to toHaveOwnOpacity()
 
 - Allow to look up layers by overlay modes, e.g. { layer: 'modal' }
