@@ -1,6 +1,8 @@
 Next
 ====
 
+- Install instructions should use script defer
+
 - up.emit docs need an example with an element
 
 - Publish up.event.onAncestor() as experimental up.event.onClosest()
