@@ -1,23 +1,31 @@
 Next
 ====
+- Test new web animations manually
 
-- Install instructions should use script defer
+- Test that we really cache the initial page load
+  - Open deskbot on index
+  - Follow link
+  - Go offline
+  - Can we go back to index from cache?
 
-- up.emit docs need an example with an element
+- Fix flakey test: `up.Layer.Modal > styles > scrollbars while an overlay is open > consistently shifts and unshifts if multiple overlays are opened and closed concurrently`
 
-- Publish up.event.onAncestor() as experimental up.event.onClosest()
+- Docs: Install instructions should use script defer
 
-- Rename matcher toHaveOpacity() to toHaveOwnOpacity()
+- Docs: up.emit docs need an example with an element
 
-- Allow to look up layers by overlay modes, e.g. { layer: 'modal' }
+- Docs: /layer-option is more like "Targeting layers"
 
-- Warn about overusing up-hungry. Use explit targets instead. There is already a note somewhere else, look for "overusing"
+- Docs: Warn about overusing up-hungry. Use explit targets instead. There is already a note somewhere else, look for "overusing"
 
 - Can we accept a location change as close condition without emitting location:changed before?
   - Yes
   - Also don't push a history entry that we don't even render
 
-- Fix flakey test: `up.Layer.Modal > styles > scrollbars while an overlay is open > consistently shifts and unshifts if multiple overlays are opened and closed concurrently`
+
+[ok] - Publish up.event.onAncestor() as experimental up.event.onClosest()
+
+- [ok] Rename matcher toHaveOpacity() to toHaveOwnOpacity()
 
 [ok] - Test that { scroll: 'keep' } will preserve positions of secondary viewports
 
@@ -38,12 +46,6 @@ Next
   - https://unpoly.com/up:location:changed
 
 - [ok] up.destroy() awaits exit animation before :destroyed
-
-- Test that we really cache the initial page load
-  - Open deskbot on index
-  - Follow link
-  - Go offline
-  - Can we go back to index from cache?
 
 [ok] - Issues with background scrolling and .up-scrollbar-away
   - https://github.com/unpoly/unpoly/discussions/790
@@ -87,8 +89,6 @@ Next
   - [ok] Allow scrollMap to update arbitrary fragments?
     => We could have done this all along, because we reverse the steps and run the scroll function last!
   - [no] Stop reversing in steps
-
-- Docs: /layer-option is more like "Targeting layers"
 
 [ok] - Docs: Sizes in /customizing-overlays#overlay-sizes should be in fixed width
 
@@ -258,6 +258,8 @@ After 3.13
 
 Backlog / Icebox
 ================
+
+[no] - Allow to look up layers by overlay modes, e.g. { layer: 'modal' }
 
 - Think about introducing a light way of [up-zone] or [up-frame]
   - I just want the auto-targeting
@@ -1408,3 +1410,7 @@ Icebox / Tar pits
 
 - Can we make a mutated event now?
   => We could emit a :mutated event after a change but then programmatic calls of up.hello() and up.destroy() would not emit that event
+  
+- [NO] Consider accepting kekbabCase styles again
+  => Too much code
+
