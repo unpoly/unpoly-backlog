@@ -1,5 +1,8 @@
 Next
 ====
+
+- Remove concludeCSSTransition, hasCSSTransition
+
 - Test new web animations manually
 
 - Test that we really cache the initial page load
@@ -120,10 +123,6 @@ Next
   - There is also DestroyFragment that *does* emit
   - Should we rename CompilerPass to HelloFragment then?
 
-- Possibly offer up.destroy(remove: false) for morphdom integration
-  - I want to do this, but would this be up.script.clean()?
-    - But this does not emit events
-
 [ok] - Offer [up-scroll-map=...] and { scrollMap }
 
 - [docs] Fix comments like // returns foo with // result: foo
@@ -217,6 +216,12 @@ Next
 After 3.13
 ==========
 
+
+- Possibly offer up.destroy(remove: false) for morphdom integration
+  - I want to do this, but would this be up.script.clean()?
+    - But this does not emit events
+
+
 - Zones
   - Support [up-zone]
   - up.fragment.expandTargets() now defaults `true` to :zone, not to :main
@@ -252,6 +257,35 @@ After 3.13
     - What would be the difference between emitting an event with argument and invoking an action?
       => This is about setting an action when opening a layer from the server, with X-Up-Open-Layer
     - I feel we would duplicate several API methods with "actions" (reload, validate, emit, submit?)
+  - Alternative with Render Intents:
+    X-Up-Open-Layer: { intent: 'reload' }
+
+    X-Up-Open-Layer: { intent: { reloadOnDismissed: { target: "foo" } } }
+
+    up.fragment.config.intents.render
+    up.fragment.config.intents.navigate
+    up.fragment.config.intents.reloadOnDismissed
+
+    => OK, das vereint render Options und das callback ding, aber nur die Callbacks wäre ja einfacher und eine Schachtelung weniger:
+
+      X-Up-Open-Layer: { onDismissed: { 'reload' } }
+      X-Up-Open-Layer: { onDismissed: { reload: { target: 'foo' } }
+
+      up.action('reload', { target } => {
+        up.reload(target)
+      })
+      
+      - Also Actions sometimes need to be able to access the event:
+      - 'up-on-accepted': up.safe_callback('up.navigate({ response: event.response })')
+
+      up.callback('reload', (event, { target }) => {
+        // It's weird because I sometimes want a { response } key and sometimes not
+        
+      })
+    => The API with up.action/callback is *NOT* nicer than this. There's no extra indirection, and I don't need to know which param is part of the event and which is defined by the action
+    
+      up.layer.open({ onDismissed: up.safe_callback("up.reload({ response })") })
+
 
 - It would be nice if the log prefix is the outmost function/feature
 
