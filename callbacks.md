@@ -1,3 +1,59 @@
+2026-02-12
+---------
+
+Can we have just one setting for all kinds of callbacks?
+
+up.fragment.runScripts
+up.fragment.runCallbacks
+
+
+up.script.config.allow.default
+up.script.config.allow.bodyScripts
+up.script.config.allow.attributeCallbacks
+up.script.config.allow.headerCallbacks
+
+
+
+up.fragment.runBodyScripts
+up.fragment.runCallbackStrings
+
+
+up.script.config.allow.default
+up.script.config.allow.bodyScripts
+up.script.config.allow.callbackStrings
+
+
+
+
+
+
+
+What I know (2026-02-11)
+------------------------
+
+- With a strict-dynamic CSP, we need to also enforce nonces for attribute-parsed callbacks.
+- runScripts and the new allow.* configs conflate "Do I want to run scripts" and "What is allowed"
+- I might need to check the nonce prefix before executing a <script>
+  - Otherwise an attacker would just include an [up-on-loaded] with a random nonce
+  - This means that we *need* the csp-nonce meta or we cannot execute
+- What about onclick handlers? => No
+- I'm not sure if allowing header-based scripting is a good idea.
+  => It's probably OK.
+  => Attackers that can tamper with headers could also disable CSP, set cookies, etc.
+
+
+
+
+
+
+
+
+
+
+Original Notes
+--------------
+
+
 - Use onAccepted with JS string?
   - At least support X-Up-Open-Layer with callbacks
   - Or support actions, effects

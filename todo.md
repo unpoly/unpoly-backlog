@@ -1,6 +1,8 @@
 Next
 ====
 
+- Consider exposing up.Request#isSafe()
+
 - Remove concludeCSSTransition, hasCSSTransition
 
 - Test new web animations manually
@@ -215,6 +217,8 @@ Next
   
 After 3.13
 ==========
+
+- up-hungry scopen auf Teile der Seite
 
 
 - Possibly offer up.destroy(remove: false) for morphdom integration
