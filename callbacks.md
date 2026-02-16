@@ -1,5 +1,57 @@
+2026-02-16 (2)
+--------------
+
+Dangerous combinations:
+
+- unsafe-eval allows execution of *all* string callbacks (just keep out the nonce)
+- strict-dynamic allows execution of *all* scripts (and string callbacks with incorrect nonce unless we check it, which we now do)
+
+We also cannot detect both these for the initial page load.
+
+How about this:
+
+We only have two settings:
+
+  up.script.config.policy.bodyScripts = 'pass' (default)
+  up.script.config.policy.stringCallbacks = 'pass' (default)
+
+But when we encounter 'unsafe-eval' in a ResponseDoc we print a warning:
+
+  [up.script] An 'unsafe-eval' CSP allows arbitrary [up-on...] callbacks. Consider setting up.script.config.policy.stringCallbacks = 'nonce'.
+  [up.script] A 'strict-dynamic' CSP allows arbitrary `<script>` elements in new fragments. Consider setting up.script.config.policy.bodyScripts = 'nonce'.
+  
+The warnings are only printed once.
+The warnings are not shown if user configured a "nonce" or "block" policy.
+The warnings are shown whenever we encounter a problematic directive. We don't wait for an actual `<script>` or [up-on-*] callback, as these might be inserted by an attacker.
+
+Open questions:
+
+- Do we still want the "auto" option?
+  - It does not work for [up-on] callback in the initial page load, or in attacker-controlled HTML outside the updated fragment
+  - It might give a wrong sense of security
+    - But we still print the warning
+    - At least we protect the new fragment.
+    => Should we switch to "nonce"? Or is this too much magic?
+
+
+2026-02-16 (1)
+--------------
+
+JC
+  strict-dynamic + unsafe-eval
+    Means initial attrs unprotected
+    
+Many projects
+  define a nonce "just in case"
+  or for one-off scripts
+    => but that doesn't require a `<meta name="csp-nonce">`
+  or for unpoly callbacks
+  requiring a nonce by default would now break host whiteist, like stripe.com
+
+
+
 2026-02-12
----------
+----------
 
 Can we have just one setting for all kinds of callbacks?
 

@@ -1,6 +1,8 @@
 Next
 ====
 
+- Fix remaining `() => it(`
+
 - Consider exposing up.Request#isSafe()
 
 - Remove concludeCSSTransition, hasCSSTransition
