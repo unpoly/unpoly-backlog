@@ -1,5 +1,72 @@
+2026-02-17
+=========
+
+A new approach that captures the intent of everybody: We have two different meanings for 'auto'.
+
+
+Default
+-------
+
+up.script.config.policy.default = 'auto'
+
+  Used for both callbacks and scripts, but means something different for each.
+
+
+Callbacks
+---------
+
+up.script.config.policy.stringCallbacks = 'auto' (default inherited from policy.default)
+
+  If a <meta name="csp-nonce"> is given: Require this nonce for callbacks (behave like 'nonce')
+  If no <meta> is given: Pass to CSP (dangerous for unsafe-eval) (behave like 'pass')
+  Maybe ignore document.currentScript.nonce, since that might just be for loading Unpoly from CDN?
+  
+If we have stringCallbacks = 'pass' (or when auto resolves to 'pass') and we observe 'unsafe-eval' in a response, we print:
+
+  [up.script] An 'unsafe-eval' CSP allows arbitrary [up-on...] callbacks. Consider setting up.script.config.policy.stringCallbacks = 'nonce'.
+  However, we do not change our behavior. It's just the warning.
+  This might annoy people with a "don't care" CSP, but those could set up.script.config.cspWarnings = false
+  
+
+Scripts
+-------
+
+up.script.config.policy.bodyScripts = 'auto' (default inherited from policy.default)
+
+Backwards compatible behavior (like 3.11, but allow nonces):
+
+  Ignore <meta name="csp-nonce"> or document.currentScript.nonce. This might just be given to run callbacks. **Right?**
+  Behave like 'nonce' ? This is actually slightly LESS strict than our new default in 3.11
+  
+Alternative (analogue to callback auto):
+
+  If a <meta name="csp-nonce"> is given: Require this nonce for callbacks (behave like 'nonce')
+  If no <meta> is given: Pass to CSP (dangerous for strict-dynamic) (behave like 'pass')
+
+If we have bodyScripts = 'pass' (or when auto resolves to 'pass') and we observe 'strict-dynamic' in a response, we print:
+
+  [up.script] A 'strict-dynamic' CSP allows arbitrary `<script>` elements in new fragments. Consider setting up.script.config.policy.bodyScripts = 'nonce'.
+  However, we do not change our behavior (and anyway we couldn't cover callbacks outside the fragment or before we swap). It's just the warning.
+  
+  
+Migration
+----------
+
+up.fragment.config.runScripts = true
+  Complain that the safer object is 'auto' or 'nonce'
+  => up.script.config.policy.bodyScripts = 'pass' (or 'auto' if we choose the liberal default) (same minus the strict-dynamic safeguard)
+  => up.script.config.policy.callbackStrings = 'auto' (new setting, possibly just rely on the policy.default inheritance)
+  
+up.fragment.config.runScripts = false
+  => up.script.config.policy.bodyScripts = 'block' (same)
+  => up.script.config.policy.callbackStrings = 'auto' (new setting, possibly just rely on the policy.default inheritance)
+  
+
+
+
+
 2026-02-16 (2)
---------------
+===========
 
 Dangerous combinations:
 
@@ -12,17 +79,17 @@ How about this:
 
 We only have two settings:
 
-  up.script.config.policy.bodyScripts = 'pass' (default)
-  up.script.config.policy.stringCallbacks = 'pass' (default)
+    up.script.config.policy.bodyScripts = 'pass' (default)
+    up.script.config.policy.stringCallbacks = 'pass' (default)
 
 But when we encounter 'unsafe-eval' in a ResponseDoc we print a warning:
 
-  [up.script] An 'unsafe-eval' CSP allows arbitrary [up-on...] callbacks. Consider setting up.script.config.policy.stringCallbacks = 'nonce'.
-  [up.script] A 'strict-dynamic' CSP allows arbitrary `<script>` elements in new fragments. Consider setting up.script.config.policy.bodyScripts = 'nonce'.
-  
+    [up.script] An 'unsafe-eval' CSP allows arbitrary [up-on...] callbacks. Consider setting up.script.config.policy.stringCallbacks = 'nonce'.
+    [up.script] A 'strict-dynamic' CSP allows arbitrary `<script>` elements in new fragments. Consider setting up.script.config.policy.bodyScripts = 'nonce'.
+
 The warnings are only printed once.
 The warnings are not shown if user configured a "nonce" or "block" policy.
-The warnings are shown whenever we encounter a problematic directive. We don't wait for an actual `<script>` or [up-on-*] callback, as these might be inserted by an attacker.
+The warnings are shown whenever we encounter a problematic directive. We don't wait for an actual `<script>` or `[up-on-*]` callback, as these might be inserted by an attacker.
 
 Open questions:
 
@@ -32,10 +99,18 @@ Open questions:
     - But we still print the warning
     - At least we protect the new fragment.
     => Should we switch to "nonce"? Or is this too much magic?
+- Install: Security Guide
+- up.script.config.unsafeCSPWarnings
+
+Ideen:
+
+- Default block
+  - 1st experience bad
+- Automagic reconfigure
 
 
 2026-02-16 (1)
---------------
+=============
 
 JC
   strict-dynamic + unsafe-eval
@@ -51,7 +126,7 @@ Many projects
 
 
 2026-02-12
-----------
+===========
 
 Can we have just one setting for all kinds of callbacks?
 
@@ -81,7 +156,7 @@ up.script.config.allow.callbackStrings
 
 
 What I know (2026-02-11)
-------------------------
+========================
 
 - With a strict-dynamic CSP, we need to also enforce nonces for attribute-parsed callbacks.
 - runScripts and the new allow.* configs conflate "Do I want to run scripts" and "What is allowed"
@@ -103,8 +178,7 @@ What I know (2026-02-11)
 
 
 Original Notes
---------------
-
+==============
 
 - Use onAccepted with JS string?
   - At least support X-Up-Open-Layer with callbacks

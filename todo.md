@@ -1,6 +1,11 @@
 Next
 ====
 
+- Are feedback classes still an option, or are they always showing?
+  - I still see docs for options.feedback somewhere
+  
+- Consider .up-revalidating class in addition to .up-loading
+
 - Fix remaining `() => it(`
 
 - Consider exposing up.Request#isSafe()
