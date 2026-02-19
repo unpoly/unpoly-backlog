@@ -1,3 +1,14 @@
+Was ist Policy?
+
+- Ein Wert: 'auto' | 'pass' | 'block' | 'nonce'
+- Ein Weg, 'auto' zu resolven
+- Evtl. eine Warning nach auto-Resolution
+- Eine Log-Msg bei blocken (z.B. "Blocking CALLBACK via up.script.config.PROPERTY='auto': SOURCE")
+
+
+
+
+
 2026-02-17 (2)
 =========
 
@@ -25,10 +36,6 @@ How would we name these two settings? Some ideas:
 - up.script.config.scriptElementPolicy
 - up.script.config.evalCallbackPolicy
 
-- up.script.config.policy.default // We could block everything with "block" here, but people would still feel the need to check overrides
-- up.script.config.policy.scriptElement
-- up.script.config.policy.evalCallback
-
 This change is safe and backwards compatible.
 It's a little sad that we actually had a full mitigation for scripts (allow, but block for strict-dynamic), but we decide to not use it anymore.
 
@@ -40,7 +47,7 @@ So maybe think about defaulting to scriptPolicy: 'auto', but it works like this:
 
 Also:
 
-- Still print the warnings for 'pass'
+- Still print the warnings when we're in 'pass', but see potentially unsafe directives
 - Include install instructions
 - Add /script-security
 
