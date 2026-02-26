@@ -1,18 +1,9 @@
 Next
 ====
 
-- Expose optional { response } for up:assets:changed
+- Check if tests pass with every CSP setting
 
-- Are feedback classes still an option, or are they always showing?
-  - I still see docs for options.feedback somewhere
-  
-- Consider .up-revalidating class in addition to .up-loading
-
-- Fix remaining `() => it(`
-
-- Consider exposing up.Request#isSafe()
-
-- Remove concludeCSSTransition, hasCSSTransition
+[ok] - Expose optional { response } for up:assets:changed
 
 - Test new web animations manually
 
@@ -32,10 +23,30 @@ Next
 
 - Docs: Warn about overusing up-hungry. Use explit targets instead. There is already a note somewhere else, look for "overusing"
 
-- Can we accept a location change as close condition without emitting location:changed before?
+[ok] - Can we accept a location change as close condition without emitting location:changed before?
   - Yes
   - Also don't push a history entry that we don't even render
 
+- Write the CHANGELOG and remaining docs
+
+- Improve docs and tests of offline/loaded events
+  - Test and document that up:fragment:offline does not run when preloading
+  - Test and document that up:request:loaded does NOT run when loading from cache
+  - Test and document that up:fragment:loaded DOES run when loading from cache
+    - Vs. preloading?
+  - undefined log message: up:fragment:offline Cannot load fragment from GET /notes/229: undefined
+
+[ok] - Are feedback classes still an option, or are they always showing?
+  - I still see docs for options.feedback somewhere
+  => Yes, it's still an option
+  
+[ok] - Consider .up-revalidating class in addition to .up-loading
+
+[ok] - Fix remaining `() => it(`
+
+[ok] - Consider exposing up.Request#isSafe()
+
+[ok] - Remove concludeCSSTransition, hasCSSTransition
 
 [ok] - Publish up.event.onAncestor() as experimental up.event.onClosest()
 
@@ -176,13 +187,6 @@ Next
     - Would up.network.offline need to raise or return "unknown"?
   => Mobile chrome also has a great offline indicator
   
-- Improve docs and tests of offline/loaded events
-  - Test and document that up:fragment:offline does not run when preloading
-  - Test and document that up:request:loaded does NOT run when loading from cache
-  - Test and document that up:fragment:loaded DOES run when loading from cache
-    - Vs. preloading?
-  - undefined log message: up:fragment:offline Cannot load fragment from GET /notes/229: undefined
-
 - [ok] Meta props
   - [ok] meta.ok
   - [ok] meta props for up:fragment:inserted
