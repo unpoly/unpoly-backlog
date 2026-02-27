@@ -3,17 +3,16 @@ Next
 
 - Check if tests pass with every CSP setting
 
-[ok] - Expose optional { response } for up:assets:changed
 
 - Test new web animations manually
+
+- Write the CHANGELOG and remaining docs
 
 - Test that we really cache the initial page load
   - Open deskbot on index
   - Follow link
   - Go offline
   - Can we go back to index from cache?
-
-- Fix flakey test: `up.Layer.Modal > styles > scrollbars while an overlay is open > consistently shifts and unshifts if multiple overlays are opened and closed concurrently`
 
 - Docs: Install instructions should use script defer
 
@@ -23,18 +22,20 @@ Next
 
 - Docs: Warn about overusing up-hungry. Use explit targets instead. There is already a note somewhere else, look for "overusing"
 
+- [ok?] Fix flakey test: `up.Layer.Modal > styles > scrollbars while an overlay is open > consistently shifts and unshifts if multiple overlays are opened and closed concurrently`
+
+[ok] - Expose optional { response } for up:assets:changed
+
 [ok] - Can we accept a location change as close condition without emitting location:changed before?
   - Yes
   - Also don't push a history entry that we don't even render
 
-- Write the CHANGELOG and remaining docs
-
-- Improve docs and tests of offline/loaded events
-  - Test and document that up:fragment:offline does not run when preloading
-  - Test and document that up:request:loaded does NOT run when loading from cache
-  - Test and document that up:fragment:loaded DOES run when loading from cache
+- [ok] Improve docs and tests of offline/loaded events
+  [ok] - Test and document that up:fragment:offline does not run when preloading
+  [ok] - Test and document that up:request:loaded does NOT run when loading from cache
+  [ok] - Test and document that up:fragment:loaded DOES run when loading from cache
     - Vs. preloading?
-  - undefined log message: up:fragment:offline Cannot load fragment from GET /notes/229: undefined
+  [ok] - undefined log message: up:fragment:offline Cannot load fragment from GET /notes/229: undefined
 
 [ok] - Are feedback classes still an option, or are they always showing?
   - I still see docs for options.feedback somewhere
