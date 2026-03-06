@@ -1,8 +1,9 @@
 Next
 ====
 
-- Check if tests pass with every CSP setting
+[ok] - Check if tests pass with every CSP setting
 
+- Replace up.motion.isEnabled() with just up.motion.config.enabled
 
 - Test new web animations manually
 
