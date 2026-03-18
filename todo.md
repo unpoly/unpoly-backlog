@@ -1,6 +1,8 @@
 Next
 ====
 
+- Redirect /handle-everything to /handling-everything
+
 - New demo
   - Clean up code
   - Explain sections
