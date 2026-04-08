@@ -43,12 +43,14 @@ Next
   - Support [up-zone]
   - up.fragment.expandTargets() now defaults `true` to :zone, not to :main
     - Support ":zone" and ":zone .child"
-      - This is the first pseudo that has suffix extensions
-    - The expandTargets logic might not work for nested zones, since this will just match the first variant
-      - Maybe a better place is FragmentLookup? Where we can look at ancestors and replace with a derived target?
-        - But how would we get the target string?
+    - We replace this in expandTargets()
+  - Region-aware lookup must look in closest zone first
+    - That must be in FragmentFinder.
   - Zones support [up-history] and [up-scroll] and possibly [up-focus]
-  - autoScroll, autoHistory, autoFocus need 'target-attr' or 'zone-attr' or 'attr-if-zone'
+  - autoScroll, autoHistory, autoFocus need 'target-attr' or 'zone-attr' or 'target-attr-if-zone'
+  - Configuration
+    - up.fragment.config.zoneSelectors
+    - Do we need a way to configure default { history, scroll, focus } per zone?
 
 - Think about exposing placeHolderMap and previewMap
   - previewMap is weird as an attribute: up-preview-map="{ '.foo': 'preview { attr: 'value' }' 
