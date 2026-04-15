@@ -1,14 +1,10 @@
 Next
 ====
 
-- Document that `<script type="application/ld+json">` are treated like `<meta>` tags
-
 - It's not possible to style a link with an active popup
   - There is [up-layer] on [up-nav], but that's not helping here
   - Maybe always mark an opener as current?
   - Or something new, like .up-opening?
-
-- Redirect /handle-everything to /handling-everything
 
 - New demo
   - Clean up code
