@@ -1,6 +1,9 @@
 Next
 ====
 
+- Does revalidation keep scroll positions?
+  - reloading does { scroll: 'keep' }, but this is overridden with up.RenderOptions.NO_INPUT_INTERFERENCE.scroll === false
+
 - It's not possible to style a link with an active popup
   - There is [up-layer] on [up-nav], but that's not helping here
   - Maybe always mark an opener as current?
