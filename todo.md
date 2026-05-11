@@ -1,8 +1,8 @@
 Next
 ====
 
-- Does revalidation keep scroll positions?
-  - reloading does { scroll: 'keep' }, but this is overridden with up.RenderOptions.NO_INPUT_INTERFERENCE.scroll === false
+- loadPage() should be able to target a frame or new tab
+  - { htmlTarget: '_blank' }
 
 - It's not possible to style a link with an active popup
   - There is [up-layer] on [up-nav], but that's not helping here
