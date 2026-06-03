@@ -1,6 +1,12 @@
 Next
 ====
 
+- Consider supporting
+  - up-on-accepted-reload=".target"
+  - up-on-accepted-reload=".company_picker { valueParam: 'company_id' }"
+  - up-on-accepted-reload=".company_picker { valueParam: 'company_id', reuseResponse: true }"
+  - up-on-accepted-render=".company_picker"
+
 - loadPage() should be able to target a frame or new tab
   - { htmlTarget: '_blank' }
 
