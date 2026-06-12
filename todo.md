@@ -1,6 +1,8 @@
 Next
 ====
 
+- Upgrade build pipeline to use es2023
+
 - Consider supporting
   - up-on-accepted-reload=".target"
   - up-on-accepted-reload=".company_picker { valueParam: 'company_id' }"
