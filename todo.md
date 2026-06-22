@@ -56,10 +56,20 @@ Next
   - Region-aware lookup must look in closest zone first
     - That must be in FragmentFinder.
   - Zones support [up-history] and [up-scroll] and possibly [up-focus]
-  - autoScroll, autoHistory, autoFocus need 'target-attr' or 'zone-attr' or 'target-attr-if-zone'
   - Configuration
     - up.fragment.config.zoneSelectors
     - Do we need a way to configure default { history, scroll, focus } per zone?
+      - yes
+      - { autoScroll, autoHistory, autoFocus } or options in general need 'target-attr' or 'zone-attr' or 'target-attr-if-zone'
+  - So :main is a default zone? Hence also :layer?
+
+- Understand why the ActiveStorage hack is so insane
+
+- Consider a way for responses to push content into other fragments 
+  - E.g. <div id="#other-target" up-push>...</div>
+  - What would be the graceful degredation story here?
+    - Should only render for up?
+    - Remove if the target is not found
 
 - Think about exposing placeHolderMap and previewMap
   - previewMap is weird as an attribute: up-preview-map="{ '.foo': 'preview { attr: 'value' }' 
