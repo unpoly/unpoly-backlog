@@ -12,6 +12,24 @@ Next
 - loadPage() should be able to target a frame or new tab
   - { htmlTarget: '_blank' }
 
+- ich habe ein Suchfeld in einem Container, auf den das Such-Formular zeigt. Wie bringe ich Unpoly dazu, den Fokus auf dem Feld zu behalten?
+
+  Habe versucht:
+
+  up-focus="keep" am Formular
+  up-save-focus="true" am Formular (wäre aber auch nicht richtig)
+  up-id am Input
+  up-keep am Input
+
+
+  Aber nichts davon scheint zu helfen.
+
+  Edit: Gebe ich dem Input ein autofocus-Attribut und ein up-keep, scheint es zu funktionieren.
+  Das klingt aber technically nicht ganz richtig. Liegt der Fehler bei mir?
+
+  Edit2: Ursache des Problems ist, dass das Suchfeld mehrmals im DOM im selben Layer liegt, in unterschiedlichen Suchformularen (die anderen sind auch unsichtbar). Gibt es das Suchfeld nur 1x im Layer, funktioniert ein up-focus="keep" am Formular wie erwartet.
+  Also vielleicht ein Fehler in Unpoly (ich hätte erwartet, dass das keep nur im getargeteten Container funktioniert, aber kann auch verstehen, dass es Layer-weit das Element sucht). Ich lasse Henning entscheiden, wenn er zurück ist, und denke mir in der Zwischenzeit eine Lösung für mich aus. (edited)
+
 - It's not possible to style a link with an active popup
   - There is [up-layer] on [up-nav], but that's not helping here
   - Maybe always mark an opener as current?
