@@ -1,6 +1,12 @@
 Next
 ====
 
+- revealMax must also be parsed as boolean
+
+- revealPadding does not work when set as attribute (but does work when configured globally)
+
+- Check why [up-scroll-behavior=smooth] 
+
 - Upgrade build pipeline to use es2023
 
 - Consider supporting
