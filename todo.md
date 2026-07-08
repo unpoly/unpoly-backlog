@@ -1,13 +1,15 @@
 Next
 ====
 
+- Support QUERY method
+
 - revealMax must also be parsed as boolean
 
 - revealPadding does not work when set as attribute (but does work when configured globally)
 
-- Check why [up-scroll-behavior=smooth] 
+- Check why [up-scroll-behavior=smooth] does not scroll smoothly when appending elements
 
-- Upgrade build pipeline to use es2023
+- Upgrade build pipeline to use es2023 or es2024. This might require an esbuild upgrade also.
 
 - Consider supporting
   - up-on-accepted-reload=".target"
