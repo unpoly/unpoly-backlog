@@ -3,6 +3,9 @@ Next
 
 - Support QUERY method
 
+- Think if Cache-Control could influence caching
+  - But Rails always sets a weird Cache-Control header that is incompatible with our defaults
+
 - revealMax must also be parsed as boolean
 
 - revealPadding does not work when set as attribute (but does work when configured globally)
