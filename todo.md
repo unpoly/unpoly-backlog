@@ -1,6 +1,10 @@
 Next
 ====
 
+- CHANGELOG is not agent-queriable
+  - Split the files
+  - Or support .md version of docs
+
 - Support QUERY method
 
 - Think if Cache-Control could influence caching
