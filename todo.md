@@ -4,6 +4,8 @@ Next
 - CHANGELOG is not agent-queriable
   - Split the files
   - Or support .md version of docs
+  
+- Find a way to make fragment_spec agent-editable
 
 - Support QUERY method
 
