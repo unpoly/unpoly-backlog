@@ -12,6 +12,8 @@ Next
 - Think if Cache-Control could influence caching
   - But Rails always sets a weird Cache-Control header that is incompatible with our defaults
   
+- Find a way to signal debounce timers for field watching.
+  
 - unpoly-rails could use an `up.location = foo_path`
 
 - revealMax must also be parsed as boolean
