@@ -1,6 +1,8 @@
 Next
 ====
 
+- Allow to force-disable smooth scrolling for tests
+
 - :form-group (or is this really :fields in modern lingo?)
 
 - CHANGELOG is not agent-queriable
