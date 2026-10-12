@@ -20,9 +20,8 @@ Next
   
 - unpoly-rails could use an `up.location = foo_path`
 
-- revealMax must also be parsed as boolean
 
-- revealPadding does not work when set as attribute (but does work when configured globally)
+[ok] - revealPadding does not work when set as attribute (but does work when configured globally)
 
 - Check why [up-scroll-behavior=smooth] does not scroll smoothly when appending elements
 
