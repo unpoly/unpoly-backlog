@@ -1,6 +1,20 @@
 Next
 ====
 
+
+Unpoly 3.7+: Viele kleine Autosubmit-Formulare bremsen jedes Update aus :turtle:
+
+  Die Skill-Seite der XXX ist eine lange Checkliste: Qualifikation → Bereiche → Skills → Kriterien. Sie war so gebaut:
+  • Jedes Kriterium ist ein eigenes kleines Formular mit Hidden-Feld + Checkbox, und das Formular trägt up-autosubmit – bei einem Mandanten ~450 Stück.
+  • Dazu pro Skill ein Regler-Formular (~90).
+  • Nach dem Abschicken aktualisiert Unpoly per up-hungry die Zähler von Skill, Bereich und Qualifikation.
+
+  Ergebnis: Nach jedem Häkchen hing der Browser ca. 1 s, obwohl der Server nach ~50 ms antwortete. Schuld waren nicht die vielen up-hungry-Zähler, sondern das up-autosubmit am Formular:
+
+  Seit Unpoly 3.7 legt jeder Watcher mit Formular oder Container als Wurzel einen SelectorTracker an. Der durchsucht nach jedem Fragment-Update alle Felder der Seite. 450 Formulare × 2.200 Felder = quadratischer Aufwand bei jeder Änderung. Gebaut wurde die Seite noch unter Unpoly 2, das dieses Tracking nicht kannte.
+
+  Fix: up-autosubmit ans Feld statt ans Formular (<input type="checkbox" … up-autosubmit>). Dann gibt es keinen Tracker mehr, und das Update dauert Millisekunden statt einer Sekunde. Achtung bei Radio-Gruppen: Die lassen sich nur über einen Container beobachten, und der trackt wieder.
+
 - Allow to force-disable smooth scrolling for tests
 
 - :form-group (or is this really :fields in modern lingo?)
