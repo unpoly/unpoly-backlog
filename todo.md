@@ -1,39 +1,22 @@
 Next
 ====
 
+- Support QUERY method. It should also be considered "safe" like GET or HEAD.
 
-Unpoly 3.7+: Viele kleine Autosubmit-Formulare bremsen jedes Update aus :turtle:
+- loadPage() should be able to target a frame or new tab
+  - { htmlTarget: '_blank' }
 
-  Die Skill-Seite der XXX ist eine lange Checkliste: Qualifikation → Bereiche → Skills → Kriterien. Sie war so gebaut:
-  • Jedes Kriterium ist ein eigenes kleines Formular mit Hidden-Feld + Checkbox, und das Formular trägt up-autosubmit – bei einem Mandanten ~450 Stück.
-  • Dazu pro Skill ein Regler-Formular (~90).
-  • Nach dem Abschicken aktualisiert Unpoly per up-hungry die Zähler von Skill, Bereich und Qualifikation.
-
-  Ergebnis: Nach jedem Häkchen hing der Browser ca. 1 s, obwohl der Server nach ~50 ms antwortete. Schuld waren nicht die vielen up-hungry-Zähler, sondern das up-autosubmit am Formular:
-
-  Seit Unpoly 3.7 legt jeder Watcher mit Formular oder Container als Wurzel einen SelectorTracker an. Der durchsucht nach jedem Fragment-Update alle Felder der Seite. 450 Formulare × 2.200 Felder = quadratischer Aufwand bei jeder Änderung. Gebaut wurde die Seite noch unter Unpoly 2, das dieses Tracking nicht kannte.
-
-  Fix: up-autosubmit ans Feld statt ans Formular (<input type="checkbox" … up-autosubmit>). Dann gibt es keinen Tracker mehr, und das Update dauert Millisekunden statt einer Sekunde. Achtung bei Radio-Gruppen: Die lassen sich nur über einen Container beobachten, und der trackt wieder.
+- Find a way to dedup validation request with [up-watch-event="input"]
+  - Alternative: Get rid of inputEvents mapping
 
 - Allow to force-disable smooth scrolling for tests
 
 - :form-group (or is this really :fields in modern lingo?)
 
-- CHANGELOG is not agent-queriable
-  - Split the files
-  - Or support .md version of docs
-  
-- Find a way to make fragment_spec agent-editable
-
-- Support QUERY method
-
-- Think if Cache-Control could influence caching
-  - But Rails always sets a weird Cache-Control header that is incompatible with our defaults
-  
 - Find a way to signal debounce timers for field watching.
+  - But shouldn't they be abort-aware then?
   
 - unpoly-rails could use an `up.location = foo_path`
-
 
 [ok] - revealPadding does not work when set as attribute (but does work when configured globally)
 
@@ -42,13 +25,11 @@ Unpoly 3.7+: Viele kleine Autosubmit-Formulare bremsen jedes Update aus :turtle:
 - Upgrade build pipeline to use es2023 or es2024. This might require an esbuild upgrade also.
 
 - Consider supporting
+  - up-on-accepted="reload .target"
   - up-on-accepted-reload=".target"
   - up-on-accepted-reload=".company_picker { valueParam: 'company_id' }"
   - up-on-accepted-reload=".company_picker { valueParam: 'company_id', reuseResponse: true }"
   - up-on-accepted-render=".company_picker"
-
-- loadPage() should be able to target a frame or new tab
-  - { htmlTarget: '_blank' }
 
 - ich habe ein Suchfeld in einem Container, auf den das Such-Formular zeigt. Wie bringe ich Unpoly dazu, den Fokus auf dem Feld zu behalten?
 
@@ -72,17 +53,6 @@ Unpoly 3.7+: Viele kleine Autosubmit-Formulare bremsen jedes Update aus :turtle:
   - There is [up-layer] on [up-nav], but that's not helping here
   - Maybe always mark an opener as current?
   - Or something new, like .up-opening?
-
-- New demo
-  - Clean up code
-  - Explain sections
-  - Clean up start page
-    - Refer to other demos
-    - Say thanks to Philip
-  - Share on forum
-
-- New unpoly.com landing page
-  - See balsamiq mockup
 
 - Test that we really cache the initial page load
   - Open deskbot on index
