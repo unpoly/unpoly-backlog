@@ -1,6 +1,30 @@
 Next
 ====
 
+- Test the contributing guides with fresh agents that get no briefing
+  - Do they find and read the guides they need? Run with and without the `bin/outline` hint.
+  - See docs/plans/rc6-tasks.md item 48d
+
+- Document options for up.layer.dismissOverlays(), up.layer.dismiss() and up.Layer#dismiss()
+  - They only link onwards, ending at "See options for up.Layer#accept()"
+  - Can't @mix accept: options would land under an "Acceptance" heading. Needs a dismiss options partial or a parser change.
+
+- Detect when Unpoly is loaded twice and log a clear error
+
+- unpoly-rails: CI matrix over several Rails versions
+  - The deprecator bug on Rails 7.2+ went unnoticed
+
+- unpoly-rails release task: the check step should list the files that go into the built gem
+  - Like the npm package preview in unpoly
+  - Replaces the confusing step that mentions `rake release:clean` / jasmine files
+
+- unpoly.com: custom 404 page instead of Apache's default
+
+- unpoly-docs skill: `scripts/releases.py --first <name>` to print the first release note mentioning a feature
+  - Only if agents still dig through release notes to find out when a feature was introduced (the skill tells them not to)
+
+- fahrsicherheitstraining: after the next Unpoly release (with the `[up-confirm="false"]` fix, 0076b116d), delete `app/assets/shared/javascripts/macros/convert_ujs_confirm_attributes.js` and its version guard
+
 - Support QUERY method. It should also be considered "safe" like GET or HEAD.
 
 - loadPage() should be able to target a frame or new tab
