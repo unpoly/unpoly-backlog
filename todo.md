@@ -1,6 +1,11 @@
 Next
 ====
 
+- Name overlays by default for screen readers
+  - Unpoly gives the overlay box role=dialog and aria-modal, but no name: a screen reader only says "dialog"
+  - Idea: aria-labelledby on the first heading in the box, plus an option/attribute for overlays without a heading
+  - unpoly.com does this with an up:layer:opened handler (2026-11-01); remove it once the framework does it
+
 - Test the contributing guides with fresh agents that get no briefing
   - Do they find and read the guides they need? Run with and without the `bin/outline` hint.
   - See docs/plans/rc6-tasks.md item 48d
