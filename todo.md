@@ -1,6 +1,19 @@
 Next
 ====
 
+- Editor completion and hover docs for Unpoly's HTML attributes
+  - Goal: completion, hover docs, deprecations and value hints for `up-*` attributes in templates. TypeScript can't help here.
+  - Generate JetBrains Web-Types and VS Code HTML custom data from our doc comments: a Rake task in unpoly-site writes one JSON file and converts it to both formats
+  - Ship Web-Types in the `unpoly` npm package through a `"web-types"` field in package.json (like htmx), serve both files from unpoly.com, offer the data to the community "Unpoly Support" JetBrains plugin (stops at 3.9)
+  - No own language server or editor extension: htmx-lsp and turbo-lsp stalled
+  - Values: string literal types on attribute params, e.g. `@param {'modal'|'drawer'|'popup'|'cover'} [up-mode='modal']`. No new `@values` directive.
+    - Open sets get `|string` (or `|Selector`), so editors suggest keywords without rejecting other values. Boolean attributes get `{boolean}`.
+    - unpoly-site already parses `{a|b}` (parser.rb), but hides types for selectors (feature.rb `should_document_types?`). Decide whether unpoly.com shows them.
+    - Later maybe: lint the literals against TS unions where an attribute maps to an option (`[up-mode]` ↔ `LayerMode`)
+  - First step: hand-write Web-Types for ~5 attributes, try them in RubyMine on `.html`, `.html.erb` and `.haml`. Convert to custom data, try in VS Code with Ruby LSP on `.html.erb`. Settles which template languages really work.
+  - Limitation: attributes passed as hash keys to Rails helpers like `link_to` are invisible to HTML tooling (about two thirds of all uses in the Rails demo). A Herb lint rule could cover them later; talk to Herb's author first.
+  - Details: unpoly/docs/plans/html-attribute-tooling.md (local research notes)
+
 - Fix the integration apps that call APIs removed without unpoly-migrate
   - verkehrswacht: `up.modal.isOpen()` → `up.layer.isOverlay()` (F1 help tour is broken), `up.element.remove(el)` → `el.remove()`, delete `inventory_select_modal.js`
   - fahrsicherheitstraining: `up.fragment.first` → `up.fragment.get` in `disable_cookie_consent_dialog.js` (consent dialog stays off after leaving imprint/privacy via a link), plus a spec that leaves the imprint page through a link
