@@ -1,6 +1,16 @@
 Next
 ====
 
+- Fix the integration apps that call APIs removed without unpoly-migrate
+  - verkehrswacht: `up.modal.isOpen()` → `up.layer.isOverlay()` (F1 help tour is broken), `up.element.remove(el)` → `el.remove()`, delete `inventory_select_modal.js`
+  - fahrsicherheitstraining: `up.fragment.first` → `up.fragment.get` in `disable_cookie_consent_dialog.js` (consent dialog stays off after leaving imprint/privacy via a link), plus a spec that leaves the imprint page through a link
+  - cheapenergy24, makandra-cards, pr-workspace: delete the dead `to_match_url.js` spec helper
+  - Details: unpoly-typescript/docs/plans/typescript-downstream.md, "Follow-up: calls to APIs that need unpoly-migrate"
+
+- unpoly-docs skill (shipped via unpoly-site): tell agents to statically search the app for removed API names when upgrading
+  - unpoly-migrate only warns when a deprecated call actually runs; untested code paths slip through
+  - All five broken calls found in the integration apps (2026-11-09) would have been found by grepping for the names migrate shims
+
 - Name overlays by default for screen readers
   - Unpoly gives the overlay box role=dialog and aria-modal, but no name: a screen reader only says "dialog"
   - Idea: aria-labelledby on the first heading in the box, plus an option/attribute for overlays without a heading
