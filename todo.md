@@ -1,6 +1,22 @@
 Next
 ====
 
+- When a form with [up-disable] disables a field with [up-validate], we probably don't want to trigger a `change` event (that would cause another validation request while we're submitting)
+
+- Bin über einen Edge Case mit Unpoly gestolpert:
+  Formular in einem Modal, mit einem Feld das up-validate macht.
+  Formular hat up-layer="root"
+  Benutzer tippt in das Feld was ein und klickt dann auf Submit.
+  Unpoly schickt sowohl den Validierungs-Request als auch den Submit-Request raus.
+  Bei mir hat das Submitten Daten gelöscht, die das up-validate noch gebraucht hätte, und Tests sind gescheitert, weil zuerst Submit und dann Validate ankamen.
+
+
+  Normalerweise würde der Request für Validierung ja gecancelt, aber hier nicht, weil nur Requests mit gleichem Ziel-Layer gecancelt werden.
+
+  Ich weiß nicht, ob Unpoly sich hier anders verhalten sollte. :man-shrugging: Hast du Meinung?
+
+  (Das ist evtl auch grundsätzlich ein schlechtes Verhalten in meiner Anwendung, um das ich mich kümmern könnte.) (edited)
+
 - Editor completion and hover docs for Unpoly's HTML attributes
   - Goal: completion, hover docs, deprecations and value hints for `up-*` attributes in templates. TypeScript can't help here.
   - Generate JetBrains Web-Types and VS Code HTML custom data from our doc comments: a Rake task in unpoly-site writes one JSON file and converts it to both formats
